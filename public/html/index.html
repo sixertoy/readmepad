@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr" ng-app="readmepadApp">
+
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <!-- styles -->
+    <link rel="stylesheet" type="text/css" href="css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="css/text.css" />
+    <link rel="stylesheet" type="text/css" href="css/unsemantic.css" />
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+</head>
+
+<body>
+
+    <div class="page">
+        <div class="grid-container" ng-controller="ExplorerController">
+            <div class="sidebar grid-25 tablet-grid-25">
+                <h2><span>Explorer</span></h2>
+                <div class="container">
+                    <ul ng-repeat="(key, pages) in projects">
+                        <li>
+                            <h5>{{key}}</h5>
+                            <ul>
+                                <li ng-repeat="page in pages">
+                                    <a href="" ng-click="showPage(page.link)">{{page.name}}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="view grid-75 tablet-grid-75">
+                <h3>Documentation</h3>
+                <div class="container">
+                    {{markdown_content}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="after-body">
+        <!-- libs -->
+        <script type="text/javascript" src="js/lib/markdown-it.min.js"></script>
+        <!-- angular -->
+        <script type="text/javascript" src="js/angular.min.js"></script>
+        <script type="text/javascript" src="js/angular-sanitize.min.js"></script>
+        <!-- app -->
+        <script type="text/javascript" src="js/app.js"></script>
+        <script type="text/javascript" src="js/explorer/controller.js"></script>
+        <script type="text/javascript" src="js/viewer/controller.js"></script>
+    </div>
+
+</body>
+
+</html>

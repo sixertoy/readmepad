@@ -1,0 +1,24 @@
+{
+  "name": "readmepad",
+  "main": "index.js",
+  "version": "0.1.0",
+  "authors": [
+    "sixertoy <sixertoy.github@gmail.com>"
+  ],
+  "description": "Mardown Explorer",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "markdown",
+    "documentation",
+    "express"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "unsemantic": "~1.0.2",
+    "angular": "~1.4.2",
+    "markdown-it": "~4.3.0",
+    "async": "~1.3.0"
+  }
+}
