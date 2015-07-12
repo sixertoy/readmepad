@@ -4,12 +4,12 @@
 
     'use strict';
 
-    var markdownIt = angular.module('markdownIt', [])
-        .factory('markdownIt', function () {
+    var markdownIt = angular.module('MarkdownIt', [])
+        .factory('MarkdownIt', function () {
             return window.markdownit();
         });
 
-    angular.module('readmepadApp', ['explorerApp', 'viewerApp'])
+    angular.module('readmepadApp', ['explorerApp', 'viewerApp', 'servicesApp'])
         .run(function () {});
 
 }());

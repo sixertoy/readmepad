@@ -4,9 +4,9 @@
   "description": "Project generated with Yeoman generator-gruntproject v0.1.20",
   "main": "index.js",
   "scripts": {
+    "start": "node index",
     "clean_modules": "rm -rf node_modules",
-    "test": "istanbul cover ./scripts/jasmine_node spec/src",
-    "start": "echo \"Error: no start specified\" && exit 1"
+    "test": "istanbul cover ./scripts/jasmine_node spec/src"
   },
   "engines": {
     "node": ">=0.12.0"
