@@ -2,7 +2,7 @@
 
 [![MIT License][license-img]][license-url] [![NPM version][npm-version-img]][npm-url] [![NPM downloads][npm-downloads-img]][npm-url] 
 
-* Project generated with Yeoman generator-gruntproject v0.1.20
+> NodeJS Markdown Editor
 
 ## Install
 
