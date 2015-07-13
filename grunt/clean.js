@@ -3,5 +3,6 @@
 module.exports = {
     server: ['./build/server/**/*'],
     html: ['./build/public/html/**/*'],
-    documentation: ['./build/docs/**/*']
+    documentation: ['./build/docs/**/*'],
+    bower: ['./src/html/js/li/**/*', './src/html/css/**/*']
 };

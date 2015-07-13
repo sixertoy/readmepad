@@ -1,0 +1,24 @@
+<!--
+
+editors
+
+-->
+<div class="view col-md-9" ng-controller="ViewerController">
+
+    <h3 class="title col-md-6"><span>Documentation</span></h3>
+
+    <div class="menu col-md-6">
+        <div class="btn-group">
+            <label class="btn btn-primary btn-sm" ng-click="changeEditMode()" ng-model="radioModel" btn-radio="'Right'">HTML</label>
+            <label class="btn btn-primary btn-sm" ng-click="changeEditMode()" ng-model="radioModel" btn-radio="'Left'">Raw</label>
+        </div>
+        <label class="btn btn-danger btn-sm" ng-click="saveDocumentChanges()" ng-model="singleModel">Save</label>
+    </div>
+
+    <div class="editors col-md-12">
+        <div id="markdown-editor" ui-ace="{useWrapMode: true, mode: 'markdown', onChange: aceChanged}" ng-readonly="checked" ng-show="edit" ng-model="markdownSrv.raw"></div>
+        <div id="markdown-viewer" ng-hide="edit" ng-bind-html="markdownSrv.html"></div>
+    </div>
+
+</div>
+<!-- endof editors -->

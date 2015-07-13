@@ -3,9 +3,14 @@ serve:
 build_documentation:
   - clean:documentation
   - joli_markdown
+build_bower:
+  - clean:bower
+  - copy:bower_js
+  - copy:bower_css
 build_html:
   - clean:html
   - copy:html
+  - mustacher
   - less
 build_server:
   - clean:server
@@ -16,6 +21,7 @@ quick_build:
 build:
   - jshint
   - jasmine_node
+  - build_bower
   - build_html
   - build_server
 default:
