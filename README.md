@@ -7,12 +7,34 @@
 ## Install
 
 ```bash
+sudo su
+# recuperation du repo
 git clone https://github.com/sixertoy/readmepad
 cd readmepad
-sudo npm install
-sudo bower install
-grunt build
+# changer de branche au besoin
+# - master (default)
+# - develop
+# - feature/app
+# - feature/docker
+#
+git checkout <branch_name>
+#
+# installation des dependences
+npm install
+bower install --allow-root
+#
+# build bower components
+grunt build_bower
+#
+# build du serveur
+grunt build_server
+#
+# build du client HTML
+grunt build_html
+#
+# lancement du serveur
 npm start
+# se connecter sur http://localhost:9080/ 
 ```
 
 ## Angular Components
