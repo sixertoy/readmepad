@@ -6,9 +6,14 @@
 
 ## Install
 
-## Usage
-
-## Options
+```bash
+git clone https://github.com/sixertoy/readmepad
+cd readmepad
+sudo npm install
+sudo bower install
+grunt build
+npm start
+```
 
 ## Issues
 
