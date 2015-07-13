@@ -27,6 +27,13 @@
     })); // for parsing application/x-www-form-urlencoded
     app.use(Express.static('public/html'));
 
+    app.post('/save', function (req, res) {
+        var options = {encoding: 'utf8'};
+        console.log(req.body.content);
+        //
+        res.send('yo');
+    });
+
     app.post('/view', function (req, res) {
         var options = {encoding: 'utf8'},
             file = Path.join(process.cwd(), 'public', 'docs', req.body.path);

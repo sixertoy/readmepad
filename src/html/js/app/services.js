@@ -11,13 +11,16 @@
                 html: '',
                 parse: function (value) {
                     this.raw = value;
-                    this.html = $sce.trustAsHtml(MarkdownIt.render(this.raw));
+                    this.setHTML(value);
                 },
                 getRaw: function () {
                     return this.raw;
                 },
                 getHTML: function () {
                     return this.html;
+                },
+                setHTML: function (value) {
+                    this.html = $sce.trustAsHtml(MarkdownIt.render(value));
                 }
             };
         }]);

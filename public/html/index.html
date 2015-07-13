@@ -34,11 +34,14 @@
                 </div>
             </div>
             <div class="view grid-75 tablet-grid-75" ng-controller="ViewerController">
-                <h3>Documentation</h3>
-                <a href="" ng-click="changeEditMode()">Raw</a>
+                <h3>Documentation
+                <a href="" ng-show="edit" ng-click="changeEditMode()">Raw</a>
+                <a href="" ng-hide="edit" ng-click="changeEditMode()">HTML</a>
+                <a href="" ng-click="saveDocumentChanges()">Save</a>
+                </h3>
                 <div class="editor">
                     <div
-                         ui-ace="{useWrapMode: true, mode: 'markdown'}"
+                         ui-ace="{useWrapMode: true, mode: 'markdown', onChange: aceChanged}"
                          ng-readonly="checked" ng-show="edit" ng-model="markdownSrv.raw"
                     ></div>
                     <div class="output" ng-hide="edit" ng-bind-html="markdownSrv.html"></div>
