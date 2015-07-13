@@ -1,10 +1,16 @@
 /*jslint indent: 4 */
 /*global module */
 module.exports = {
-    all: {
+    html: {
         expand: true,
         cwd: 'src/html/',
-        dest: './public/html/',
+        dest: './build/public/html/',
         src: ['**/*', '!**/*.less', '!less']
+    },
+    server: {
+        expand: true,
+        cwd: 'src/server/',
+        dest: './build/server/',
+        src: ['**/*']
     }
 };

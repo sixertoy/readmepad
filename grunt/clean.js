@@ -1,6 +1,7 @@
 /*jslint indent: 4 */
 /*global module */
 module.exports = {
-    public: ['./public/html/**/*'],
+    server: ['./build/server/**/*'],
+    html: ['./build/public/html/**/*'],
     documentation: ['./build/docs/**/*']
 };

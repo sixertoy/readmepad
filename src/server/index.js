@@ -4,7 +4,7 @@
 
     'use strict';
 
-    var app, tree, root,
+    var app, tree, root, front,
         HTTP_PORT = 9080,
         // requires
         FS = require('fs'),
@@ -14,7 +14,8 @@
         BodyParser = require('body-parser'),
         Explorer = require('./lib/explorer');
 
-    root = Path.join(process.cwd(), 'public', 'docs');
+    root = Path.join(__dirname, 'www', 'docs');
+    front = Path.join(__dirname, '..', 'public', 'html');
 
     app = new Express();
 
@@ -25,23 +26,30 @@
     app.use(BodyParser.urlencoded({
         extended: true
     })); // for parsing application/x-www-form-urlencoded
-    app.use(Express.static('public/html'));
+    app.use(Express.static(front));
 
     app.post('/save', function (req, res) {
-        var options = {encoding: 'utf8'};
-        console.log(req.body.content);
+        var options = {
+            encoding: 'utf8'
+        };
         //
+        // content du save
+        console.log(req.body.content);
         res.send('yo');
     });
 
     app.post('/view', function (req, res) {
-        var options = {encoding: 'utf8'},
-            file = Path.join(process.cwd(), 'public', 'docs', req.body.path);
+        var options = {
+                encoding: 'utf8'
+            },
+            file = Path.join(root, req.body.path);
         //
         // read file
-        FS.readFile(file, options, function(err, data){
-            if(err){
-                res.status(404).send({ error: err });
+        FS.readFile(file, options, function (err, data) {
+            if (err) {
+                res.status(404).send({
+                    error: err
+                });
             } else {
                 res.send(data);
             }
@@ -49,8 +57,6 @@
     });
 
     app.get('/explorer', function (req, res) {
-        // console.log(tree);
-        // tree = JSON.stringify(tree);
         res.send(tree);
     });
 

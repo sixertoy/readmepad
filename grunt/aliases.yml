@@ -3,16 +3,21 @@ serve:
 build_documentation:
   - clean:documentation
   - joli_markdown
-quick_build:
-  - clean
-  - copy
+build_html:
+  - clean:html
+  - copy:html
   - less
+build_server:
+  - clean:server
+  - copy:server
+quick_build:
+  - build_html
+  - build_server
 build:
   - jshint
   - jasmine_node
-  - clean
-  - copy
-  - less
+  - build_html
+  - build_server
 default:
   - build
   - watch

@@ -6,7 +6,7 @@ module.exports = {
             compress: true
         },
         files: {
-            "./public/html/css/styles.min.css": "./src/html/less/styles.less"
+            "./build/public/html/css/styles.min.css": "./src/html/less/styles.less"
         }
     }
 };
