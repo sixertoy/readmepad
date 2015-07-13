@@ -12,7 +12,7 @@
         Multer = require('multer'),
         Express = require('express'),
         BodyParser = require('body-parser'),
-        Explorer = require('./../lib/explorer');
+        Explorer = require('./lib/explorer');
 
     root = Path.join(process.cwd(), 'public', 'docs');
 

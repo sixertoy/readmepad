@@ -1,28 +1,63 @@
 <!DOCTYPE html>
-<html lang="fr">
-    <head>
-        <title>Readme Pad</title>
-        <meta charset="utf-8" />
-        <meta http-equiv="x-ua-compatible" content="ie=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
-        <!-- styles -->
-        <link rel="stylesheet" href="css/reset.css" />
-        <link rel="stylesheet" href="css/text.css" />
-        <link rel="stylesheet" href="css/unsemantic.css" />
-        <link rel="stylesheet" href="css/styles.css" />
-    </head>
-    <body>
+<html lang="fr" ng-app="readmepadApp">
 
-        <div class="page">
-            <div class="grid-container">
-                <div class="grid-25">
-                    <h2><span>Explorer</span></h2>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <!-- styles -->
+    <link rel="stylesheet" type="text/css" href="css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="css/text.css" />
+    <link rel="stylesheet" type="text/css" href="css/codemirror.css" />
+    <link rel="stylesheet" type="text/css" href="css/unsemantic.css" />
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+</head>
+
+<body>
+
+    <div class="page">
+        <div class="grid-container">
+            <div class="sidebar grid-25 tablet-grid-25" ng-controller="ExplorerController">
+                <h2><span>Explorer</span></h2>
+                <a href="" ng-click="addProject()">Add Project</a>
+                <div class="container">
+                    <ul ng-repeat="(key, pages) in projects">
+                        <li>
+                            <h5>{{key}}</h5>
+                            <ul>
+                                <li ng-repeat="page in pages">
+                                    <a href="" ng-click="showPage(page.link)">{{page.name}}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
-                <div class="grid-75">
-                    <h3>Documentation</h3>
+            </div>
+            <div class="view grid-75 tablet-grid-75" ng-controller="ViewerController">
+                <h3>Documentation</h3>
+                <a href="" ng-click="changeEditMode()">Raw</a>
+                <div class="editor">
+                    <textarea ng-show="edit">{{markdownSrv.getRaw()}}</textarea>
+                    <div class="output" ng-hide="edit" ng-bind-html="markdownSrv.getHTML()"></div>
                 </div>
             </div>
         </div>
+    </div>
 
-    </body>
+    <div class="after-body">
+        <!-- libs -->
+        <script type="text/javascript" src="js/lib/markdown-it.min.js"></script>
+        <script type="text/javascript" src="js/lib/angular.min.js"></script>
+        <script type="text/javascript" src="js/lib/angular-sanitize.min.js"></script>
+        <script type="text/javascript" src="js/lib/ui-codemirror.min.js"></script>
+        <!-- app -->
+        <script type="text/javascript" src="js/app.js"></script>
+        <script type="text/javascript" src="js/app/services.js"></script>
+        <script type="text/javascript" src="js/app/viewer/controller.js"></script>
+        <script type="text/javascript" src="js/app/explorer/controller.js"></script>
+    </div>
+
+</body>
+
 </html>

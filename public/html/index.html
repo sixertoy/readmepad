@@ -20,6 +20,7 @@
         <div class="grid-container">
             <div class="sidebar grid-25 tablet-grid-25" ng-controller="ExplorerController">
                 <h2><span>Explorer</span></h2>
+                <a href="" ng-click="addProject()">Add Project</a>
                 <div class="container">
                     <ul ng-repeat="(key, pages) in projects">
                         <li>
@@ -37,7 +38,7 @@
                 <h3>Documentation</h3>
                 <a href="" ng-click="changeEditMode()">Raw</a>
                 <div class="editor">
-                    <ui-codemirror ui-codemirror-opts="editorOptions" ng-show="edit">{{markdownSrv.getRaw()}}</ui-codemirror>
+                    <textarea ng-show="edit">{{markdownSrv.getRaw()}}</textarea>
                     <div class="output" ng-hide="edit" ng-bind-html="markdownSrv.getHTML()"></div>
                 </div>
             </div>
@@ -46,8 +47,6 @@
 
     <div class="after-body">
         <!-- libs -->
-        <script type="text/javascript" src="js/lib/codemirror.js"></script>
-        <script type="text/javascript" src="js/lib/mode/markdown.js"></script>
         <script type="text/javascript" src="js/lib/markdown-it.min.js"></script>
         <script type="text/javascript" src="js/lib/angular.min.js"></script>
         <script type="text/javascript" src="js/lib/angular-sanitize.min.js"></script>

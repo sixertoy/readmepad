@@ -6,7 +6,9 @@ build_documentation:
 build:
   - jshint
   - jasmine_node
-  - build_documentation
+  - clean
+  - copy
+  - less
 default:
   - build
   - watch
