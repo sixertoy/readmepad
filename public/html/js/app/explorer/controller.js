@@ -33,7 +33,7 @@
                     })
                     .success(function (data, status) {
                         if (status === 200) {
-                            MarkdownService.setRaw(data);
+                            MarkdownService.parse(data);
                         }
                         /*
                         else {

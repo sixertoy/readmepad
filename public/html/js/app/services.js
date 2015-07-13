@@ -6,17 +6,18 @@
 
     angular.module('servicesApp', ['ngSanitize', 'MarkdownIt'])
         .factory('MarkdownService', ['$sce', 'MarkdownIt', function ($sce, MarkdownIt) {
-            var raw = '';
             return {
-                setRaw: function (value) {
-                    raw = value;
+                raw: '',
+                html: '',
+                parse: function (value) {
+                    this.raw = value;
+                    this.html = $sce.trustAsHtml(MarkdownIt.render(this.raw));
                 },
                 getRaw: function () {
-                    return raw;
+                    return this.raw;
                 },
                 getHTML: function () {
-                    var content = MarkdownIt.render(raw);
-                    return $sce.trustAsHtml(content);
+                    return this.html;
                 }
             };
         }]);

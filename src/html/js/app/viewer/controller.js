@@ -4,7 +4,7 @@
 
     'use strict';
 
-    angular.module('viewerApp', ['servicesApp'])
+    angular.module('viewerApp', ['servicesApp', 'ui.ace'])
         .controller('ViewerController', ['$scope', 'MarkdownService', function ($scope, MarkdownService) {
 
             $scope.edit = false;
