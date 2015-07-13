@@ -1,5 +1,5 @@
 /*jslint indent: 4, nomen: true */
-/*global require, module, __dirname */
+/*global require, module */
 (function () {
 
     'use strict';
@@ -37,10 +37,11 @@
                 if (!result.hasOwnProperty(proj)) {
                     result[proj] = [];
                 }
-                result[proj].push({
+                obj = {
                     link: path,
                     name: Path.basename(file, '.md')
-                });
+                };
+                result[proj].push(obj);
             });
             return result;
         },

@@ -3,6 +3,10 @@ serve:
 build_documentation:
   - clean:documentation
   - joli_markdown
+quick_build:
+  - clean
+  - copy
+  - less
 build:
   - jshint
   - jasmine_node

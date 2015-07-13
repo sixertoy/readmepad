@@ -1,15 +1,16 @@
 /*jslint indent: 4 */
-/*globals angular */
+/*globals angular, window */
 (function () {
 
     'use strict';
 
-    var markdownIt = angular.module('MarkdownIt', [])
+    // Markdown Module
+    angular.module('MarkdownIt', [])
         .factory('MarkdownIt', function () {
             return window.markdownit();
         });
 
-    angular.module('readmepadApp', ['explorerApp', 'viewerApp', 'servicesApp', 'ui.ace'])
+    angular.module('readmepadApp', ['explorerApp', 'viewerApp', 'servicesApp'])
         .run(function () {});
 
 }());

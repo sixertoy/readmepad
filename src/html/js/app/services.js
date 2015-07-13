@@ -6,8 +6,7 @@
 
     angular.module('servicesApp', ['ngSanitize', 'MarkdownIt'])
         .factory('MarkdownService', ['$sce', 'MarkdownIt', function ($sce, MarkdownIt) {
-            var raw = '',
-                html = '';
+            var raw = '';
             return {
                 setRaw: function (value) {
                     raw = value;

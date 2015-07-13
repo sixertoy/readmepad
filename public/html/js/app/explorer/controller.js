@@ -7,23 +7,45 @@
     angular.module('explorerApp', ['servicesApp'])
         .controller('ExplorerController', ['$scope', '$http', 'MarkdownService', function ($scope, $http, MarkdownService) {
             $http.get('/explorer')
-                .success(function (data, status, headers, config) {
+                .success(function (data, status) {
                     if (status === 200) {
                         $scope.projects = data;
                     }
-                }).error(function (data, status, headers, config) {});
+                    /*
+                    else {
+                        // @TODO log errors
+                    }
+                    */
+                });
+            // @TODO log errors
+            /*
+            .error(function () {
+            });
+            */
 
-            $scope.addProject = function(){
+            $scope.addProject = function () {
 
             };
 
             $scope.showPage = function (path) {
-                $http.post('/view', {path: path})
-                    .success(function (data, status, headers, config) {
+                $http.post('/view', {
+                        path: path
+                    })
+                    .success(function (data, status) {
                         if (status === 200) {
                             MarkdownService.setRaw(data);
                         }
-                    }).error(function (data, status, headers, config) {});
+                        /*
+                        else {
+                            // @TODO log errors
+                        }
+                        */
+                    });
+                // @TODO log errors
+                /*
+                .error(function () {
+                });
+                */
             };
 
         }]);

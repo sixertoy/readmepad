@@ -1,5 +1,5 @@
 /*jslint indent: 4, nomen: true */
-/*global require, module, process, console */
+/*global require, process, console */
 (function () {
 
     'use strict';
@@ -9,7 +9,7 @@
         // requires
         FS = require('fs'),
         Path = require('path'),
-        Multer = require('multer'),
+        multer = require('multer'),
         Express = require('express'),
         BodyParser = require('body-parser'),
         Explorer = require('./lib/explorer');
@@ -20,7 +20,7 @@
 
     //
     // Middlewares
-    app.use(Multer()); // for parsing multipart/form-data
+    app.use(multer()); // for parsing multipart/form-data
     app.use(BodyParser.json()); // for parsing application/json
     app.use(BodyParser.urlencoded({
         extended: true
