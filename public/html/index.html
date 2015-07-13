@@ -37,7 +37,10 @@
                 <h3>Documentation</h3>
                 <a href="" ng-click="changeEditMode()">Raw</a>
                 <div class="editor">
-                    <div ui-ace ng-show="edit" ng-model="markdownSrv.raw"></div>
+                    <div
+                         ui-ace="{useWrapMode: true, mode: 'markdown'}"
+                         ng-readonly="checked" ng-show="edit" ng-model="markdownSrv.raw"
+                    ></div>
                     <div class="output" ng-hide="edit" ng-bind-html="markdownSrv.html"></div>
                 </div>
             </div>
@@ -46,7 +49,8 @@
 
     <div class="after-body">
         <!-- libs -->
-        <script type="text/javascript" src="js/lib/ace.js"></script>
+        <script type="text/javascript" src="js/lib/ace-noconflict.min.js"></script>
+        <script type="text/javascript" src="js/lib/mode-markdown-noconflict.min.js"></script>
         <script type="text/javascript" src="js/lib/markdown-it.min.js"></script>
         <!-- angular -->
         <script type="text/javascript" src="js/lib/angular.min.js"></script>
