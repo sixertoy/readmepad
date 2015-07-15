@@ -32,7 +32,8 @@
   "dependencies": {
     "body-parser": "^1.13.2",
     "express": "^4.13.1",
-    "multer": "^0.1.8"
+    "multer": "^0.1.8",
+    "serve-favicon": "^2.3.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

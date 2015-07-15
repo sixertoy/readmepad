@@ -4,10 +4,12 @@
 
     'use strict';
 
-    angular.module('viewerApp', ['servicesApp', 'ui.ace'])
-        .controller('ViewerController', ['$scope', '$http', 'MarkdownService', function ($scope, $http, MarkdownService) {
-
+    angular.module('readmepadApp', ['servicesApp', 'ui.ace'])
+        .controller('ViewerCcontroller', ['$scope', '$http', 'MarkdownService', function ($scope, $http, MarkdownService) {
+            //
+            // variables
             $scope.edit = false;
+            $scope.markdownSrv = MarkdownService;
 
             $scope.changeEditMode = function () {
                 $scope.edit = !$scope.edit;
@@ -34,7 +36,7 @@
                 $scope.markdownSrv.setHTML($scope.markdownSrv.raw);
             };
 
-            $scope.markdownSrv = MarkdownService;
+
 
         }]);
 

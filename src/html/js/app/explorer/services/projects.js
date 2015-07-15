@@ -4,8 +4,10 @@
 
     'use strict';
 
-    angular.module('servicesApp', ['ngSanitize', 'MarkdownIt'])
-        .factory('MarkdownService', ['$sce', 'MarkdownIt', function ($sce, MarkdownIt) {
+    angular.module('readmepadAppSidebar')
+        .factory('ProjectsService', ['$sce', 'MarkdownIt', function ($sce, MarkdownIt) {
+            return {};
+            /*
             return {
                 raw: '',
                 html: '',
@@ -23,6 +25,7 @@
                     this.html = $sce.trustAsHtml(MarkdownIt.render(value));
                 }
             };
+            */
         }]);
 
 }());

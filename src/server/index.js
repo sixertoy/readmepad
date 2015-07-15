@@ -1,34 +1,37 @@
 /*jslint indent: 4, nomen: true */
-/*global require, process, console */
+/*global require, process, console, __dirname */
 (function () {
 
     'use strict';
 
-    var app, tree, root, front,
+    var server, tree, root, app,
         HTTP_PORT = 9080,
         // requires
         FS = require('fs'),
         Path = require('path'),
         multer = require('multer'),
         Express = require('express'),
+        favicon = require('serve-favicon'),
         BodyParser = require('body-parser'),
         Explorer = require('./lib/explorer');
 
     root = Path.join(__dirname, 'www', 'docs');
-    front = Path.join(__dirname, '..', 'public', 'html');
+    app = Path.join(__dirname, '..', 'public', 'html');
+    favicon = favicon(Path.join(app, 'favicon.ico'));
 
-    app = new Express();
+    server = new Express();
 
     //
     // Middlewares
-    app.use(multer()); // for parsing multipart/form-data
-    app.use(BodyParser.json()); // for parsing application/json
-    app.use(BodyParser.urlencoded({
+    server.use(favicon);
+    server.use(multer()); // for parsing multipart/form-data
+    server.use(BodyParser.json()); // for parsing application/json
+    server.use(BodyParser.urlencoded({
         extended: true
     })); // for parsing application/x-www-form-urlencoded
-    app.use(Express.static(front));
+    server.use(Express.static(app));
 
-    app.post('/save', function (req, res) {
+    server.post('/save', function (req, res) {
         var options = {
             encoding: 'utf8'
         };
@@ -38,7 +41,7 @@
         res.send('yo');
     });
 
-    app.post('/view', function (req, res) {
+    server.post('/view', function (req, res) {
         var options = {
                 encoding: 'utf8'
             },
@@ -56,11 +59,11 @@
         });
     });
 
-    app.get('/explorer', function (req, res) {
+    server.get('/explorer', function (req, res) {
         res.send(tree);
     });
 
-    app.listen(HTTP_PORT, function () {
+    server.listen(HTTP_PORT, function () {
         tree = Explorer.flatten(root);
         console.log('ReadmePad now running under http://localhost:%d', HTTP_PORT);
         console.log('ReadmePad root dir:%s', root);

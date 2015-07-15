@@ -11,7 +11,7 @@ module.exports = {
         tasks: ['build_server']
     },
     html: {
-        files: ['./src/html/**/*'],
+        files: ['./src/html/**/*', './src/html/**/*.hbs', './src/html/**/*.tpl'],
         tasks: ['build_html']
     }
 };

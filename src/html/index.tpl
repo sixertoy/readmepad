@@ -14,13 +14,13 @@
     <div id="page" class="container-fluid">
         <div class="row">
             <h1 class="title col-md-12"><span>Readme PAD</span></h1>
-            {{$include 'explorer'}}
-            {{$include 'viewer'}}
+            {{$include 'views/explorer'}}
         </div>
     </div>
 
     <div class="after-body">
         {{$include 'scripts'}}
+        {{$include 'modals/sidebar_modal'}}
     </div>
 
 </body>
