@@ -12,14 +12,18 @@
 
             return {
 
+                LOAD_URI: '/explorer',
+                CREATE_URI: '/create',
+
                 /**
+                 * Chargement de la liste des projest
                  *
-                 *
+                 * @param [String] uri:self.LOAD_URI
                  *
                  */
-                loadProjects: function () {
+                load: function (uri) {
                     deferred = $q.defer();
-                    $http.get('/explorer')
+                    $http.get(uri)
                         .success(function (data, status) {
                             // @TODO log errors
                             if (status === 200) {
@@ -30,6 +34,7 @@
                             }
                         })
                         .error(function () {
+                            console.log(arguments);
                             return deferred.reject('error');
                         });
                     return deferred.promise;
@@ -37,22 +42,27 @@
 
                 /**
                  *
+                 * Creation d'un projest
                  *
+                 * @param [String] uri:self.CREATE_URI
+                 * @param [String] project_uri
                  *
                  */
-                createProject: function (path) {
-                    params.path = path;
+                create: function (uri, project_uri) {
+                    params.path = project_uri;
                     //
                     deferred = $q.defer();
-                    $http.post('/create', params).success(function (data, status) {
+                    $http.post(uri, params).success(function (data, status) {
                         // @TODO log errors
                         if (status === 200) {
                             // $scope.projects = data;
                             return deferred.resolve(data);
                         } else {
+                            console.log(arguments);
                             return deferred.reject('error');
                         }
                     }).error(function () {
+                        console.log(arguments);
                         return deferred.reject('error');
                     });
                     return deferred.promise;

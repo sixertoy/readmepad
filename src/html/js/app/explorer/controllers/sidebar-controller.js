@@ -25,11 +25,11 @@
             _.assign($scope, options);
 
             $scope.loadProjects = function () {
-                ProjectsService.loadProjects()
+                ProjectsService.load(ProjectsService.LOAD_URI)
                     .then(function (data) {
-                        // console.log(data);
+                        console.log(data);
                     }, function (err) {
-                        // console.log(err);
+                        console.log(err);
                     });
             };
 
@@ -41,14 +41,14 @@
                 */
             };
 
-            $scope.createProject = function (path) {
-                ProjectsService.createProjects(path)
+            $scope.createProject = function (project_uri) {
+                ProjectsService.create(ProjectsService.CREATE_URI, project_uri)
                     .then(function (data) {
-                        // console.log(data);
+                        console.log('project has been created');
+                        console.log(data);
                     }, function (err) {
-                        // console.log(err);
+                        console.log(err);
                     });
-                console.log(path);
             };
 
             $scope.removeProject = function (key) {
