@@ -13,5 +13,9 @@ module.exports = {
     html: {
         files: ['./src/html/**/*', './src/html/**/*.hbs', './src/html/**/*.tpl'],
         tasks: ['build_html']
+    },
+    jasmine: {
+        files: ['./src/**/*.js', './spec/**/*.js'],
+        tasks: ['jasmine_node']
     }
 };

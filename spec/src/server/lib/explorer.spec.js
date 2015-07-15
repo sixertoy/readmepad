@@ -7,26 +7,19 @@
 
     var result, helper,
         cwd = process.cwd(),
-        Helper = require();
+        Path = require('path'),
+        Explorer = require(Path.join(cwd, 'src', 'server', 'lib', 'explorer'));
 
-    describe('Helper', function () {
-
-        beforeEach(function(){
-            // helper = new Helper();
-        });
+    describe('Explorer', function () {
 
         describe('Method', function () {
 
-            it('Expect something', function(){
+            xit('Expect something', function(){
                 expect(function(){
                     result = helper.render();
                 }).toThrow();
             });
 
-        });
-
-        afterEach(function(){
-            // helper = null;
         });
 
     });

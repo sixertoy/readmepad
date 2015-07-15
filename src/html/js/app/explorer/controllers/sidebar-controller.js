@@ -42,6 +42,9 @@
             };
 
             $scope.createProject = function (project_uri) {
+
+                console.log('createProject');
+
                 ProjectsService.create(ProjectsService.CREATE_URI, project_uri)
                     .then(function (data) {
                         console.log('project has been created');
@@ -73,7 +76,10 @@
                         templateUrl: 'SidebarModal.html',
                         controller: 'SidebarModalController'
                     })
-                    .result.then($scope.createProject, function () {
+                    .result.then(function (project_uri) {
+                        console.log('result modal');
+                        $scope.createProject(project_uri);
+                    }, function () {
                         // $log.info('Modal dismissed at: ' + new Date());
                     });
 

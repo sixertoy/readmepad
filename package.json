@@ -1,6 +1,6 @@
 {
   "name": "readmepad",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Project generated with Yeoman generator-gruntproject v0.1.20",
   "main": "index.js",
   "scripts": {

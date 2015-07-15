@@ -83,6 +83,7 @@
         var project_id, pages,
             path = Path.normalize(req.body.path);
         //
+        console.log('on server');
         // lecture du dossier
         FS.stat(path, function (err, stats) {
             if (err) {
@@ -101,6 +102,8 @@
                     } else {
                         if (doc !== null) {
                             // si le document existe
+                            // on renvoi le document
+                            Facade.ok(res, doc);
                         } else {
                             // si le document n'existe pas
                             // on recupere son arbre
@@ -108,6 +111,7 @@
                             // on insere le nouveau document
                             // en bdd
                             db.insert({
+                                path: path,
                                 pages: pages,
                                 project_id: project_id,
                                 name: Path.basename(path)
