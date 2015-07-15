@@ -20,22 +20,17 @@
      *
      */
     angular.module('readmepadAppSidebar')
-        .controller('SidebarController', ['$scope', '$http', '$modal', '_', function ($scope, $http, $modal, _) {
+        .controller('SidebarController', ['$scope', '$http', '$modal', 'ProjectsService', '_', function ($scope, $http, $modal, ProjectsService, _) {
 
             _.assign($scope, options);
 
             $scope.loadProjects = function () {
-                console.log('load projects');
-                /*
-                $http.get('/explorer')
-                    .success(function (data, status) {
-                        // @TODO log errors
-                        if (status === 200) {
-                            $scope.projects = data;
-                        }
-                    })
-                    .error(function () {});
-                    */
+                ProjectsService.loadProjects()
+                    .then(function (data) {
+                        // console.log(data);
+                    }, function (err) {
+                        // console.log(err);
+                    });
             };
 
             $scope.openProject = function (key) {
@@ -44,6 +39,16 @@
                 $scope.project.name = key;
                 $scope.project.items = $scope.projects[key];
                 */
+            };
+
+            $scope.createProject = function (path) {
+                ProjectsService.createProjects(path)
+                    .then(function (data) {
+                        // console.log(data);
+                    }, function (err) {
+                        // console.log(err);
+                    });
+                console.log(path);
             };
 
             $scope.removeProject = function (key) {
@@ -63,18 +68,12 @@
             };
 
             $scope.openModalProject = function () {
-
-
                 modalInstance = $modal.open({
-                        resolve: {},
                         animation: true,
                         templateUrl: 'SidebarModal.html',
                         controller: 'SidebarModalController'
                     })
-                    .result.then(function (path) {
-                        // $log.info(path);
-                        // $scope.selected = selectedItem;
-                    }, function () {
+                    .result.then($scope.createProject, function () {
                         // $log.info('Modal dismissed at: ' + new Date());
                     });
 

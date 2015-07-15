@@ -7,14 +7,20 @@
     angular.module('readmepadAppSidebar')
         .controller('SidebarModalController', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
 
+            $scope.data = {
+                project_uri: ''
+            };
+
             $scope.onModalSubmit = function () {
-                $modalInstance.close();
+                if ($scope.data.project_uri !== '') {
+                    $modalInstance.close($scope.data.project_uri);
+                }
             };
 
             $scope.onModalCancel = function () {
                 $modalInstance.dismiss('cancel');
             };
 
-        }])
+        }]);
 
 }());

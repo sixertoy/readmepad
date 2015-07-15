@@ -1,11 +1,19 @@
 <script type="text/ng-template" id="SidebarModal.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Nouveau projet</h3>
-    </div>
-    <div class="modal-body">
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="onModalSubmit()">OK</button>
-        <button class="btn btn-warning" ng-click="onModalCancel()">Cancel</button>
+    <div class="container-fluid">
+        <div class="modal-header">
+            <h3 class="modal-title">Nouveau projet</h3>
+        </div>
+        <div class="modal-body">
+            <form name="projectForm">
+                <div class="form-group" ng-class="{ 'has-error': projectForm.project_uri.$invalid }">
+                    <label for="project_uri">Project's URI</label>
+                    <input id="project_uri" name="project_uri" ng-model="data.project_uri" type="text" class="form-control" placeholder="http://" ng-trim="true" required />
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="onModalSubmit()">OK</button>
+            <button class="btn btn-warning" ng-click="onModalCancel()">Cancel</button>
+        </div>
     </div>
 </script>

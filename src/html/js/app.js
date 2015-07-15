@@ -12,8 +12,6 @@
         });
         */
 
-    console.log(window.isuri);
-
     angular.module('markdownIt', [])
         .factory('MarkdownIt', function () {
             return window.markdownit();

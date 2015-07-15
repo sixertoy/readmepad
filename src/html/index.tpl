@@ -20,8 +20,9 @@
 
     <div class="after-body">
         {{$include 'scripts'}}
-        {{$include 'modals/sidebar_modal'}}
     </div>
+
+    {{$include 'modals/sidebar_modal'}}
 
 </body>
 
