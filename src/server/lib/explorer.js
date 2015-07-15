@@ -4,18 +4,44 @@
 
     'use strict';
 
-    var FS = require('fs'),
-        Path = require('path');
+    var Q = require('q'),
+        FS = require('fs'),
+        Path = require('path'),
+        lodash = require('lodash');
 
     module.exports = {
 
-        _hasFiles: function (base) {
-            var files = FS.readdirSync(base);
-            if (files.length) {
-                return files;
+        /**
+         *
+         * Verifie qu'un dossier contient des fichiers
+         *
+         */
+        folderHasFiles: function (base) {
+            var msg, files,
+                deferred = Q.defer(),
+                nvalid = (arguments.length < 0 || lodash.isEmpty(base) || !lodash.isString(base) || lodash.isEmpty(base.trim()));
+            //
+            if (nvalid) {
+                msg = 'Explore.folderHasFiles needs one argument. Aborted!';
+                throw new Error(msg);
             } else {
-                return false;
+                //
+                base = Path.normalize(base);
+                FS.readdir(base, function (err) {
+                    if (err) {
+                        throw err;
+                    } else {
+                        /*
+                        if (files.length) {
+                            return files;
+                        } else {
+                            return false;
+                        }
+                        */
+                    }
+                });
             }
+            return deferred.promise;
         },
 
         /**
@@ -26,7 +52,7 @@
          * Last split of the data array is file name
          *
          */
-        _asObject: function (data) {
+        asObject: function (data) {
             var proj, file, paths, obj,
                 result = {},
                 sep = Path.sep;
@@ -56,7 +82,7 @@
          * ...]
          *
          */
-        _explore: function (base, parent, data) {
+        explore: function (base, parent, data) {
             var files, path, stats, current,
                 $this = this;
             FS.readdirSync(base).filter(function (file) {
