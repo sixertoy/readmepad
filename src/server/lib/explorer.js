@@ -16,28 +16,27 @@
          * Verifie qu'un dossier contient des fichiers
          *
          */
-        folderHasFiles: function (base) {
-            var msg, files,
+        hasFiles: function (base) {
+            var msg,
                 deferred = Q.defer(),
                 nvalid = (arguments.length < 0 || lodash.isEmpty(base) || !lodash.isString(base) || lodash.isEmpty(base.trim()));
             //
             if (nvalid) {
-                msg = 'Explore.folderHasFiles needs one argument. Aborted!';
+                msg = 'Explore.hasFiles :: Needs one argument. Aborted!';
                 throw new Error(msg);
             } else {
                 //
                 base = Path.normalize(base);
-                FS.readdir(base, function (err) {
+                FS.readdir(base, function (err, files) {
                     if (err) {
-                        throw err;
+                        msg = new Error('Explore.hasFiles :: Invalid path. Aborted!');
+                        deferred.reject(msg);
                     } else {
-                        /*
                         if (files.length) {
-                            return files;
+                            deferred.resolve(files);
                         } else {
-                            return false;
+                            deferred.resolve(false);
                         }
-                        */
                     }
                 });
             }
@@ -52,6 +51,7 @@
          * Last split of the data array is file name
          *
          */
+        /*
         asObject: function (data) {
             var proj, file, paths, obj,
                 result = {},
@@ -71,6 +71,7 @@
             });
             return result;
         },
+        */
 
         /**
          *
@@ -82,6 +83,7 @@
          * ...]
          *
          */
+        /*
         explore: function (base, parent, data) {
             var files, path, stats, current,
                 $this = this;
@@ -111,13 +113,15 @@
                 return true;
             });
         },
-
+        */
+        /*
         flatten: function (base) {
             var data = [];
             this._explore(base, '.', data);
             data = this._asObject(data);
             return data;
         }
+        */
 
     };
 
