@@ -1,5 +1,5 @@
 /*jslint indent: 4, nomen: true */
-/*global require, module, process */
+/*global require, module, exports, process */
 (function () {
 
     'use strict';
@@ -15,6 +15,8 @@
         scandir = {
 
             exec: function (base, options) {
+                var msg, name, deferred,
+                    obj = {};
                 //
                 // tests des arguments
                 if (arguments.length < 1) {
@@ -32,9 +34,40 @@
                     }
                 }
                 if (!lodash.isPlainObject(options) || !lodash.isString(base) || lodash.isEmpty(base)) {
-                    throw new Error('Invalid arguments. Aborted.');
+                    msg = 'Invalid arguments. Aborted.';
+                    throw new Error(msg);
                 }
                 //
+                deferred = Q.defer();
+                // normalisation du path
+                base = Path.normalize(base);
+                // check base as directoy
+                FS.stat(base, function (err, stats) {
+                    if (err || !stats.isDirectory()) {
+                        if (err) {
+                            deferred.reject(err);
+                        } else {
+                            msg = 'Path is not a directory. Cancelled.';
+                            deferred.reject(new Error(msg));
+                        }
+                    } else {
+                        scandir.hasfiles(base).then(function (files) {
+                            if (files) {
+                                name = Path.basename(base);
+                                obj[name] = {
+                                    files: files,
+                                    fullpath: base
+                                };
+                                deferred.resolve(obj);
+                            } else {
+                                deferred.resolve(false);
+                            }
+                        }, function (err) {
+                            deferred.reject(new Error(err));
+                        });
+                    }
+                });
+                return deferred.promise;
             },
 
             /**

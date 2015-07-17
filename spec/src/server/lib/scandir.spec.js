@@ -25,6 +25,7 @@
         FS = require('fs'),
         Path = require('path'),
         sinon = require('sinon'),
+        lodash = require('lodash'),
         //
         // exposed
         scandir = require(Path.join(cwd, 'src', 'server', 'lib', 'scandir')),
@@ -68,6 +69,60 @@
                 expect(function () {
                     scandir.exec(undefined);
                 }).toThrow(err);
+            });
+
+            /*
+            // unable to test
+            it('returns Q.promise', function () {
+                var promise,
+                    path = Path.join(cwd, 'spec', 'expected', 'explore_method');
+                //
+                sinon.stub(scandir, 'hasfiles', function(){
+                    return qPromise;
+                });
+                sinon.stub(Q, 'defer', function () {
+                    return qPromise;
+                });
+                promise = scandir('toto');
+                //
+                expect(promise).toEqual('yo! promise');
+                //
+                scandir.hasfiles.restore();
+                Q.defer.restore();
+            });
+            */
+
+            it('returns a plainObject', function (done) {
+                var name,
+                    path = Path.join(cwd, 'spec', 'expected', 'explore_method');
+                scandir(path).then(function (data) {
+                    name = Path.basename(path);
+                    expect(data.hasOwnProperty(name)).toBe(true);
+                    expect(lodash.isPlainObject(data)).toBe(true);
+                    done();
+                });
+            });
+
+            it('reject with an error not directory', function (done) {
+                var msg = 'Path is not a directory. Cancelled.',
+                    path = Path.join(cwd, 'spec', 'expected', 'not_directory');
+                scandir(path).then(function (data) {
+                }, function(err){
+                    expect(err.message).toEqual(msg);
+                    done();
+                });
+            });
+
+            it('reject with a FS.stat error', function (done) {
+                var msg = 'Path is not a directory. Cancelled.',
+                    path = Path.join(cwd, 'spec', 'expected', 'non_exists');
+                scandir(path).then(function (data) {
+                }, function(err){
+                    expect(err.hasOwnProperty('path')).toBe(true);
+                    expect(err.hasOwnProperty('code')).toBe(true);
+                    expect(err.hasOwnProperty('errno')).toBe(true);
+                    done();
+                });
             });
 
         });
