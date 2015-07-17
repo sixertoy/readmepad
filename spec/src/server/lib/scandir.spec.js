@@ -34,7 +34,10 @@
 
     describe('scandir', function () {
 
-        describe('scandir', function () {
+        xdescribe('list items/item method', function () {
+        });
+
+        describe('scandir/exec/scandir.exec', function () {
 
             it('does not throw', function () {
                 var path = Path.join(cwd, 'spec', 'expected', 'explore_method');
@@ -92,7 +95,7 @@
             });
             */
 
-            it('returns a plainObject', function (done) {
+            it('returns a plainObject w/ basename as property', function (done) {
                 var name,
                     path = Path.join(cwd, 'spec', 'expected', 'explore_method');
                 scandir(path).then(function (data) {
@@ -100,23 +103,40 @@
                     expect(data.hasOwnProperty(name)).toBe(true);
                     expect(lodash.isPlainObject(data)).toBe(true);
                     done();
+                }, function(err){
+                    // no error
                 });
             });
 
-            it('reject with an error not directory', function (done) {
+            it('returns a plainObject w/ basename as property, base is a dot', function (done) {
+                var name = 'readmepad',
+                    path = '.';
+                scandir(path).then(function (data) {
+                    console.log(data);
+                    expect(data.hasOwnProperty(name)).toBe(true);
+                    expect(lodash.isPlainObject(data)).toBe(true);
+                    done();
+                }, function(err){
+                    // no error
+                });
+            });
+
+            it('reject w/ an error not directory', function (done) {
                 var msg = 'Path is not a directory. Cancelled.',
                     path = Path.join(cwd, 'spec', 'expected', 'not_directory');
-                scandir(path).then(function (data) {
+                scandir.exec(path).then(function (data) {
+                    // no data
                 }, function(err){
                     expect(err.message).toEqual(msg);
                     done();
                 });
             });
 
-            it('reject with a FS.stat error', function (done) {
+            it('reject w/ a FS.stat error', function (done) {
                 var msg = 'Path is not a directory. Cancelled.',
                     path = Path.join(cwd, 'spec', 'expected', 'non_exists');
-                scandir(path).then(function (data) {
+                exec(path).then(function (data) {
+                    // no data
                 }, function(err){
                     expect(err.hasOwnProperty('path')).toBe(true);
                     expect(err.hasOwnProperty('code')).toBe(true);
@@ -127,7 +147,7 @@
 
         });
 
-        describe('hasfiles', function () {
+        describe('scandir.hasfiles/hasfiles', function () {
 
             it('use FS.readdir', function () {
                 var promise;

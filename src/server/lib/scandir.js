@@ -7,6 +7,7 @@
     var Q = require('q'),
         FS = require('fs'),
         Path = require('path'),
+        Util = require('util'),
         lodash = require('lodash'),
         defaults = {
             depth: 0,
@@ -14,9 +15,23 @@
         },
         scandir = {
 
+            item: function (stats, base, files) {
+                var obj = {
+                    path: false,
+                    name: false,
+                    files: files,
+                    stats: stats,
+                    fullpath: base,
+                    isdir: stats.isDirectory()
+                };
+                obj.name = Path.basename(base);
+                obj.path = Path.relative(process.cwd(), base);
+                return obj;
+            },
+
             exec: function (base, options) {
-                var msg, name, deferred,
-                    obj = {};
+                var obj, msg, name, deferred,
+                    result = {};
                 //
                 // tests des arguments
                 if (arguments.length < 1) {
@@ -51,20 +66,22 @@
                             deferred.reject(new Error(msg));
                         }
                     } else {
-                        scandir.hasfiles(base).then(function (files) {
-                            if (files) {
-                                name = Path.basename(base);
-                                obj[name] = {
-                                    files: files,
-                                    fullpath: base
-                                };
-                                deferred.resolve(obj);
-                            } else {
-                                deferred.resolve(false);
-                            }
-                        }, function (err) {
-                            deferred.reject(new Error(err));
-                        });
+                        try {
+                            scandir.hasfiles(base).then(function (files) {
+                                if (files) {
+                                    obj = scandir.item(stats, base, files);
+                                    result[obj.name] = obj;
+                                    deferred.resolve(result);
+                                } else {
+                                    deferred.resolve(false);
+                                }
+                            }, function (err) {
+                                deferred.reject(new Error(err));
+                            });
+                        } catch (e) {
+                            // prevents internal refactoring
+                            throw e;
+                        }
                     }
                 });
                 return deferred.promise;
@@ -185,7 +202,9 @@
         };
 
     exports = module.exports = scandir.exec;
+    // exposed
     exports.exec = scandir.exec;
+    exports.item = scandir.item;
     exports.hasfiles = scandir.hasfiles;
 
 }());
