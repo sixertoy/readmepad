@@ -9,29 +9,79 @@
         Path = require('path'),
         Util = require('util'),
         lodash = require('lodash'),
+        Utils = require('./utils'),
         defaults = {
             depth: 0,
             filters: []
         },
         scandir = {
 
-            item: function (stats, base, files) {
-                var obj = {
+            /**
+             *
+             * Verifie qu'un dossier contient des fichiers
+             *
+             */
+            hasfiles: function (base) {
+                var msg,
+                    deferred = Q.defer(),
+                    nvalid = (arguments.length < 0 || lodash.isEmpty(base) || !lodash.isString(base) || lodash.isEmpty(base.trim()));
+                //
+                if (nvalid) {
+                    msg = 'Needs one argument. Aborted';
+                    throw new Error(msg);
+                } else {
+                    //
+                    FS.readdir(base, function (err, files) {
+                        if (err) {
+                            msg = 'Invalid path. Aborted';
+                            deferred.reject(new Error(msg));
+                        } else {
+                            if (files.length) {
+                                deferred.resolve(files);
+                            } else {
+                                deferred.resolve(false);
+                            }
+                        }
+                    });
+                }
+                return deferred.promise;
+            },
+
+            build: function (stats, base, files) {
+                var obj;
+                // nvalid = (arguments.length < 3 || (typeof (stats) !== 'function') || (!lodash.isString(base) && !lodash.isEmpty(base)) || (!lodash.isArray(files) || !lodash.isBoolean(files)));
+                /*
+                if (nvalid) {
+                    throw new Error('Arguments missing. Aborted');
+                }
+                */
+
+                obj = {
                     path: false,
                     name: false,
                     files: files,
                     stats: stats,
-                    fullpath: base,
+                    fullpath: false,
                     isdir: stats.isDirectory()
                 };
-                obj.name = Path.basename(base);
-                obj.path = Path.relative(process.cwd(), base);
+                base = Path.normalize(base);
+                obj.fullpath = Path.resolve(process.cwd(), base);
+                obj.path = Path.relative(process.cwd(), obj.fullpath);
+                if (lodash.isEmpty(obj.path)) {
+                    obj.path = '.';
+                }
+                obj.name = Utils.dirname(obj.fullpath);
                 return obj;
             },
 
             exec: function (base, options) {
-                var obj, msg, name, deferred,
-                    result = {};
+                var obj, msg, name,
+                    result = {},
+                    deferred = Q.defer();
+
+
+
+                return deferred.promise;
                 //
                 // tests des arguments
                 if (arguments.length < 1) {
@@ -53,69 +103,35 @@
                     throw new Error(msg);
                 }
                 //
-                deferred = Q.defer();
                 // normalisation du path
                 base = Path.normalize(base);
-                // check base as directoy
-                FS.stat(base, function (err, stats) {
-                    if (err || !stats.isDirectory()) {
-                        if (err) {
-                            deferred.reject(err);
-                        } else {
-                            msg = 'Path is not a directory. Cancelled.';
-                            deferred.reject(new Error(msg));
-                        }
-                    } else {
-                        try {
-                            scandir.hasfiles(base).then(function (files) {
-                                if (files) {
-                                    obj = scandir.item(stats, base, files);
-                                    result[obj.name] = obj;
-                                    deferred.resolve(result);
-                                } else {
-                                    deferred.resolve(false);
-                                }
-                            }, function (err) {
-                                deferred.reject(new Error(err));
-                            });
-                        } catch (e) {
-                            // prevents internal refactoring
-                            throw e;
-                        }
-                    }
-                });
-                return deferred.promise;
-            },
 
-            /**
-             *
-             * Verifie qu'un dossier contient des fichiers
-             *
-             */
-            hasfiles: function (base) {
-                var msg,
-                    deferred = Q.defer(),
-                    nvalid = (arguments.length < 0 || lodash.isEmpty(base) || !lodash.isString(base) || lodash.isEmpty(base.trim()));
+
                 //
-                if (nvalid) {
-                    msg = 'Needs one argument. Aborted';
-                    throw new Error(msg);
-                } else {
-                    //
-                    base = Path.normalize(base);
-                    FS.readdir(base, function (err, files) {
-                        if (err) {
-                            msg = 'Invalid path. Aborted';
-                            deferred.reject(new Error(msg));
-                        } else {
-                            if (files.length) {
-                                deferred.resolve(files);
+                // check base as directoy
+                /*
+                FS.stat(base, function (err, stats) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else if(!lodash.isPlainObject(stats)) {
+                        msg = 'Path is not a directory. Cancelled. Base: ' + base;
+                        deferred.reject(new Error(msg));
+                    } else {
+                        deferred.reject(new Error(err));
+                        scandir.hasfiles(base).then(function (files) {
+                            if (files) {
+                                obj = scandir.build(stats, base, files);
+                                result[obj.name] = obj;
+                                deferred.resolve(result);
                             } else {
                                 deferred.resolve(false);
                             }
-                        }
-                    });
-                }
+                        }, function (err) {
+                            deferred.reject(new Error(err));
+                        });
+                    }
+                });
+                */
                 return deferred.promise;
             }
 
@@ -204,7 +220,7 @@
     exports = module.exports = scandir.exec;
     // exposed
     exports.exec = scandir.exec;
-    exports.item = scandir.item;
+    exports.build = scandir.build;
     exports.hasfiles = scandir.hasfiles;
 
 }());
