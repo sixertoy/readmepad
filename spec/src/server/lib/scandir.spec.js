@@ -109,9 +109,9 @@
                 helper.exec(opts);
                 result = {
                     depth: 0,
+                    root: process.cwd(),
                     added: 'no default',
-                    filters: ['**/*.hml'],
-                    root: 'd:\\npm\\readmepad'
+                    filters: ['**/*.hml']
                 }
                 expect(helper.options()).toEqual(result);
             })
