@@ -44,61 +44,58 @@
              *
              */
             this.hasfiles = function (base) {
-                var msg,
-                    deferred = Q.defer(),
-                    nvalid = (arguments.length < 0 || lodash.isEmpty(base) || !lodash.isString(base) || lodash.isEmpty(base.trim()));
+                var deferred = Q.defer();
                 //
-                if (nvalid) {
-                    msg = 'Needs one argument. Aborted';
-                    throw new Error(msg);
-                } else {
-                    //
-                    FS.readdir(base, function (err, files) {
-                        if (err) {
-                            msg = 'Invalid path. Aborted';
-                            deferred.reject(new Error(msg));
+                FS.readdir(base, function (err, files) {
+                    if (err) {
+                        deferred.reject(new Error('Invalid path. Aborted'));
+                    } else {
+                        if (files.length) {
+                            deferred.resolve(files);
                         } else {
-                            if (files.length) {
-                                deferred.resolve(files);
-                            } else {
-                                deferred.resolve(false);
-                            }
+                            deferred.resolve(false);
                         }
-                    });
-                }
+                    }
+                });
                 return deferred.promise;
             };
 
-            this.build = function (stats, base, files) {
-                var obj;
-                // nvalid = (arguments.length < 3 || (typeof (stats) !== 'function') || (!lodash.isString(base) && !lodash.isEmpty(base)) || (!lodash.isArray(files) || !lodash.isBoolean(files)));
-                /*
-                if (nvalid) {
-                    throw new Error('Arguments missing. Aborted');
-                }
-                */
+            /**
+             *
+             *
+             *
+             */
+            this.build = function (base, stats) {
+                var deferred = Q.defer(),
+                    data = {
+                        files: [],
+                        stats: stats,
+                        fullpath: base,
+                        name: Utils.dirname(base)
+                    };
+                //
+                this.hasfiles(base).then(function (files) {
+                    if (files) {
+                        data.files = files;
+                    }
+                    deferred.resolve(data);
 
-                obj = {
-                    path: false,
-                    name: false,
-                    files: files,
-                    stats: stats,
-                    fullpath: false,
-                    isdir: stats.isDirectory()
-                };
-                base = Path.normalize(base);
-                obj.fullpath = Path.resolve(process.cwd(), base);
-                obj.path = Path.relative(process.cwd(), obj.fullpath);
-                if (lodash.isEmpty(obj.path)) {
-                    obj.path = dotbase;
-                }
-                obj.name = Utils.dirname(obj.fullpath);
-                return obj;
+                }, function (err) {
+                    deferred.reject(err);
+
+                });
+                return deferred.promise;
             };
 
+            /**
+             *
+             * Scandir Entry Point
+             *
+             */
             this.exec = function (pBase, pOptions) {
                 var obj, msg, name,
                     result = {},
+                    $this = this,
                     deferred = Q.defer();
                 //
                 // si l'argument base n'est pas une string
@@ -136,70 +133,19 @@
                 FS.stat(this.root, function (err, stats) {
                     if (err) {
                         deferred.reject(err);
-
-                    } else if(lodash.isEmpty(stats) || !stats.isDirectory()) {
+                    } else if (lodash.isEmpty(stats) || !stats.isDirectory()) {
                         msg = 'Invalid path. Aborted.';
                         deferred.reject(new Error(msg));
-
                     } else {
-                        deferred.resolve('ok');
-                    }
-                });
-
-                return deferred.promise;
-
-
-
-                /*
-                if (arguments.length < 1) {
-                    base = Path.join(process.cwd(), '.');
-                    options = lodash.assign({}, defaults);
-
-                } else if (arguments.length < 2) {
-                    if (!lodash.isString(base)) {
-                        options = lodash.assign(base, defaults);
-                        base = Path.join(process.cwd(), '.');
-
-                    } else {
-                        base = base.trim();
-                        options = lodash.assign({}, defaults);
-                    }
-                }
-                if (!lodash.isPlainObject(options) || !lodash.isString(base) || lodash.isEmpty(base)) {
-                    msg = 'Invalid arguments. Aborted.';
-                    throw new Error(msg);
-                }
-                */
-                //
-                // normalisation du path
-
-
-
-                //
-                // check base as directoy
-                /*
-                FS.stat(base, function (err, stats) {
-                    if (err) {
-                        deferred.reject(err);
-                    } else if(!lodash.isPlainObject(stats)) {
-                        msg = 'Path is not a directory. Cancelled. Base: ' + base;
-                        deferred.reject(new Error(msg));
-                    } else {
-                        deferred.reject(new Error(err));
-                        Scandir.hasfiles(base).then(function (files) {
-                            if (files) {
-                                obj = Scandir.build(stats, base, files);
-                                result[obj.name] = obj;
-                                deferred.resolve(result);
-                            } else {
-                                deferred.resolve(false);
-                            }
+                        // lance l'exploration du dossier
+                        $this.build($this.root, stats).then(function (data) {
+                            deferred.resolve(data);
                         }, function (err) {
-                            deferred.reject(new Error(err));
+                            deferred.reject(err);
                         });
                     }
                 });
-                */
+                return deferred.promise;
             };
 
             /**
