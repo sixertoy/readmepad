@@ -103,7 +103,7 @@
                 //
                 // si l'argument base n'est pas une string
                 // ou n'est pas un objet
-                if (!lodash.isString(pBase) || !lodash.isPlainObject(pBase)) {
+                if (!lodash.isString(pBase) && !lodash.isPlainObject(pBase)) {
                     msg = 'Invalid arguments. Aborted.';
                     deferred.reject(new Error(msg));
                 }
@@ -137,7 +137,7 @@
                     if (err) {
                         deferred.reject(err);
 
-                    } else if(lodash.isEmpty(stats)) {
+                    } else if(lodash.isEmpty(stats) || !stats.isDirectory()) {
                         msg = 'Invalid path. Aborted.';
                         deferred.reject(new Error(msg));
 

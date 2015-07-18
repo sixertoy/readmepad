@@ -11,7 +11,7 @@
         DATABASE = './db.nedb',
         // requires
         FS = require('fs'),
-        md5 = require('MD5'),
+        md5 = require('md5'),
         Path = require('path'),
         chalk = require('chalk'),
         multer = require('multer'),

@@ -39,19 +39,19 @@
 
     describe('scandir', function () {
 
-        xdescribe('scandir.options()', function () {
+        describe('scandir.options()', function () {
             it('returns defaults options', function () {
                 helper = new Scandir();
                 result = helper.options();
                 expect(result.root).toEqual('.');
                 expect(result.depth).toEqual(0);
-                expect(result.filters.length).toEqual(0);
+                expect(result.filters).toEqual([]);
             });
         });
 
         describe('scandir/exec/scandir.exec', function () {
 
-            xit('returns Q.promise', function () {
+            it('returns Q.promise', function () {
                 sinon.stub(FS, 'stat');
                 sinon.stub(Q, 'defer', qPromiseFunc);
                 helper = new Scandir();
@@ -61,7 +61,7 @@
                 Q.defer.restore();
             });
 
-            it('returns a path', function () {
+            it('returns a path/test scandir.options().root', function () {
                 var promise, p, e;
                 sinon.stub(FS, 'stat');
                 /* --- */
@@ -83,17 +83,17 @@
                 p = Path.join(cwd, 'toto');
                 helper = new Scandir();
                 helper.exec(p);
-                expect(helper.root).toEqual(Path.join(cwd, 'toto'));
+                expect(helper.options().root).toEqual(Path.join(cwd, 'toto'));
                 //
                 p = Path.join(cwd, '..', '..', 'toto');
                 helper = new Scandir();
                 helper.exec(p);
-                expect(helper.root).toEqual(Path.resolve(cwd, Path.join('..', '..', 'toto')));
+                expect(helper.options().root).toEqual(Path.resolve(cwd, Path.join('..', '..', 'toto')));
                 //
                 p = Path.join(cwd, '..', '.', '..', 'toto');
                 helper = new Scandir();
                 helper.exec(p);
-                expect(helper.root).toEqual(Path.resolve(cwd, Path.join('..', '.', '..', 'toto')));
+                expect(helper.options().root).toEqual(Path.resolve(cwd, Path.join('..', '.', '..', 'toto')));
                 /* --- */
                 expect(FS.stat.called).toEqual(true);
                 FS.stat.restore();
@@ -124,52 +124,53 @@
                 });
             });
 
-            /*
-            xit('does not throw', function () {
+            it('does not reject', function (done) {
                 var path = Path.join(cwd, 'spec', 'expected', 'explore_method');
                 //
-                exec(path).then(function (data) {
+                helper = new Scandir();
+                helper.exec(path).then(function (data) {
+                    // no data
+                    expect(helper.options().root).toEqual(path);
+                    done();
+                }, function (err) {});
+
+                helper.exec(options).then(function (data) {
+                    // no data
+                    expect(helper.options().filters).toEqual(options.filters);
+                    done();
+                }, function (err) {});
+
+                helper.exec(path, options).then(function (data) {
+                    // no data
+                    expect(helper.options().root).toEqual(path);
+                    expect(helper.options().filters).toEqual(options.filters);
+                    done();
+                }, function (err) {});
+
+            });
+
+            it('reject w/ a FS.stat error', function (done) {
+                var path = Path.join(cwd, 'spec', 'expected', 'non_exists');
+                helper = new Scandir();
+                helper.exec(path).then(function (data) {
                     // no data
                 }, function (err) {
+                    // returns an FS Error
+                    expect(err.hasOwnProperty('path')).toBe(true);
+                    expect(err.hasOwnProperty('code')).toBe(true);
+                    expect(err.hasOwnProperty('errno')).toBe(true);
                     done();
                 });
-                expect(function () {
-                    scandir();
-                }).not.toThrow();
-                expect(function () {
-                    scandir(options);
-                }).not.toThrow();
-                expect(function () {
-                    exec(path);
-                }).not.toThrow();
-                expect(function () {
-                    scandir.exec(path, options);
-                }).not.toThrow();
             });
-            */
 
-            it('reject w/ a non exists path', function (done) {
-                var path = Path.join(cwd, 'spec', 'expected', 'non_exists');
+            it('reject w/ not directory', function (done) {
+                var path = Path.join(cwd, 'spec', 'expected', 'not_directory');
                 helper = new Scandir();
                 helper.exec(path).then(function (data) {
                     // no data
                 }, function (err) {
                     // returns an Error
                     expect(err.message).toEqual('Invalid path. Aborted.');
-                    done();
-                });
-            });
-
-            xit('reject w/ a FS.stat error', function (done) {
-                var path = Path.join('/e/spec', 'expected', 'non_exists');
-                helper = new Scandir();
-                helper.exec(path).then(function (data) {
-                    // no data
-                }, function (err) {
-                    // returns an Error
-                    expect(err.hasOwnProperty('path')).toBe(true);
-                    expect(err.hasOwnProperty('code')).toBe(true);
-                    expect(err.hasOwnProperty('errno')).toBe(true);
                     done();
                 });
             });
