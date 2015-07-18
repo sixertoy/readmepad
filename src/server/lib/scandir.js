@@ -4,24 +4,46 @@
 
     'use strict';
 
-    var Q = require('q'),
+    var dotbase = '.',
+        // requires
+        Q = require('q'),
         FS = require('fs'),
         Path = require('path'),
         Util = require('util'),
         lodash = require('lodash'),
         Utils = require('./utils'),
-        defaults = {
-            depth: 0,
-            filters: []
-        },
-        scandir = {
+        //
+        // Object Scandir
+        Scandir = function () {
+
+            /**
+             *
+             * defaults
+             *
+             */
+            this.root = dotbase;
+            this.defaults = {
+                depth: 0,
+                filters: []
+            };
+
+            /**
+             *
+             *
+             *
+             */
+            this.options = function () {
+                return lodash.assign({
+                    root: this.root
+                }, this.defaults);
+            };
 
             /**
              *
              * Verifie qu'un dossier contient des fichiers
              *
              */
-            hasfiles: function (base) {
+            this.hasfiles = function (base) {
                 var msg,
                     deferred = Q.defer(),
                     nvalid = (arguments.length < 0 || lodash.isEmpty(base) || !lodash.isString(base) || lodash.isEmpty(base.trim()));
@@ -45,9 +67,9 @@
                     });
                 }
                 return deferred.promise;
-            },
+            };
 
-            build: function (stats, base, files) {
+            this.build = function (stats, base, files) {
                 var obj;
                 // nvalid = (arguments.length < 3 || (typeof (stats) !== 'function') || (!lodash.isString(base) && !lodash.isEmpty(base)) || (!lodash.isArray(files) || !lodash.isBoolean(files)));
                 /*
@@ -68,22 +90,67 @@
                 obj.fullpath = Path.resolve(process.cwd(), base);
                 obj.path = Path.relative(process.cwd(), obj.fullpath);
                 if (lodash.isEmpty(obj.path)) {
-                    obj.path = '.';
+                    obj.path = dotbase;
                 }
                 obj.name = Utils.dirname(obj.fullpath);
                 return obj;
-            },
+            };
 
-            exec: function (base, options) {
+            this.exec = function (pBase, pOptions) {
                 var obj, msg, name,
                     result = {},
                     deferred = Q.defer();
+                //
+                // si l'argument base n'est pas une string
+                // ou n'est pas un objet
+                if (!lodash.isString(pBase) || !lodash.isPlainObject(pBase)) {
+                    msg = 'Invalid arguments. Aborted.';
+                    deferred.reject(new Error(msg));
+                }
+                //
+                // si l'argument base
+                // est un objet
+                if (lodash.isPlainObject(pBase)) {
+                    // on transforme options en objet
+                    // sur une de valeurs par defaut
+                    pOptions = lodash.assign({}, pBase);
+                    pBase = this.root;
+                }
+                //
+                // defaults parameters
+                if (lodash.isEmpty(pBase)) {
+                    pBase = this.root;
+                }
+                if (!lodash.isPlainObject(pOptions)) {
+                    pOptions = {};
+                }
+                // si base n'est pas un chemin absolut
+                if (!Path.isAbsolute(pBase)) {
+                    pBase = Path.join(process.cwd(), pBase);
 
+                }
 
+                this.root = Path.normalize(pBase);
+                this.defaults = lodash.assign(this.defaults, pOptions);
+
+                FS.stat(this.root, function (err, stats) {
+                    if (err) {
+                        deferred.reject(err);
+
+                    } else if(lodash.isEmpty(stats)) {
+                        msg = 'Invalid path. Aborted.';
+                        deferred.reject(new Error(msg));
+
+                    } else {
+                        deferred.resolve('ok');
+                    }
+                });
 
                 return deferred.promise;
-                //
-                // tests des arguments
+
+
+
+                /*
                 if (arguments.length < 1) {
                     base = Path.join(process.cwd(), '.');
                     options = lodash.assign({}, defaults);
@@ -102,9 +169,10 @@
                     msg = 'Invalid arguments. Aborted.';
                     throw new Error(msg);
                 }
+                */
                 //
                 // normalisation du path
-                base = Path.normalize(base);
+
 
 
                 //
@@ -118,9 +186,9 @@
                         deferred.reject(new Error(msg));
                     } else {
                         deferred.reject(new Error(err));
-                        scandir.hasfiles(base).then(function (files) {
+                        Scandir.hasfiles(base).then(function (files) {
                             if (files) {
-                                obj = scandir.build(stats, base, files);
+                                obj = Scandir.build(stats, base, files);
                                 result[obj.name] = obj;
                                 deferred.resolve(result);
                             } else {
@@ -132,8 +200,7 @@
                     }
                 });
                 */
-                return deferred.promise;
-            }
+            };
 
             /**
              *
@@ -217,10 +284,6 @@
 
         };
 
-    exports = module.exports = scandir.exec;
-    // exposed
-    exports.exec = scandir.exec;
-    exports.build = scandir.build;
-    exports.hasfiles = scandir.hasfiles;
+    module.exports = Scandir;
 
 }());
