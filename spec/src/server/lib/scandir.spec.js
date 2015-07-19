@@ -28,14 +28,14 @@
         Path = require('path'),
         sinon = require('sinon'),
         lodash = require('lodash'),
-        Utils = require(Path.join(cwd, 'src', 'server', 'lib', 'utils')),
         //
-        // exposed
-        base = Path.join(cwd, 'src', 'server', 'lib', 'scandir'),
-        Scandir = require(base),
+        Utils = require(Path.join(cwd, 'src', 'server', 'lib', 'utils')),
+        Scandir = require(Path.join(cwd, 'src', 'server', 'lib', 'scandir'));
+        /*
         exec = require(base).exec,
         build = require(base).build,
-        hasfiles = require(base).hasfiles;
+        files = require(base).files
+        */
 
     describe('scandir', function () {
 
@@ -49,7 +49,129 @@
             });
         });
 
-        describe('scandir/exec/scandir.exec', function () {
+        describe('scandir.node()', function () {
+            it('returns an object', function () {
+                var base = cwd,
+                    stats = {};
+                helper = new Scandir();
+                result = helper.node(base, stats);
+                expect(result).toEqual({
+                    files: [],
+                    stats: {},
+                    fullpath: cwd,
+                    name: 'readmepad'
+                });
+            });
+        });
+
+        describe('scandir.files/files', function () {
+
+            it('returns Q.promise', function () {
+                var promise;
+                sinon.stub(Q, 'defer', qPromiseFunc);
+                helper = new Scandir();
+                promise = helper.files('toto');
+                expect(promise).toEqual('yo! it\'s a promise');
+                Q.defer.restore();
+            });
+
+            it('use FS.readdir', function () {
+                helper = new Scandir();
+                sinon.stub(FS, 'readdir');
+                helper.files('test_fs_readdir');
+                expect(FS.readdir.calledOnce).toEqual(true);
+                FS.readdir.restore();
+            });
+
+            it('Q.reject called on non existent path', function (done) {
+                var msg = 'Invalid path. Aborted';
+                helper = new Scandir();
+                helper.files('test_invalid_path').then(function () {}, function (err) {
+                    expect(err.message).toEqual(msg);
+                    done();
+                });
+            });
+
+            it('Q.resolved with false - no file in folder', function (done) {
+                var no_file_path = Path.join(cwd, 'spec', 'expected', 'files_method', 'nofile');
+                helper = new Scandir();
+                helper.files(no_file_path).then(function (result) {
+                    expect(result).toEqual(false);
+                    done();
+                }, function (err) {
+                    // no error
+                });
+            });
+
+            it('Q.resolved with array of files - length 4', function (done) {
+                var no_file_path = Path.join(cwd, 'spec', 'expected', 'files_method', 'threefile');
+                helper = new Scandir();
+                helper.files(no_file_path).then(function (result) {
+                    expect(result.length).toEqual(4);
+                    done();
+                }, function (err) {
+                    // no error
+                });
+
+            });
+
+        });
+
+        describe('browsable method (async)', function () {
+            it('resolve w/ stats', function (done) {
+                var base = Path.join(cwd, 'spec', 'expected', 'explore_method');
+                helper = new Scandir();
+                helper.browsable(base).then(function (stats) {
+                    expect(stats.isDirectory()).toEqual(true);
+                    done();
+                }, function () {});
+            });
+            it('resolve w/ FS.error', function (done) {
+                var base = Path.join(cwd, 'spec', 'expected', 'non_exists');
+                helper = new Scandir();
+                helper.browsable(base).then(function () {}, function (err) {
+                    // returns an FS Error
+                    expect(err.hasOwnProperty('path')).toBe(true);
+                    expect(err.hasOwnProperty('code')).toBe(true);
+                    expect(err.hasOwnProperty('errno')).toBe(true);
+                    done();
+                });
+            });
+        });
+
+        describe('list items/build method', function () {
+            it('returns plain object', function (done) {
+                var file = Path.join(cwd, 'spec', 'expected', 'explore_method'),
+                    base = {
+                        files: [],
+                        fullpath: file,
+                        name: 'explore_method',
+                        stats: FS.statSync(file)
+                    };
+                helper = new Scandir();
+                helper.build(base, helper).then(function (data) {
+                    expect(lodash.isPlainObject(data)).toEqual(true);
+                    expect(data.files.length).toEqual(4);
+                    expect(data.files[0].files).toEqual(false); // index.html
+                    expect(data.files[1].files).toEqual(false); // subnofiles
+                    expect(data.files[2].files.length).toEqual(1); // subone
+                    expect(data.files[2].files[0].files.length).toEqual(2); // subone/file && subone/file.txt
+                    expect(data.files[2].files[0].files[0].name).toEqual('file'); // subone/file && subone/file.txt
+                    expect(data.files[2].files[0].files[1].name).toEqual('file.txt'); // subone/file && subone/file.txt
+                    expect(data.files[3].files.length).toEqual(3); // subtwo
+                    expect(data.files[3].files[0].name).toEqual('file.js'); // subtwo/file.js
+                    expect(data.files[3].files[1].name).toEqual('file.md'); // subtwo/file.md
+                    expect(data.files[3].files[2].files.length).toEqual(1); // subtwo/subsub
+                    expect(data.files[3].files[2].files[0].files.length).toEqual(1); // subtwo/subsub/subsubsub
+                    expect(data.files[3].files[2].files[0].files[0].name).toEqual('file.css'); // subtwo/subsub/subsubsub/file.css
+                    done();
+                }, function (err) {
+                    // no error
+                });
+            });
+        });
+
+        xdescribe('scandir/exec/scandir.exec', function () {
 
             it('returns Q.promise', function () {
                 helper = new Scandir();
@@ -71,11 +193,11 @@
                 /* --- */
                 p = '';
                 helper.exec(p);
-                expect(helper.options().root).toEqual(process.cwd());
+                expect(helper.options().root).toEqual(cwd);
                 //
                 p = '.';
                 helper.exec(p);
-                expect(helper.options().root).toEqual(process.cwd());
+                expect(helper.options().root).toEqual(cwd);
                 //
                 p = 'toto';
                 helper.exec(p);
@@ -109,12 +231,12 @@
                 helper.exec(opts);
                 result = {
                     depth: 0,
-                    root: process.cwd(),
+                    root: cwd,
                     added: 'no default',
                     filters: ['**/*.hml']
-                }
+                };
                 expect(helper.options()).toEqual(result);
-            })
+            });
 
             it('Q.reject', function (done) {
                 var msg = 'Invalid arguments. Aborted.';
@@ -139,31 +261,6 @@
                     expect(err.message).toEqual(msg);
                     done();
                 });
-            });
-
-            it('does not reject', function (done) {
-                var path = Path.join(cwd, 'spec', 'expected', 'explore_method');
-                //
-                helper = new Scandir();
-                helper.exec(path).then(function (data) {
-                    // no data
-                    expect(helper.options().root).toEqual(path);
-                    done();
-                }, function (err) {});
-
-                helper.exec(options).then(function (data) {
-                    // no data
-                    expect(helper.options().filters).toEqual(options.filters);
-                    done();
-                }, function (err) {});
-
-                helper.exec(path, options).then(function (data) {
-                    // no data
-                    expect(helper.options().root).toEqual(path);
-                    expect(helper.options().filters).toEqual(options.filters);
-                    done();
-                }, function (err) {});
-
             });
 
             it('reject w/ a FS.stat error', function (done) {
@@ -192,7 +289,52 @@
                 });
             });
 
-            it('returns a plainObject w/ basename as property', function (done) {
+            xit('does not reject', function (done) {
+                var path = Path.join(cwd, 'spec', 'expected', 'explore_method');
+                //
+                helper = new Scandir();
+                sinon.stub(helper, 'build', function(){
+                    var deferred = Q.defer();
+                    setTimeout(function(){
+                        deferred.resolve('ok');
+                    }, 1000);
+                    return deferred.promise;
+                });
+                helper.exec(path).then(function (data) {
+                    // no data
+                    expect(helper.options().root).toEqual(path);
+                    done();
+                }, function (err) {
+                    // no error
+                    console.log(err);
+                    done();
+                });
+
+                helper.exec(options).then(function (data) {
+                    // no data
+                    expect(helper.options().filters).toEqual(options.filters);
+                    done();
+                }, function (err) {
+                    // no error
+                    console.log(err);
+                    done();
+                });
+
+                helper.exec(path, options).then(function (data) {
+                    // no data
+                    expect(helper.options().root).toEqual(path);
+                    expect(helper.options().filters).toEqual(options.filters);
+                    done();
+                }, function (err) {
+                    // no error
+                    console.log(err);
+                    done();
+                });
+                helper.build.restore();
+
+            });
+
+            xit('returns a plainObject w/ basename as property', function (done) {
                 var name,
                     path = Path.join(cwd, 'spec', 'expected', 'explore_method');
                 name = Utils.dirname(path);
@@ -213,67 +355,6 @@
                 }, function (err) {
                     // no error
                 });
-            });
-
-        });
-
-        describe('scandir.hasfiles/hasfiles', function () {
-
-            it('returns Q.promise', function () {
-                var promise;
-                sinon.stub(Q, 'defer', qPromiseFunc);
-                helper = new Scandir();
-                promise = helper.hasfiles('toto');
-                expect(promise).toEqual('yo! it\'s a promise');
-                Q.defer.restore();
-            });
-
-            it('use FS.readdir', function () {
-                helper = new Scandir();
-                sinon.stub(FS, 'readdir');
-                helper.hasfiles('test_fs_readdir');
-                expect(FS.readdir.calledOnce).toEqual(true);
-                FS.readdir.restore();
-            });
-
-            it('Q.reject called on non existent path', function (done) {
-                var msg = 'Invalid path. Aborted';
-                helper = new Scandir();
-                helper.hasfiles('test_invalid_path').then(function () {}, function (err) {
-                    expect(err.message).toEqual(msg);
-                    done();
-                });
-            });
-
-            it('Q.resolved with false - no file in folder', function (done) {
-                var no_file_path = Path.join(cwd, 'spec', 'expected', 'hasfiles_method', 'nofile');
-                helper = new Scandir();
-                helper.hasfiles(no_file_path).then(function (result) {
-                    expect(result).toEqual(false);
-                    done();
-                }, function () {});
-            });
-
-            it('Q.resolved with array of files - length 4', function (done) {
-                var no_file_path = Path.join(cwd, 'spec', 'expected', 'hasfiles_method', 'threefile');
-                helper = new Scandir();
-                helper.hasfiles(no_file_path).then(function (result) {
-                    expect(result.length).toEqual(4);
-                    done();
-                }, function () {});
-            });
-
-        });
-
-        xdescribe('list items/build method', function () {
-            var msg = 'Arguments missing. Aborted';
-            it('throw', function () {
-                expect(function () {
-                    scandir.build();
-                }).toThrow(msg);
-                expect(function () {
-                    scandir.build({}, '');
-                }).toThrow(msg);
             });
         });
 

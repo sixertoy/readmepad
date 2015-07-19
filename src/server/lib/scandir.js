@@ -1,5 +1,5 @@
 /*jslint indent: 4, nomen: true */
-/*global require, module, exports, process */
+/*global require, module, exports, process, console */
 (function () {
 
     'use strict';
@@ -10,6 +10,7 @@
         FS = require('fs'),
         Path = require('path'),
         Util = require('util'),
+        chalk = require('chalk'),
         lodash = require('lodash'),
         Utils = require('./utils'),
         //
@@ -40,10 +41,29 @@
 
             /**
              *
+             * @see https://strongloop.com/strongblog/how-to-compose-node-js-promises-with-q/
+             *
+             */
+            this.map = function (entries, scope, callback) {
+                try {
+                    var q = new Q();
+                    return q.then(function () {
+                        // inside a `then`, exceptions will be handled in next onRejected
+                        return entries.map(function (node) {
+                            return callback(node, scope);
+                        });
+                    }).all(); // return group promise
+                } catch (e) {
+                    throw new Error(e);
+                }
+            };
+
+            /**
+             *
              * Verifie qu'un dossier contient des fichiers
              *
              */
-            this.hasfiles = function (base) {
+            this.files = function (base) {
                 var deferred = Q.defer();
                 //
                 FS.readdir(base, function (err, files) {
@@ -65,26 +85,104 @@
              *
              *
              */
-            this.build = function (base, stats) {
-                var deferred = Q.defer(),
-                    data = {
-                        files: [],
-                        stats: stats,
-                        fullpath: base,
-                        name: Utils.dirname(base)
-                    };
-                //
-                this.hasfiles(base).then(function (files) {
-                    if (files) {
-                        data.files = files;
+            this.browsable = function (base) {
+                var deferred = Q.defer();
+                FS.stat(base, function (err, stats) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(stats);
                     }
-                    deferred.resolve(data);
-
-                }, function (err) {
-                    deferred.reject(err);
-
                 });
                 return deferred.promise;
+            };
+
+            /**
+             *
+             *
+             *
+             */
+            this.build = function (node, scope) {
+                var p, childs, msg,
+                    $this = scope,
+                    deferred = Q.defer(),
+                    base = node.fullpath;
+                //
+                // retourne les stats pour un fichier
+                scope.browsable(base).then(function (stats) {
+                    // ajout des stats au node
+                    node.stats = stats;
+                    // si c'est un fichier
+                    if (stats.isFile()) {
+                        // console.log('file.name => ' + node.name);
+                        node.files = false;
+                        deferred.resolve(node);
+
+                    } else if (stats.isDirectory()) {
+                        // console.log('dir.name => ' + node.name);
+                        node.files = [];
+                        scope.files(base).then(function (files) {
+                            if (!files) {
+                                // console.log('contient pas de fichiers');
+                                node.files = false;
+                                deferred.resolve(node);
+
+                            } else {
+                                node.files = files.map(function (file) {
+                                    p = Path.join(base, file);
+                                    return scope.node(p, false);
+                                });
+                                scope.map(node.files, scope, scope.build).then(function (res) {
+                                    // console.log(res);
+
+                                    deferred.resolve(node);
+
+                                }, function (err) {
+                                    // erreur du chargement de fichier
+                                    msg = 'Scandir.build() recursive error';
+                                    // console.log(chalk.red.bold(msg));
+                                    deferred.reject(msg);
+
+                                });
+
+                            }
+
+                        }, function (err) {
+                            // erreur du chargement de fichier
+                            msg = 'Scandir.build() files error';
+                            console.log(chalk.red.bold(msg));
+                            deferred.reject(msg);
+                        });
+
+                    } else {
+                        msg = 'Scandir.build() not a directory and not a file: ' + base;
+                        console.log(chalk.red.bold(msg));
+                        throw new Error(msg);
+                    }
+
+                }, function () {
+                    // erreur du chargement de fichier
+                    msg = 'Scandir.build() browsable error';
+                    console.log(chalk.red.bold(msg));
+                    deferred.reject(msg);
+                });
+                return deferred.promise;
+            };
+
+            /**
+             *
+             *
+             *
+             */
+            this.node = function (base, stats) {
+                // construction de l'objet
+                var data = {
+                    files: [],
+                    stats: stats,
+                    fullpath: base,
+                    name: Utils.dirname(base)
+                };
+                return data;
             };
 
             /**
@@ -93,8 +191,8 @@
              *
              */
             this.exec = function (pBase, pOptions) {
-                var obj, msg, name,
-                    result = {},
+                var child, msg,
+                    main = {},
                     $this = this,
                     deferred = Q.defer();
                 //
@@ -124,7 +222,6 @@
                 // si base n'est pas un chemin absolut
                 if (!Path.isAbsolute(pBase)) {
                     pBase = Path.join(process.cwd(), pBase);
-
                 }
 
                 this.root = Path.normalize(pBase);
@@ -137,96 +234,23 @@
                         msg = 'Invalid path. Aborted.';
                         deferred.reject(new Error(msg));
                     } else {
-                        // lance l'exploration du dossier
-                        $this.build($this.root, stats).then(function (data) {
-                            deferred.resolve(data);
+                        // lancement de la recursivite
+                        child = $this.node($this.root, stats);
+                        //
+                        $this.build(child, $this).then(function () {
+                            // renvoi de l'objet main
+                            main[child.name] = child;
+                            deferred.resolve(main);
+
                         }, function (err) {
                             deferred.reject(err);
+
                         });
+
                     }
                 });
                 return deferred.promise;
             };
-
-            /**
-             *
-             * Flatten data array
-             * Return an object
-             * First split of the data array is project name
-             * Last split of the data array is file name
-             *
-             */
-            /*
-            asObject: function (data) {
-                var proj, file, paths, obj,
-                    result = {},
-                    sep = Path.sep;
-                data.sort().forEach(function (path) {
-                    paths = path.split(sep);
-                    file = paths.pop();
-                    proj = paths[0];
-                    if (!result.hasOwnProperty(proj)) {
-                        result[proj] = [];
-                    }
-                    obj = {
-                        link: path,
-                        name: Path.basename(file, '.md')
-                    };
-                    result[proj].push(obj);
-                });
-                return result;
-            },
-            */
-
-            /**
-             *
-             * Fill an array
-             *
-             * [ 'project_one\\index.md',
-             * 'project_one\\pages\\dummy.md',
-             * 'project_one\\pages\\dummy2.md',
-             * ...]
-             *
-             */
-            /*
-            explore: function (base, parent, data) {
-                var files, path, stats, current,
-                    $this = this;
-                FS.readdirSync(base).filter(function (file) {
-                    if (file === '.' || file === '..') {
-                        return false;
-                    }
-                    path = Path.join(base, file);
-                    stats = FS.statSync(path);
-                    //
-                    // si c'est un fichier
-                    if (stats.isFile()) {
-                        return (Path.extname(path) === '.md');
-                    } else if (stats.isDirectory()) {
-                        //
-                        // si c'est un dossier
-                        files = $this._hasFiles(path);
-                        if (files) {
-                            current = Path.join(parent, file);
-                            $this._explore(path, current, data);
-                        }
-                        return false;
-                    }
-                }).map(function (file) {
-                    current = Path.join(parent, file);
-                    data.push(current);
-                    return true;
-                });
-            },
-            */
-            /*
-            flatten: function (base) {
-                var data = [];
-                this._explore(base, '.', data);
-                data = this._asObject(data);
-                return data;
-            }
-            */
 
         };
 
