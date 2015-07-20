@@ -133,16 +133,13 @@
                                     return scope.node(p, false);
                                 });
                                 scope.map(node.files, scope, scope.build).then(function (res) {
-                                    // console.log(res);
-
                                     deferred.resolve(node);
 
                                 }, function (err) {
                                     // erreur du chargement de fichier
                                     msg = 'Scandir.build() recursive error';
-                                    // console.log(chalk.red.bold(msg));
+                                    console.log(chalk.red.bold(msg));
                                     deferred.reject(msg);
-
                                 });
 
                             }
