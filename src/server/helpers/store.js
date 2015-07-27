@@ -5,7 +5,7 @@
     'use strict';
 
     var db, dbfile,
-        Datastore = require('nedb');
+        nedb = require('nedb');
 
     module.exports = {
 
@@ -17,7 +17,7 @@
         init: function (database) {
             try {
                 dbfile = database;
-                db = new Datastore({
+                db = new nedb({
                     autoload: true,
                     filename: dbfile
                 });

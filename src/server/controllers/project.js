@@ -1,24 +1,65 @@
 /*jslint indent: 4, nomen: true, plusplus: true */
-/*globals require, module*/
-(function(){
+/*globals require, module, console*/
+(function () {
 
     'use strict';
 
     var router,
+        __options = {
+            db: null
+        },
         // requires
-        // md5 = require('md5'),
+        md5 = require('md5'),
         // path = require('path'),
+        chalk = require('chalk'),
+        lodash = require('lodash'),
         express = require('express');
 
     router = express.Router();
 
-    router.post('/create', function () {
+    router.post('/create', function (req, res) {
+        if (!req.body.hasOwnProperty('project_path') || lodash.isEmpty(req.body.project_path)) {
+            res.status(404).send({
+                error: 'unable to parse project path'
+            });
+        } else {}
     });
 
-    router.post('/loadall', function () {
-    });
+    router.post('/loadall', function () {});
 
-    router.post('/open', function () {
+    /**
+     *
+     * Ouvre un projet
+     *
+     * @param path [String] Chemin absolu du projet
+     *
+     */
+    router.post('/open', function (req, res) {
+        var options,
+            project = {
+                name: '',
+                items: [],
+                fullpath: ''
+            };
+        if (!req.body.hasOwnProperty('project_path') || lodash.isEmpty(req.body.project_path)) {
+            res.status(404).send({
+                error: 'unable to parse project path'
+            });
+        } else {
+            options = {
+                project_id: md5(req.body.project_path)
+            };
+            __options.db.findOne(options, function (err, doc) {
+                if (err) {
+                    res.status(404).send({
+                        error: 'unable to parse project path'
+                    });
+                } else {
+                    // obj = Facade.document(doc);
+                    res.send({});
+                }
+            });
+        }
     });
 
     /**
@@ -112,31 +153,14 @@
         });
     });*/
 
-    /**
-     *
-     * Ouvre un projet
-     *
-     * @param path [String] Chemin absolu du projet
-     *
-     */
-    /*router.post('open', function (req, res) {
-        var obj,
-            items = [],
-            path = req.body.path,
-            options = {
-                project_id: md5(path)
-            };
-        db.findOne(options, function (err, doc) {
-            if (err) {
-                // si l'insertion a echouee
-                // Facade.error(res, err);
-            } else {
-                obj = Facade.document(doc);
-                // Facade.ok(res, obj);
+    module.exports = {
+        options: function (obj) {
+            if (arguments.length > 0) {
+                __options = lodash.assign(__options, obj);
             }
-        });
-    });*/
-
-    module.exports = router;
+            return __options;
+        },
+        router: router
+    };
 
 }());

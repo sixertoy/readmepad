@@ -12,7 +12,7 @@
         // requires
         path = require('path'),
         multer = require('multer'),
-        Express = require('express'),
+        express = require('express'),
         bodyParser = require('body-parser'),
         serveFavicon = require('serve-favicon'),
         // scandirAsync = require('scandir-async'),
@@ -26,11 +26,11 @@
     //
     // creation de la BDD
     // creation du serveur
-    server = new Express();
+    server = express();
     //
     // le serveur express sert des ressouces statiques
     www = path.join(__dirname, '..', 'public', 'html');
-    server.use(Express.static(www));
+    server.use(express.static(www));
     //
     // express middlewares
     favicon = path.join(www, 'favicon.ico');

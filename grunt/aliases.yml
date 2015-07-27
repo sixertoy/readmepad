@@ -17,7 +17,7 @@ build_html:
   - less
 build_server:
   - jshint:server
-  - jasmine_node
+  - jasmine_node:server
   - clean:server
   - copy:server
 quick_build:

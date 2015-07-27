@@ -57,6 +57,7 @@
     "istanbul": "^0.3.16",
     "jasmine-node": "^1.14.5",
     "load-grunt-config": "^0.17.1",
-    "sinon": "1.15.3"
+    "sinon": "1.15.3",
+    "supertest": "^1.0.1"
   }
 }
