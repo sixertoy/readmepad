@@ -1,0 +1,35 @@
+<!--
+
+explorer
+
+-->
+<div class="view sidebar col-md-3" ng-controller="SidebarController" ng-init="initialize()">
+
+    <div class="menu btn-group" dropdown>
+        <button type="button" class="btn btn-primary dropdown-toggle btn-sm" dropdown-toggle ng-disabled="disabled">
+            <span>{{$ldim}}project.name{{$rdim}}&nbsp;<span class="caret"></span></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li>
+                <a href="#" ng-click="openModalProject()">Ouvrir un dossier...</a>
+            </li>
+            <li class="divider" ng-if="projects"></li>
+            <li ng-repeat="obj in projects">
+                <a href="#" ng-click="openProject(obj.path)">
+                    <button type="button" class="close" aria-label="Close" ng-click="removeProject(obj.path)">&times;</button>
+                    <span>{{$ldim}}obj.name{{$rdim}}</span> - <small>{{$ldim}}obj.path{{$rdim}}</small>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <ul class="files">
+        <li ng-repeat="page in project.items">
+            <a href="" ng-click="viewPage(page.path)">
+                <span>{{$ldim}}page.name{{$rdim}}</span>
+            </a>
+        </li>
+    </ul>
+
+</div>
+<!-- endof explorer -->

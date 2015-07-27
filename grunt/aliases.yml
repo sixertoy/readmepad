@@ -7,12 +7,17 @@ build_bower:
   - clean:bower
   - copy:bower_js
   - copy:bower_css
+build_jasmine:
+  - jshint:jasmine
+  - jasmine_node
 build_html:
   - clean:html
   - copy:html
   - mustacher
   - less
 build_server:
+  - jshint:server
+  - jasmine_node
   - clean:server
   - copy:server
 quick_build:

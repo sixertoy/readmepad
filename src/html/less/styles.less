@@ -41,8 +41,11 @@ html {
  *
  *
  ------------------------------------------------------------- */
+.view{
+    margin-top: 40px;
+}
 
-.view.sidebar {
+.sidebar {
     height: 100%;
     .dropdown-menu {
         font-size: 12px;
@@ -56,7 +59,7 @@ html {
                     line-height: 1.2em;
                 }
                 small {
-                    color: #4E4E4E;
+                    color: #AFAFAF;
                 }
             }
             &:first-child {
@@ -66,16 +69,22 @@ html {
             }
         }
     }
+    ul.files {
+        padding-left: 10px;
+        list-style-type: none;
+        a:hover{
+            text-decoration: none;
+        }
+    }
 }
 
-.view.main,
-.view.sidebar {
+.viewer,
+.sidebar {
     h1 {
         text-align: center;
         margin-bottom: 40px;
     }
     > .menu {
-        margin-top: 20px;
         margin-bottom: 10px;
     }
 }

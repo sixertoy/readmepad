@@ -3,16 +3,17 @@
 editors
 
 -->
-<div class="view main col-md-9" ng-controller="ViewerController">
+<div class="view viewer col-md-9" ng-controller="ViewerController">
 
-    <h3 class="title col-md-6"><span>Documentation</span></h3>
-
-    <div class="menu col-md-6" style="text-align:right;">
+    <div class="menu col-md-10">
         <div class="btn-group">
-            <label class="btn btn-primary btn-sm" ng-click="changeEditMode()" ng-model="radioModel" btn-radio="'Right'">HTML</label>
-            <label class="btn btn-primary btn-sm" ng-click="changeEditMode()" ng-model="radioModel" btn-radio="'Left'">Raw</label>
+            <label class="btn btn-primary btn-sm" ng-click="" ng-model="radioModel" btn-radio="'Right'">HTML</label>
+            <label class="btn btn-primary btn-sm" ng-click="" ng-model="radioModel" btn-radio="'Left'">Raw</label>
         </div>
-        <label class="btn btn-danger btn-sm" ng-click="saveDocumentChanges()" ng-model="singleModel">Save</label>
+    </div>
+
+    <div class="menu col-md-2" >
+        <label class="btn btn-danger btn-sm btn-block disabled" ng-click="" ng-model="singleModel">Save</label>
     </div>
 
     <div class="editors col-md-12">

@@ -6,16 +6,16 @@ module.exports = {
         livereload: true,
         livereloadOnError: false
     },
-    server: {
-        files: ['./src/server/**/*'],
-        tasks: ['build_server']
-    },
     html: {
         files: ['./src/html/**/*', './src/html/**/*.hbs', './src/html/**/*.tpl'],
         tasks: ['build_html']
     },
     jasmine: {
         files: ['./src/**/*.js', './spec/**/*.js'],
-        tasks: ['jasmine_node']
+        tasks: ['build_jasmine']
+    },
+    server: {
+        files: ['./src/server/**/*.js'],
+        tasks: ['build_server']
     }
 };
