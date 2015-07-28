@@ -5,7 +5,7 @@
 
     'use strict';
 
-    var result, helper, stats, project, p,
+    var p, stats, project,
         cwd = process.cwd(),
         fs = require('fs'),
         md5 = require('md5'),
@@ -17,7 +17,7 @@
 
         describe('init', function () {
             it('create database', function (done) {
-                storeModel.init(dbfile, function (err) {
+                storeModel.init('store', dbfile, function (err) {
                     if (err) {
                         console.log(err);
                     } else {
@@ -32,31 +32,31 @@
         describe('findOneProject', function () {
             it('reject no argument', function (done) {
                 storeModel.findOneProject().then(function (data) {}, function (err) {
-                    expect(err.message).toEqual('needs 1 argument at least');
+                    expect(err.message).toEqual('needs 2 argument at least');
                     done();
                 });
             });
             it('reject empty string', function (done) {
-                storeModel.findOneProject('').then(function (data) {}, function (err) {
-                    expect(err.message).toEqual('needs 1 argument at least');
+                storeModel.findOneProject('store', '').then(function (data) {}, function (err) {
+                    expect(err.message).toEqual('needs 2 argument at least');
                     done();
                 });
             });
             it('reject empty string', function (done) {
-                storeModel.findOneProject('     ').then(function (data) {}, function (err) {
-                    expect(err.message).toEqual('needs 1 argument at least');
+                storeModel.findOneProject('store', '     ').then(function (data) {}, function (err) {
+                    expect(err.message).toEqual('needs 2 argument at least');
                     done();
                 });
             });
             it('reject not a string', function (done) {
-                storeModel.findOneProject({}).then(function (data) {}, function (err) {
-                    expect(err.message).toEqual('needs 1 argument at least');
+                storeModel.findOneProject('store', {}).then(function (data) {}, function (err) {
+                    expect(err.message).toEqual('needs 2 argument at least');
                     done();
                 });
             });
             it('resolve with false project not found', function (done) {
                 project = 'toto/project';
-                storeModel.findOneProject(project).then(function (data) {
+                storeModel.findOneProject('store', project).then(function (data) {
                     expect(data).toEqual(false);
                     done();
                 }, function (err) {});
@@ -66,19 +66,19 @@
         describe('createProject', function () {
             it('reject needs more argument', function (done) {
                 storeModel.createProject().then(function () {}, function (err) {
-                    expect(err.message).toEqual('needs 3 arguments at least');
+                    expect(err.message).toEqual('needs 4 arguments at least');
                     done();
                 });
             });
             it('reject needs more argument', function (done) {
                 storeModel.createProject('name').then(function () {}, function (err) {
-                    expect(err.message).toEqual('needs 3 arguments at least');
+                    expect(err.message).toEqual('needs 4 arguments at least');
                     done();
                 });
             });
             it('reject needs more argument', function (done) {
                 storeModel.createProject('name', 'path/project').then(function () {}, function (err) {
-                    expect(err.message).toEqual('needs 3 arguments at least');
+                    expect(err.message).toEqual('needs 4 arguments at least');
                     done();
                 });
             });
@@ -89,7 +89,7 @@
                         fileone: 'path/to/toto/fileone',
                         filetwo: 'path/to/toto/filetwo'
                     }];
-                storeModel.createProject(name, p, pages).then(function (doc) {
+                storeModel.createProject('store', name, p, pages).then(function (doc) {
                     p = md5(p);
                     expect(doc.project_id).toEqual(p);
                     done();
@@ -102,21 +102,62 @@
                         fileone: 'path/to/toto/fileone',
                         filetwo: 'path/to/toto/filetwo'
                     }];
-                storeModel.createProject(name, p, pages).then(function (doc) {
-                }, function (err) {
+                storeModel.createProject('store', name, p, pages).then(function (doc) {}, function (err) {
                     expect(err.errorType).toEqual('uniqueViolated');
                     done();
                 });
             });
         });
 
-        xdescribe('findOneProject', function () {
+        describe('findOneProject', function () {
             it('returns a document', function (done) {
-                project = '/toto/project';
-                storeModel.findOneProject(project).then(function (data) {
-                    expect(data).toEqual(false);
+                project = 'path/to/toto';
+                storeModel.findOneProject('store', project).then(function (doc) {
+                    expect(md5(project)).toEqual(doc.project_id);
                     done();
                 }, function (err) {});
+            });
+        });
+
+        describe('deleteProject', function () {
+            it('reject more argument', function (done) {
+                storeModel.deleteProject('store').then(function () {}, function (err) {
+                    expect(err.message).toEqual('needs 2 argument at least');
+                    done();
+                });
+            });
+            it('reject more argument', function (done) {
+                storeModel.deleteProject('store', {}).then(function () {}, function (err) {
+                    expect(err.message).toEqual('needs 2 argument at least');
+                    done();
+                });
+            });
+            it('reject more argument', function (done) {
+                storeModel.deleteProject('store', '').then(function () {}, function (err) {
+                    expect(err.message).toEqual('needs 2 argument at least');
+                    done();
+                });
+            });
+            it('reject more argument', function (done) {
+                storeModel.deleteProject('store', '     ').then(function () {}, function (err) {
+                    expect(err.message).toEqual('needs 2 argument at least');
+                    done();
+                });
+            });
+            it('resolve with value 1', function (done) {
+                project = 'path/to/toto';
+                storeModel.deleteProject('store', project).then(function (num) {
+                    expect(num).toEqual(1);
+                    done();
+                }, function () {});
+            });
+            it('resolve with value 0 if document not exists', function (done) {
+                project = 'path/to/toto';
+                storeModel.deleteProject('store', project).then(function (num) {
+                    expect(num).toEqual(0);
+                    done();
+                }, function (err) {
+                });
             });
         });
 

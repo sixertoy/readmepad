@@ -6,6 +6,7 @@
 
     var router,
         __model = false,
+        __name = 'project',
         // requires
         fs = require('fs'),
         md5 = require('md5'),
@@ -29,7 +30,7 @@
                 error: 'unable to parse project path'
             });
         } else {
-            __model.findOneProject(req.body.project_path).then(function (data) {
+            __model.findOneProject(__name, req.body.project_path).then(function (data) {
                 res.send(data);
 
             }, function (err) {
