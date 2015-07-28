@@ -5,10 +5,9 @@
     'use strict';
 
     var router,
-        __options = {
-            db: null
-        },
+        __model = false,
         // requires
+        fs = require('fs'),
         md5 = require('md5'),
         // path = require('path'),
         chalk = require('chalk'),
@@ -16,16 +15,6 @@
         express = require('express');
 
     router = express.Router();
-
-    router.post('/create', function (req, res) {
-        if (!req.body.hasOwnProperty('project_path') || lodash.isEmpty(req.body.project_path)) {
-            res.status(404).send({
-                error: 'unable to parse project path'
-            });
-        } else {}
-    });
-
-    router.post('/loadall', function () {});
 
     /**
      *
@@ -35,32 +24,48 @@
      *
      */
     router.post('/open', function (req, res) {
-        var options,
-            project = {
-                name: '',
-                items: [],
-                fullpath: ''
-            };
         if (!req.body.hasOwnProperty('project_path') || lodash.isEmpty(req.body.project_path)) {
             res.status(404).send({
                 error: 'unable to parse project path'
             });
         } else {
-            options = {
-                project_id: md5(req.body.project_path)
-            };
-            __options.db.findOne(options, function (err, doc) {
+            __model.findOneProject(req.body.project_path).then(function (data) {
+                res.send(data);
+
+            }, function (err) {
+                res.status(404).send({
+                    error: 'unable to parse project path'
+                });
+
+            });
+        }
+    });
+
+    /**
+     *
+     * Creation d'un nouveau projet
+     * Si le projet existe on retourne le projet
+     *
+     */
+    router.post('/create', function (req, res) {
+        var options, project_path;
+        if (!req.body.hasOwnProperty('project_path') || lodash.isEmpty(req.body.project_path)) {
+            res.status(404).send({
+                error: 'unable to parse project path'
+            });
+        } else {
+            project_path = req.body.project_path;
+            fs.stat(project_path, function (err) {
                 if (err) {
-                    res.status(404).send({
-                        error: 'unable to parse project path'
-                    });
+
                 } else {
-                    // obj = Facade.document(doc);
-                    res.send({});
+
                 }
             });
         }
     });
+
+    router.post('/loadall', function () {});
 
     /**
      *
@@ -154,11 +159,11 @@
     });*/
 
     module.exports = {
-        options: function (obj) {
+        model: function (model) {
             if (arguments.length > 0) {
-                __options = lodash.assign(__options, obj);
+                __model = model;
             }
-            return __options;
+            return __model;
         },
         router: router
     };

@@ -1,0 +1,2 @@
+{"$$indexCreated":{"unique":true,"fieldName":"project_id"}}
+{"name":"toto","path":"path/to/toto","pages":[{"fileone":"path/to/toto/fileone","filetwo":"path/to/toto/filetwo"}],"project_id":"41636dabad50c4de6623a369313f8df5","_id":"EqDJPeROd9FNIAbC"}

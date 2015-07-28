@@ -7,8 +7,8 @@
     var // variables
         server, app, dbfile, favicon, www,
         // constants
-        HTTP_PORT = 9080,
-        DATABASE = './db.nedb',
+        http_port = 9080,
+        database = './db.nedb',
         // requires
         path = require('path'),
         multer = require('multer'),
@@ -20,7 +20,7 @@
         // md5 = require('md5'),
         //
         // Facade = require('./facade'),
-        store = require('./herlpers/store'),
+        store = require('./models/store'),
         projectController = require('./controllers/project'),
         documentController = require('./controllers/document');
     //
@@ -43,12 +43,23 @@
     }));
     //
     // routers/controllers
-    app.use('/project', projectController);
-    app.use('/document', documentController);
+    app.use('/project', projectController.router);
+    app.use('/document', documentController.router);
     //
     // init de la bdd
-    dbfile = path.join(__dirname, DATABASE);
-    store.init(dbfile);
-    store.load(server, HTTP_PORT);
+    dbfile = path.join(__dirname, database);
+    store.init(dbfile, function (err) {
+        if (err) {
+            console.log(err, dbfile);
+        } else {
+            // ajout du modele au controlleur
+            projectController.model(store);
+            documentController.model(store);
+            // lancement du serveur
+            server.listen(http_port, function () {
+                console.log('ReadmePad now running under http://localhost:%d', http_port);
+            });
+        }
+    });
 
 }());

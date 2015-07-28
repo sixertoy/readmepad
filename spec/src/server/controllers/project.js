@@ -1,6 +1,6 @@
 /*jshint unused: false */
-/*jslint indent: 4 */
-/*global jasmine, process, require, define, describe, xdescribe, it, xit, expect, beforeEach, afterEach, afterLast, console */
+/*jslint indent: 4, nomen: true */
+/*global __dirname, jasmine, process, require, define, describe, xdescribe, it, xit, expect, beforeEach, afterEach, afterLast, console */
 (function () {
 
     'use strict';
@@ -8,34 +8,25 @@
     var result, app, db,
         cwd = process.cwd(),
         //
+        Q = require('q'),
         path = require('path'),
         nedb = require('nedb'),
+        sinon = require('sinon'),
         multer = require('multer'),
         express = require('express'),
         request = require('supertest'),
         bodyParser = require('body-parser'),
+        storeModel = require(path.join(cwd, 'src', 'server', 'models', 'store')),
         projectController = require(path.join(cwd, 'src', 'server', 'controllers', 'project'));
-
-    db = new nedb({
-        autoload: true,
-        filename: path.join(__dirname, '..', '..', '..', 'fixtures', 'project.nedb')
-    });
-    db.loadDatabase(function (err) {
-        db.ensureIndex({
-            unique: true,
-            fieldName: 'project_name'
-        });
-    });
-
+    //
     app = express();
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({
         extended: true
     }));
     app.use('/project', projectController.router);
-    projectController.options({
-        db: db
-    });
+    storeModel.init(path.join(__dirname, '..', '..', '..', 'fixtures', 'db.nedb'));
+    projectController.model(storeModel);
 
     describe('ProjectController', function () {
 
@@ -67,7 +58,7 @@
                         done();
                     });
             });
-            it('fails empty project_path param', function (done) {
+            it('not fails', function (done) {
                 var doc = {
                         name: '',
                         items: [],
@@ -108,6 +99,19 @@
                     .expect('Content-Type', /json/)
                     .expect(200, function (err, body) {
                         expect(err).not.toBe(null);
+                        done();
+                    });
+            });
+            xit('return new document', function (done) {
+                var params = {
+                    project_path: path.join(__dirname, '..', '..', '..', '..', 'src', 'docs')
+                };
+                request(app)
+                    .post('/project/create')
+                    .send(params)
+                    .expect('Content-Type', /json/)
+                    .expect(200, function (err, body) {
+                        expect(err).toBe(null);
                         done();
                     });
             });
