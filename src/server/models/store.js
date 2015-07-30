@@ -4,7 +4,8 @@
 
     'use strict';
 
-    var db, store, dbfile, stores,
+    var db, store, dbfile,
+        stores = {},
         Q = require('q'),
         md5 = require('md5'),
         nedb = require('nedb'),
@@ -20,7 +21,7 @@
         createProject: function (name, project_name, path, pages) {
             var document,
                 q = Q.defer();
-            if (arguments.length < 3) {
+            if (arguments.length < 4) {
                 q.reject(new Error('needs 4 arguments at least'));
                 //
             } else {
@@ -52,7 +53,7 @@
          */
         deleteProject: function (name, project_path) {
             var q = Q.defer();
-            if (arguments.length < 1 || !lodash.isString(project_path) || lodash.isEmpty(project_path.trim())) {
+            if (arguments.length < 2 || !lodash.isString(project_path) || lodash.isEmpty(project_path.trim())) {
                 q.reject(new Error('needs 2 argument at least'));
                 //
             } else {
@@ -76,7 +77,7 @@
          */
         findOneProject: function (name, project_path) {
             var q = Q.defer();
-            if (arguments.length < 1 || !lodash.isString(project_path) || lodash.isEmpty(project_path.trim())) {
+            if (arguments.length < 2 || !lodash.isString(project_path) || lodash.isEmpty(project_path.trim())) {
                 q.reject(new Error('needs 2 argument at least'));
                 //
             } else {
@@ -105,9 +106,6 @@
          */
         init: function (name, dbfile, callback) {
             try {
-                if (!lodash.isPlainObject(stores)) {
-                    stores = {};
-                }
                 stores[name] = new nedb({
                     autoload: false,
                     filename: dbfile

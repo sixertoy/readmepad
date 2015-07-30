@@ -10,10 +10,11 @@
         // requires
         fs = require('fs'),
         md5 = require('md5'),
-        // path = require('path'),
+        path = require('path'),
         chalk = require('chalk'),
         lodash = require('lodash'),
-        express = require('express');
+        express = require('express'),
+        scandir = require('scandir-async').exec;
 
     router = express.Router();
 
@@ -25,14 +26,33 @@
      *
      */
     router.post('/open', function (req, res) {
-        if (!req.body.hasOwnProperty('project_path') || lodash.isEmpty(req.body.project_path)) {
+        if (!req.body.hasOwnProperty('project_path') || !lodash.isString(req.body.project_path) || lodash.isEmpty(req.body.project_path.trim())) {
             res.status(404).send({
                 error: 'unable to parse project path'
             });
         } else {
+            req.body.project_path = req.body.project_path.trim();
             __model.findOneProject(__name, req.body.project_path).then(function (data) {
                 res.send(data);
+            }, function (err) {
+                res.status(404).send({
+                    error: 'unable to parse project path'
+                });
 
+            });
+        }
+    });
+
+
+    router.post('/delete', function (req, res) {
+        if (!req.body.hasOwnProperty('project_path') || !lodash.isString(req.body.project_path) || lodash.isEmpty(req.body.project_path.trim())) {
+            res.status(404).send({
+                error: 'unable to parse project path'
+            });
+        } else {
+            req.body.project_path = req.body.project_path.trim();
+            __model.deleteProject(__name, req.body.project_path).then(function (data) {
+                res.send(data > 0);
             }, function (err) {
                 res.status(404).send({
                     error: 'unable to parse project path'
@@ -49,17 +69,53 @@
      *
      */
     router.post('/create', function (req, res) {
-        var options, project_path;
-        if (!req.body.hasOwnProperty('project_path') || lodash.isEmpty(req.body.project_path)) {
+        var options, project_path, explorer;
+        if (!req.body.hasOwnProperty('project_path') || !lodash.isString(req.body.project_path) || lodash.isEmpty(req.body.project_path.trim())) {
             res.status(404).send({
                 error: 'unable to parse project path'
             });
         } else {
-            project_path = req.body.project_path;
+            project_path = req.body.project_path.trim();
             fs.stat(project_path, function (err) {
                 if (err) {
-
+                    res.status(404).send({
+                        error: 'unable to find project'
+                    });
                 } else {
+                    __model.findOneProject(__name, project_path).then(function (doc) {
+
+                        if (doc) {
+
+                            res.send(doc);
+
+                        } else {
+                            scandir(project_path).then(function (data) {
+
+                                var doc = {
+                                    files: [],
+                                    name: 'docs',
+                                    path: path.join(process.cwd(), 'src', 'docs'),
+                                    project_id: md5(path.join(process.cwd(), 'src', 'docs'))
+                                };
+                                res.send(doc);
+
+                            }, function (err) {
+
+                                console.log(err);
+
+                                res.status(404).send({
+                                    error: 'unable to explore project: ' + project_path
+                                });
+
+
+                            });
+                        }
+
+                    }, function () {
+                        res.status(404).send({
+                            error: 'unable to find project'
+                        });
+                    });
 
                 }
             });
