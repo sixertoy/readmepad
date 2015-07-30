@@ -6,6 +6,7 @@
     'use strict';
 
     var result, app, db,
+        dbname = 'project',
         cwd = process.cwd(),
         //
         Q = require('q'),
@@ -27,9 +28,11 @@
         extended: true
     }));
     app.use('/project', projectController.router);
-    storeModel.init('project', dbfile, function () {});
+    storeModel.init(dbname, dbfile, function () {});
+    //
+    projectController.name(dbname);
     projectController.model(storeModel);
-    storeModel.createProject('project', 'toto', 'path/to/toto', []);
+    storeModel.createProject(dbname, 'toto', 'path/to/toto', []);
 
     describe('controllers/project', function () {
 

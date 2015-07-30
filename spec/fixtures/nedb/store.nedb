@@ -1,3 +1,3 @@
 {"$$indexCreated":{"unique":true,"fieldName":"project_id"}}
-{"path":"path/to/toto","pages":[{"fileone":"path/to/toto/fileone","filetwo":"path/to/toto/filetwo"}],"name":"toto","project_id":"41636dabad50c4de6623a369313f8df5","_id":"11shmJFvQLg4eXWk"}
-{"$$deleted":true,"_id":"11shmJFvQLg4eXWk"}
+{"path":"path/to/toto","pages":[{"fileone":"path/to/toto/fileone","filetwo":"path/to/toto/filetwo"}],"name":"toto","project_id":"41636dabad50c4de6623a369313f8df5","_id":"QKrUFfUIsew3ldHv"}
+{"$$deleted":true,"_id":"QKrUFfUIsew3ldHv"}

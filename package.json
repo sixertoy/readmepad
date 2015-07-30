@@ -39,8 +39,9 @@
     "multer": "^0.1.8",
     "nedb": "^1.1.2",
     "q": "^1.4.1",
-    "scandir-async": "^0.1.6",
-    "serve-favicon": "^2.3.0"
+    "scandir-async": "^0.1.9",
+    "serve-favicon": "^2.3.0",
+    "winston": "^1.0.1"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

@@ -29,10 +29,10 @@
 
             return {
 
-                LOAD_URI: '/load',
-                OPEN_URI: '/open',
                 VIEW_URI: '/view',
-                CREATE_URI: '/create',
+                OPEN_URI: '/project/open',
+                LOAD_URI: '/project/loadall',
+                CREATE_URI: '/project/create',
 
 
                 /**
@@ -43,7 +43,7 @@
                  */
                 open: function (uri, project_uri) {
                     params = {
-                        path: project_uri
+                        project_path: project_uri
                     };
                     return call('post', uri, params);
                 },
@@ -69,7 +69,7 @@
                  */
                 create: function (uri, project_uri) {
                     params = {
-                        path: project_uri
+                        project_path: project_uri
                     };
                     return call('post', uri, params);
                 },
@@ -84,7 +84,7 @@
                  */
                 view: function (uri, project_uri) {
                     params = {
-                        path: project_uri
+                        project_path: project_uri
                     };
                     return call('post', uri, params);
                 }

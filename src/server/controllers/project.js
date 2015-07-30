@@ -5,8 +5,8 @@
     'use strict';
 
     var router,
+        __name = false,
         __model = false,
-        __name = 'project',
         // requires
         fs = require('fs'),
         md5 = require('md5'),
@@ -26,7 +26,8 @@
      *
      */
     router.post('/open', function (req, res) {
-        if (!req.body.hasOwnProperty('project_path') || !lodash.isString(req.body.project_path) || lodash.isEmpty(req.body.project_path.trim())) {
+        var valid = !req.body.hasOwnProperty('project_path') || !lodash.isString(req.body.project_path) || lodash.isEmpty(req.body.project_path.trim());
+        if (valid) {
             res.status(404).send({
                 error: 'unable to parse project path'
             });
@@ -34,6 +35,7 @@
             req.body.project_path = req.body.project_path.trim();
             __model.findOneProject(__name, req.body.project_path).then(function (data) {
                 res.send(data);
+
             }, function (err) {
                 res.status(404).send({
                     error: 'unable to parse project path'
@@ -45,14 +47,16 @@
 
 
     router.post('/delete', function (req, res) {
-        if (!req.body.hasOwnProperty('project_path') || !lodash.isString(req.body.project_path) || lodash.isEmpty(req.body.project_path.trim())) {
+        var valid = !req.body.hasOwnProperty('project_path') || !lodash.isString(req.body.project_path) || lodash.isEmpty(req.body.project_path.trim());
+        if (valid) {
             res.status(404).send({
                 error: 'unable to parse project path'
             });
         } else {
             req.body.project_path = req.body.project_path.trim();
-            __model.deleteProject(__name, req.body.project_path).then(function (data) {
-                res.send(data > 0);
+            __model.deleteProject(__name, req.body.project_path).then(function (count) {
+                res.send(count > 0);
+
             }, function (err) {
                 res.status(404).send({
                     error: 'unable to parse project path'
@@ -69,8 +73,9 @@
      *
      */
     router.post('/create', function (req, res) {
-        var options, project_path, explorer;
-        if (!req.body.hasOwnProperty('project_path') || !lodash.isString(req.body.project_path) || lodash.isEmpty(req.body.project_path.trim())) {
+        var options, project_path, explorer,
+            valid = !req.body.hasOwnProperty('project_path') || !lodash.isString(req.body.project_path) || lodash.isEmpty(req.body.project_path.trim());
+        if (valid) {
             res.status(404).send({
                 error: 'unable to parse project path'
             });
@@ -83,14 +88,10 @@
                     });
                 } else {
                     __model.findOneProject(__name, project_path).then(function (doc) {
-
                         if (doc) {
-
                             res.send(doc);
-
                         } else {
                             scandir(project_path).then(function (data) {
-
                                 var doc = {
                                     files: [],
                                     name: 'docs',
@@ -98,31 +99,33 @@
                                     project_id: md5(path.join(process.cwd(), 'src', 'docs'))
                                 };
                                 res.send(doc);
-
                             }, function (err) {
-
                                 console.log(err);
-
                                 res.status(404).send({
                                     error: 'unable to explore project: ' + project_path
                                 });
-
-
                             });
                         }
-
                     }, function () {
                         res.status(404).send({
                             error: 'unable to find project'
                         });
                     });
-
                 }
             });
         }
     });
 
-    router.post('/loadall', function () {});
+    router.get('/loadall', function (req, res) {
+        __model.findAll(__name).then(function (data) {
+            res.send(data);
+        }, function (err) {
+            res.status(404).send({
+                error: 'unable to parse project path'
+            });
+
+        });
+    });
 
     /**
      *
@@ -221,6 +224,12 @@
                 __model = model;
             }
             return __model;
+        },
+        name: function (name) {
+            if (arguments.length > 0) {
+                __name = name;
+            }
+            return __name;
         },
         router: router
     };

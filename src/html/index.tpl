@@ -15,7 +15,7 @@
         <div class="row">
             <h1 class="title col-md-12"><span>Readme PAD</span></h1>
             {{$include 'views/sidebar'}}
-            {{$include 'views/viewer'}}
+            {{!-- $include 'views/viewer' --}}
         </div>
     </div>
 

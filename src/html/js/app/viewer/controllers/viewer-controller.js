@@ -4,6 +4,7 @@
 
     'use strict';
 
+    /*
     angular.module('readmepadApp', ['servicesApp', 'ui.ace'])
         .controller('ViewerCcontroller', ['$scope', '$http', 'MarkdownService', function ($scope, $http, MarkdownService) {
             //
@@ -24,11 +25,9 @@
                             console.log('saved');
                             // MarkdownService.parse(data);
                         }
-                        /*
                         else {
                             // @TODO log errors
                         }
-                        */
                     });
             };
 
@@ -39,5 +38,6 @@
 
 
         }]);
+*/
 
 }());

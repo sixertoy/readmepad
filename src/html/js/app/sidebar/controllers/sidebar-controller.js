@@ -33,8 +33,10 @@
             $scope.initialize = function () {
                 ProjectsService.load(ProjectsService.LOAD_URI)
                     .then(function (data) {
+                        console.log(data.length);
+                        console.log(data);
                         if (data.length) {
-                            $scope.projects = data;
+                            // $scope.projects = data;
                         }
                     }, function (err) {
                         // console.log(err);

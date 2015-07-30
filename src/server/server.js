@@ -5,7 +5,7 @@
     'use strict';
 
     var // variables
-        server, app, dbfile, favicon, www,
+        server, dbfile, favicon, www,
         // constants
         http_port = 9080,
         database = './db.nedb',
@@ -21,8 +21,8 @@
         //
         // Facade = require('./facade'),
         store = require('./models/store'),
-        projectController = require('./controllers/project'),
-        documentController = require('./controllers/document');
+        projectController = require('./controllers/project');
+        // documentController = require('./controllers/document')
     //
     // creation de la BDD
     // creation du serveur
@@ -34,7 +34,8 @@
     //
     // express middlewares
     favicon = path.join(www, 'favicon.ico');
-    favicon = serveFavicon(favicon); // favison du client
+    favicon = serveFavicon(favicon); // favicon du client
+    //
     server.use(favicon); // utilisation du favicon
     server.use(multer()); // for parsing multipart/form-data
     server.use(bodyParser.json()); // for parsing application/json
@@ -43,18 +44,20 @@
     }));
     //
     // routers/controllers
-    app.use('/project', projectController.router);
-    app.use('/document', documentController.router);
+    server.use('/project', projectController.router);
+    // server.use('/document', documentController.router);
+    //
     //
     // init de la bdd
     dbfile = path.join(__dirname, database);
-    store.init(dbfile, function (err) {
+    store.init('project', dbfile, function (err) {
         if (err) {
             console.log(err, dbfile);
         } else {
             // ajout du modele au controlleur
             projectController.model(store);
-            documentController.model(store);
+            projectController.name('project');
+            // documentController.model(store);
             // lancement du serveur
             server.listen(http_port, function () {
                 console.log('ReadmePad now running under http://localhost:%d', http_port);

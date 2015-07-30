@@ -52,18 +52,19 @@
          *
          */
         deleteProject: function (name, project_path) {
-            var q = Q.defer();
-            if (arguments.length < 2 || !lodash.isString(project_path) || lodash.isEmpty(project_path.trim())) {
+            var q = Q.defer(),
+                valid = arguments.length < 2 || !lodash.isString(project_path) || lodash.isEmpty(project_path.trim());
+            if (valid) {
                 q.reject(new Error('needs 2 argument at least'));
                 //
             } else {
                 stores[name].remove({
                     project_id: md5(project_path)
-                }, function (err, num) {
+                }, function (err, count) {
                     if (err) {
                         q.reject(err);
                     } else {
-                        q.resolve(num);
+                        q.resolve(count);
                     }
                 });
             }
@@ -100,6 +101,33 @@
 
         /**
          *
+         * Supprime un projet de la bdd
+         *
+         */
+        findAll: function (name) {
+            var q = Q.defer(),
+                valid = arguments.length < 1 || !lodash.isString(name) || lodash.isEmpty(name.trim());
+            if (valid) {
+                q.reject(new Error('needs 1 argument at least'));
+                //
+            } else {
+                stores[name].find({}, function (err, docs) {
+                    if (err) {
+                        q.reject(err);
+                    } else {
+                        if (docs) {
+                            q.resolve(docs);
+                        } else {
+                            q.resolve(false);
+                        }
+                    }
+                });
+            }
+            return q.promise;
+        },
+
+        /**
+         *
          * Chargement de la BDD
          * Crée les index si ils n'existent pas
          *
@@ -116,6 +144,7 @@
                             callback('ReadmePad is unable to load database: %s');
                         }
                     } else {
+                        console.log('DataBase %s loaded', name);
                         stores[name].ensureIndex({
                             unique: true,
                             fieldName: 'project_id'
