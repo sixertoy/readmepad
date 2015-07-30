@@ -91,14 +91,23 @@
                         if (doc) {
                             res.send(doc);
                         } else {
+                            //
+                            // recuperation des fichiers
                             scandir(project_path).then(function (data) {
+                                var k = Object.keys(data)[0], // nom du projet
+                                    d = data[k]; // data
+
                                 var doc = {
-                                    files: [],
-                                    name: 'docs',
-                                    path: path.join(process.cwd(), 'src', 'docs'),
-                                    project_id: md5(path.join(process.cwd(), 'src', 'docs'))
+                                    name: k,
+                                    files: d.files, // @todo parse files name/path
+                                    path: d.fullpath,
+                                    project_id: md5(d.fullpath)
                                 };
+
+
                                 res.send(doc);
+
+
                             }, function (err) {
                                 console.log(err);
                                 res.status(404).send({
