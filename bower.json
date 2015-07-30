@@ -16,9 +16,13 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "unsemantic": "~1.0.2",
     "angular": "~1.4.2",
     "markdown-it": "~4.3.0",
-    "angular-ui-ace": "bower"
+    "angular-ui-ace": "bower",
+    "angular-bootstrap": "~0.13.0",
+    "satellizer": "~0.11.2",
+    "bootstrap": "~3.3.5",
+    "normalize.css": "~3.0.3",
+    "lodash": "~3.10.0"
   }
 }

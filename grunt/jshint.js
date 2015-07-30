@@ -4,5 +4,8 @@ module.exports = {
     options: {
         jshintrc: '.jshintrc'
     },
-    all: ['index.js', 'Gruntfile.js', './spec/**/*.js', './src/server/**/*.js', './src/html/js/**/*.js', '!./src/html/js/lib/**/*.js']
+    html: ['./src/html/js/**/*.js', '!./src/html/js/lib/**/*.js'],
+    project: ['index.js', 'Gruntfile.js', './spec/**/*.js'],
+    server: ['./src/server/**/*.js'],
+    jasmine: ['./spec/**/*.js']
 };

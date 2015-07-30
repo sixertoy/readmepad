@@ -14,5 +14,6 @@ module.exports = {
         extensions: 'js',
         specNameMatcher: 'spec'
     },
-    all: ['spec/']
+    all: [],
+    server: ['src/server/**/*.js']
 };

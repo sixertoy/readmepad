@@ -3,21 +3,27 @@ serve:
 build_documentation:
   - clean:documentation
   - joli_markdown
+build_bower:
+  - clean:bower
+  - copy:bower_js
+  - copy:bower_css
+build_jasmine:
+  - clean:jasmine
+  - jshint:jasmine
+  - jasmine_node:server
 build_html:
   - clean:html
   - copy:html
+  - mustacher
   - less
 build_server:
+  - build_jasmine
   - clean:server
   - copy:server
-quick_build:
-  - build_html
-  - build_server
 build:
-  - jshint
-  - jasmine_node
-  - build_html
   - build_server
+  - build_bower
+  - build_html
 default:
   - build
   - watch

@@ -6,20 +6,16 @@ module.exports = {
         livereload: true,
         livereloadOnError: false
     },
-    documentation: {
-        files: ['./src/docs/**/*.md', './src/docs/meta.json'],
-        tasks: ['build_documentation']
+    html: {
+        files: ['./src/html/**/*', './src/html/**/*.hbs', './src/html/**/*.tpl'],
+        tasks: ['build_html']
     },
     jasmine: {
-        files: ['./spec/src/**/*.spec.js', 'src/**/*.js'],
-        tasks: ['jasmine_node']
+        files: ['./src/**/*.js', './spec/**/*.js'],
+        tasks: ['build_jasmine']
     },
     server: {
-        files: ['./src/server/**/*'],
+        files: ['./src/server/**/*.js'],
         tasks: ['build_server']
-    },
-    html: {
-        files: ['./src/html/**/*'],
-        tasks: ['build_html']
     }
 };
