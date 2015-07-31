@@ -91,10 +91,10 @@
             it('create a new project', function (done) {
                 var name = 'toto',
                     p = 'path/to/toto',
-                    pages = [{
+                    pages = {
                         fileone: 'path/to/toto/fileone',
                         filetwo: 'path/to/toto/filetwo'
-                    }];
+                    };
                 dbname = 'store';
                 storeModel.createProject(dbname, name, p, pages).then(function (doc) {
                     p = md5(p);
@@ -105,10 +105,10 @@
             it('reject cause project already exists', function (done) {
                 var name = 'toto',
                     p = 'path/to/toto',
-                    pages = [{
+                    pages = {
                         fileone: 'path/to/toto/fileone',
                         filetwo: 'path/to/toto/filetwo'
-                    }];
+                    };
                 dbname = 'store';
                 storeModel.createProject(dbname, name, p, pages).then(function (doc) {}, function (err) {
                     expect(err.errorType).toEqual('uniqueViolated');

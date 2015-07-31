@@ -190,7 +190,7 @@
                         expect(doc.name).toEqual(res.body.name);
                         expect(doc.path).toEqual(res.body.path);
                         expect(doc.project_id).toEqual(res.body.project_id);
-                        // console.log(res.body.files[0]);
+                        // expect(res.body.pages[0]).toEqual('index.md');
                         // expect(res.body.files.docs.files[0]).toEqual();
                         done();
                     });
