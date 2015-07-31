@@ -18,8 +18,10 @@
         express = require('express'),
         request = require('supertest'),
         bodyParser = require('body-parser'),
+        scandir = require('scandir-async').exec,
         dbfile = path.join(cwd, 'spec', 'fixtures', 'nedb', 'project.nedb'),
         storeModel = require(path.join(cwd, 'src', 'server', 'models', 'store')),
+        projectUtils = require(path.join(cwd, 'src', 'server', 'helpers', 'project-utils')),
         projectController = require(path.join(cwd, 'src', 'server', 'controllers', 'project'));
     //
     app = express();
@@ -96,7 +98,7 @@
                     .expect('Content-Type', /json/)
                     .expect(200, function (err, res) {
                         expect(err).toBe(null);
-                        expect(res.body.pages).toEqual([]);
+                        // expect(res.body.pages).toEqual([]);
                         expect(res.body.name).toEqual('toto');
                         expect(res.body.path).toEqual('path/to/toto');
                         expect(res.body.project_id).toEqual(md5('path/to/toto'));
@@ -172,15 +174,16 @@
                     });
             });
             it('not fails create project', function (done) {
-                var doc = {
-                        files: ['index.md', 'meta.json'],
-                        name: 'docs',
-                        path: path.join(cwd, 'src', 'docs'),
-                        project_id: md5(path.join(cwd, 'src', 'docs'))
-                    },
-                    params = {
-                        project_path: path.join(cwd, 'src', 'docs')
-                    };
+                var doc, params,
+                    fullpath = path.join(cwd, 'src', 'docs');
+                doc = {
+                    name: 'docs',
+                    path: fullpath,
+                    project_id: md5(fullpath)
+                };
+                params = {
+                    project_path: fullpath
+                };
                 request(app)
                     .post('/project/create')
                     .send(params)
@@ -190,8 +193,6 @@
                         expect(doc.name).toEqual(res.body.name);
                         expect(doc.path).toEqual(res.body.path);
                         expect(doc.project_id).toEqual(res.body.project_id);
-                        // expect(res.body.pages[0]).toEqual('index.md');
-                        // expect(res.body.files.docs.files[0]).toEqual();
                         done();
                     });
             });

@@ -90,27 +90,27 @@
             });
             it('create a new project', function (done) {
                 var name = 'toto',
-                    p = 'path/to/toto',
-                    pages = {
+                    fullpath = 'path/to/toto',
+                    files = {
                         fileone: 'path/to/toto/fileone',
                         filetwo: 'path/to/toto/filetwo'
                     };
                 dbname = 'store';
-                storeModel.createProject(dbname, name, p, pages).then(function (doc) {
-                    p = md5(p);
-                    expect(doc.project_id).toEqual(p);
+                storeModel.createProject(dbname, name, fullpath, files).then(function (doc) {
+                    fullpath = md5(fullpath);
+                    expect(doc.project_id).toEqual(fullpath);
                     done();
                 }, function (err) {});
             });
             it('reject cause project already exists', function (done) {
                 var name = 'toto',
-                    p = 'path/to/toto',
-                    pages = {
+                    fullpath = 'path/to/toto',
+                    files = {
                         fileone: 'path/to/toto/fileone',
                         filetwo: 'path/to/toto/filetwo'
                     };
                 dbname = 'store';
-                storeModel.createProject(dbname, name, p, pages).then(function (doc) {}, function (err) {
+                storeModel.createProject(dbname, name, fullpath, files).then(function (doc) {}, function (err) {
                     expect(err.errorType).toEqual('uniqueViolated');
                     done();
                 });

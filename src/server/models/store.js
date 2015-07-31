@@ -18,7 +18,7 @@
          * Cree un projet en bdd
          *
          */
-        createProject: function (name, project_name, path, pages) {
+        createProject: function (name, project_name, project_path) {
             var document,
                 q = Q.defer();
             if (arguments.length < 4) {
@@ -26,10 +26,9 @@
                 //
             } else {
                 document = {
-                    path: path,
-                    pages: pages,
+                    path: project_path,
                     name: project_name,
-                    project_id: md5(path)
+                    project_id: md5(project_path)
                 };
                 stores[name].insert(document, function (err, doc) {
                     if (err) {
