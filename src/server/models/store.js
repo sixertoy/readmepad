@@ -60,6 +60,7 @@
                         q.reject(err);
                     } else {
                         if (doc) {
+                            stores[name].persistence.compactDatafile();
                             q.resolve(doc);
                         } else {
                             q.resolve(false);
@@ -87,6 +88,7 @@
                     if (err) {
                         q.reject(err);
                     } else {
+                        stores[name].persistence.compactDatafile();
                         q.resolve(count);
                     }
                 });

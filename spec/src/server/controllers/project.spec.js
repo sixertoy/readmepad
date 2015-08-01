@@ -237,6 +237,48 @@
             });
         });
 
+        describe('[PUT] /project/update', function () {
+            it('fails', function (done) {
+                var params = {};
+                request(app)
+                    .post('/project/update')
+                    .send(params)
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.statusCode).toEqual(404);
+                        done();
+                    });
+            });
+            it('fail no project in params', function (done) {
+                var params = {};
+                request(app)
+                    .put('/project/update')
+                    .send(params)
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.statusCode).toEqual(400);
+                        done();
+                    });
+            });
+            it('success rename project', function (done) {
+                var fullpath = path.join(cwd, 'src', 'docs'),
+                    params = {
+                        project: {
+                            name: 'ReadmePad',
+                            project_id: md5(fullpath)
+                        }
+                    };
+                request(app)
+                    .put('/project/update')
+                    .send(params)
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.statusCode).toEqual(201);
+                        done();
+                    });
+            });
+        });
+
         describe('[GET] /project/loadall', function () {
             it('fails', function (done) {
                 request(app)
@@ -250,7 +292,7 @@
             it('success', function (done) {
                 var p,
                     doc = {
-                        name: 'docs',
+                        name: 'ReadmePad',
                         path: path.join(cwd, 'src', 'docs')
                     };
                 request(app)
