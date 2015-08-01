@@ -239,8 +239,7 @@
                     },
                     doc = {
                         name: "docs",
-                        path: "d:\\npm\\readmepad\\src\\docs",
-                        project_id: "0c7b9011b213e91025335a16f70b1a1a"
+                        path: path.join(cwd, 'src', 'docs')
                     };
                 request(app)
                     .post('/project/create')
@@ -251,7 +250,6 @@
                         result = JSON.parse(res.text);
                         expect(result.name).toEqual(doc.name);
                         expect(result.path).toEqual(doc.path);
-                        expect(result.project_id).toEqual(doc.project_id);
                         done();
                     });
             });
@@ -262,8 +260,7 @@
                     },
                     doc = {
                         name: "docs",
-                        path: "d:\\npm\\readmepad\\src\\docs",
-                        project_id: "0c7b9011b213e91025335a16f70b1a1a"
+                        path: path.join(cwd, 'src', 'docs')
                     };
                 request(app)
                     .post('/project/create')
@@ -274,7 +271,6 @@
                         result = JSON.parse(res.text);
                         expect(result.name).toEqual(doc.name);
                         expect(result.path).toEqual(doc.path);
-                        expect(result.project_id).toEqual(doc.project_id);
                         done();
                     });
             });
@@ -291,11 +287,11 @@
                     });
             });
             it('success', function (done) {
-                var doc = {
-                    name: "docs",
-                    path: "d:\\npm\\readmepad\\src\\docs",
-                    project_id: "0c7b9011b213e91025335a16f70b1a1a"
-                };
+                var p,
+                    doc = {
+                        name: "docs",
+                        path: path.join(cwd, 'src', 'docs')
+                    };
                 request(app)
                     .get('/project/loadall')
                     .send()
@@ -306,7 +302,6 @@
                         expect(result.length).toEqual(1);
                         expect(result[0].name).toEqual(doc.name);
                         expect(result[0].path).toEqual(doc.path);
-                        expect(result[0].project_id).toEqual(doc.project_id);
                         done();
                     });
             });
