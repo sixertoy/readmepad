@@ -201,3 +201,4 @@ bower_components/
 
 build/
 dist/
+spec/fixtures/**/*.nedb
