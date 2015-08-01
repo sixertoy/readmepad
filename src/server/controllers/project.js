@@ -26,43 +26,45 @@
      * @param path [String] Chemin absolu du projet
      *
      */
-    router.post('/open', function (req, res) {
-        var valid = !req.body.hasOwnProperty('project_path') || !lodash.isString(req.body.project_path) || lodash.isEmpty(req.body.project_path.trim());
+    router.get('/open', function (req, res) {
+        var project_path,
+            valid = !req.body.hasOwnProperty('project_path') || !lodash.isString(req.body.project_path) || lodash.isEmpty(req.body.project_path.trim());
         if (valid) {
-            res.status(404).send({
-                error: 'unable to parse project path'
-            });
+            res.status(400).send('invalid arguments');
         } else {
-            req.body.project_path = req.body.project_path.trim();
-            __model.findOneProject(__name, req.body.project_path).then(function (data) {
-                res.send(data);
-
+            project_path = req.body.project_path.trim();
+            __model.findOneProject(__name, project_path).then(function (doc) {
+                if (doc) {
+                    scandir(project_path).then(function(data){
+                        res.status(200).send(data);
+                    }, function(err){
+                        res.status(500).send();
+                    });
+                } else {
+                    res.status(404).send('unable to find project');
+                }
             }, function (err) {
-                res.status(404).send({
-                    error: 'unable to parse project path'
-                });
-
+                res.status(503).send(err.message);
             });
         }
     });
 
 
-    router.post('/delete', function (req, res) {
-        var valid = !req.body.hasOwnProperty('project_path') || !lodash.isString(req.body.project_path) || lodash.isEmpty(req.body.project_path.trim());
+    router.delete('/delete', function (req, res) {
+        var project_path,
+            valid = !req.body.hasOwnProperty('project_path') || !lodash.isString(req.body.project_path) || lodash.isEmpty(req.body.project_path.trim());
         if (valid) {
-            res.status(404).send({
-                error: 'unable to parse project path'
-            });
+            res.status(400).send('invalid arguments');
         } else {
-            req.body.project_path = req.body.project_path.trim();
-            __model.deleteProject(__name, req.body.project_path).then(function (count) {
-                res.send(count > 0);
-
+            project_path = req.body.project_path.trim();
+            __model.deleteProject(__name, project_path).then(function (count) {
+                if(count > 0){
+                    res.status(200).send();
+                } else {
+                    res.status(204).send();
+                }
             }, function (err) {
-                res.status(404).send({
-                    error: 'unable to parse project path'
-                });
-
+                res.status(503).send(err.message);
             });
         }
     });
@@ -77,39 +79,30 @@
         var project_path, name,
             valid = !req.body.hasOwnProperty('project_path') || !lodash.isString(req.body.project_path) || lodash.isEmpty(req.body.project_path.trim());
         if (valid) {
-            res.status(404).send({
-                error: 'unable to parse project path'
-            });
+            res.status(400).send('invalid arguments');
         } else {
             project_path = req.body.project_path.trim();
             fs.stat(project_path, function (err) {
                 if (err) {
-                    res.status(404).send({
-                        error: 'unable to find project'
-                    });
+                    res.status(403).send(err.message);
                 } else {
                     __model.findOneProject(__name, project_path).then(function (doc) {
                         if (doc) {
                             // si le projet existe
-                            res.send(doc);
-
+                            res.status(200).send(doc);
                         } else {
                             // si le projet n'existe pas
                             // on cree un nouveau document en BDD
                             name = projectUtils.name(project_path);
                             __model.createProject(__name, name, project_path).then(function (doc) {
-                                res.send(doc);
-                            }, function () {
-                                res.status(404).send({
-                                    error: 'unable to create project: ' + project_path
-                                });
+                                res.status(201).send(doc);
+                            }, function (err) {
+                                res.status(404).send(err.message);
                             });
                         }
 
                     }, function (err) {
-                        res.status(404).send({
-                            error: 'unable to explore project: ' + project_path
-                        });
+                        res.status(503).send(err.message);
                     });
                 }
             });
@@ -118,12 +111,9 @@
 
     router.get('/loadall', function (req, res) {
         __model.findAll(__name).then(function (data) {
-            res.send(data);
+            res.status(200).send(data);
         }, function (err) {
-            res.status(404).send({
-                error: 'unable to parse project path'
-            });
-
+            res.status(503).send(err.message);
         });
     });
 

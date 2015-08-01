@@ -21,8 +21,8 @@
         createProject: function (name, project_name, project_path) {
             var document,
                 q = Q.defer();
-            if (arguments.length < 4) {
-                q.reject(new Error('needs 4 arguments at least'));
+            if (arguments.length < 3) {
+                q.reject(new Error('needs 3 arguments at least'));
                 //
             } else {
                 document = {

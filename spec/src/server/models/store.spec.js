@@ -70,33 +70,29 @@
         describe('createProject', function () {
             it('reject needs more argument', function (done) {
                 storeModel.createProject().then(function () {}, function (err) {
-                    expect(err.message).toEqual('needs 4 arguments at least');
+                    expect(err.message).toEqual('needs 3 arguments at least');
                     done();
                 });
             });
             it('reject needs more argument', function (done) {
                 dbname = 'name';
                 storeModel.createProject(dbname).then(function () {}, function (err) {
-                    expect(err.message).toEqual('needs 4 arguments at least');
+                    expect(err.message).toEqual('needs 3 arguments at least');
                     done();
                 });
             });
             it('reject needs more argument', function (done) {
                 dbname = 'name';
                 storeModel.createProject(dbname, 'path/project').then(function () {}, function (err) {
-                    expect(err.message).toEqual('needs 4 arguments at least');
+                    expect(err.message).toEqual('needs 3 arguments at least');
                     done();
                 });
             });
             it('create a new project', function (done) {
                 var name = 'toto',
-                    fullpath = 'path/to/toto',
-                    files = {
-                        fileone: 'path/to/toto/fileone',
-                        filetwo: 'path/to/toto/filetwo'
-                    };
+                    fullpath = 'path/to/toto';
                 dbname = 'store';
-                storeModel.createProject(dbname, name, fullpath, files).then(function (doc) {
+                storeModel.createProject(dbname, name, fullpath).then(function (doc) {
                     fullpath = md5(fullpath);
                     expect(doc.project_id).toEqual(fullpath);
                     done();
@@ -104,13 +100,9 @@
             });
             it('reject cause project already exists', function (done) {
                 var name = 'toto',
-                    fullpath = 'path/to/toto',
-                    files = {
-                        fileone: 'path/to/toto/fileone',
-                        filetwo: 'path/to/toto/filetwo'
-                    };
+                    fullpath = 'path/to/toto';
                 dbname = 'store';
-                storeModel.createProject(dbname, name, fullpath, files).then(function (doc) {}, function (err) {
+                storeModel.createProject(dbname, name, fullpath).then(function (doc) {}, function (err) {
                     expect(err.errorType).toEqual('uniqueViolated');
                     done();
                 });
