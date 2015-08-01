@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index",
     "clean_modules": "rm -rf node_modules",
-    "pretest": "rm -rf ./spec/fixtures/nedb",
+    "pretest": "sh scripts/pretest",
     "test": "istanbul cover ./scripts/jasmine_node -x **/*.spec.js --captureExceptions spec/src"
   },
   "engines": {
