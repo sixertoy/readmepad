@@ -238,7 +238,7 @@
                         project_path: fullpath
                     },
                     doc = {
-                        name: "docs",
+                        name: 'docs',
                         path: path.join(cwd, 'src', 'docs')
                     };
                 request(app)
@@ -259,7 +259,7 @@
                         project_path: fullpath
                     },
                     doc = {
-                        name: "docs",
+                        name: 'docs',
                         path: path.join(cwd, 'src', 'docs')
                     };
                 request(app)
@@ -289,7 +289,7 @@
             it('success', function (done) {
                 var p,
                     doc = {
-                        name: "docs",
+                        name: 'docs',
                         path: path.join(cwd, 'src', 'docs')
                     };
                 request(app)
