@@ -23,16 +23,7 @@ git checkout <branch_name>
 npm install
 bower install --allow-root
 #
-# build bower components
-grunt build_bower
-#
-# build du serveur
-grunt build_server
-#
-# build du client HTML
-grunt build_html
-#
-# lancement du serveur
+# Build + Lancement du serveur
 npm start
 # se connecter sur http://localhost:9080/ 
 ```
