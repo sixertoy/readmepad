@@ -1,6 +1,7 @@
 language: node_js
 branches:
   only:
+    - develop
     - /^feature\//
 node_js:
   - "0.12.0"
