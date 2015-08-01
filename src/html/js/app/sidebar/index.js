@@ -4,7 +4,7 @@
 
     'use strict';
 
-    angular.module('readmepadAppSidebar', ['ngSanitize', 'ui.bootstrap', 'lodash', 'markdownIt'])
+    angular.module('readmepadAppSidebar', ['ngSanitize', 'ui.bootstrap', 'lodash', 'md5', 'markdownIt'])
         .run(function () {});
 
 }());

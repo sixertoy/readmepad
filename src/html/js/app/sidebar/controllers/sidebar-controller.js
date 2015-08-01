@@ -24,54 +24,51 @@
 
             _.assign($scope, options);
 
-            function hydrateProject(data) {
-                $scope.project = {};
-                $scope.project.name = data.name;
-                $scope.project.items = data.items;
-            }
+            $scope.projects = [];
+
+            $scope.initProject = function (data) {
+                $scope.project = data;
+                $scope.project.items = [];
+            };
 
             $scope.initialize = function () {
                 ProjectsService.loadall(ProjectsService.LOADALL_URI)
                     .then(function (data) {
-                        console.log(data.length);
-                        console.log(data);
                         if (data.length) {
-                            // $scope.projects = data;
+                            $scope.projects = data;
                         }
-                    }, function (err) {
-                        // console.log(err);
-                    });
+                    }, function (err) {});
             };
 
             $scope.openProject = function (project_uri) {
                 ProjectsService.open(ProjectsService.OPEN_URI, project_uri)
                     .then(function (data) {
-                        hydrateProject(data);
-                    }, function (err) {
-                        // console.log(err);
-                    });
+                        $scope.project.items = data.files;
+                    }, function (err) {});
             };
 
             $scope.removeProject = function (project_uri) {
                 ProjectsService.remove(ProjectsService.REMOVE_URI, project_uri)
+                    .then(function (data) {}, function (err) {});
+            };
+
+            $scope.updateProject = function (project_name) {
+                ProjectsService.update(ProjectsService.UDPATE_URI, $scope.project)
                     .then(function (data) {
-                        hydrateProject(data);
+                        $scope.project.name = project_name;
+                        $scope.openProject($scope.project.path);
                     }, function (err) {
-                        // console.log(err);
+                        console.log(err);
                     });
             };
 
             $scope.createProject = function (project_uri) {
                 ProjectsService.create(ProjectsService.CREATE_URI, project_uri)
                     .then(function (data) {
-                        // console.log('project has been created');
-                        if (!$scope.projects) {
-                            $scope.projects = [];
-                        }
+                        $scope.initProject(data);
                         $scope.projects.push(data);
-                        hydrateProject(data);
+                        $scope.openModalRenameProject();
                     }, function (err) {
-                        // console.log('$scope.createProject :: err');
                         console.log(err);
                     });
             };
@@ -80,17 +77,29 @@
                 // console.log(project_uri);
             };
 
-            $scope.openModalProject = function () {
+            $scope.openModalRenameProject = function () {
                 modalInstance = $modal.open({
                     animation: true,
-                    templateUrl: 'SidebarModal.html',
-                    controller: 'SidebarModalController'
+                    templateUrl: 'RenameProjectModal.html',
+                    controller: 'RenameProjectModalController',
+                    resolve: {
+                        project_name: function () {
+                            return $scope.project.name;
+                        }
+                    }
+                }).result.then(function (project_name) {
+                    $scope.updateProject(project_name);
+                }, function () {});
+            };
+
+            $scope.openModalNewProject = function () {
+                modalInstance = $modal.open({
+                    animation: true,
+                    templateUrl: 'NewProjectModal.html',
+                    controller: 'NewProjectModalController'
                 }).result.then(function (project_uri) {
-                    // console.log('result modal');
                     $scope.createProject(project_uri);
-                }, function () {
-                    // $log.info('Modal dismissed at: ' + new Date());
-                });
+                }, function () {});
             };
 
         }]);

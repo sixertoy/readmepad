@@ -22,6 +22,11 @@
             return window._;
         });
 
+    angular.module('md5', [])
+        .factory('md5', function () {
+            return window.md5;
+        });
+
     angular.module('readmepadApp', ['readmepadAppSidebar'])
         .run(function () {});
 

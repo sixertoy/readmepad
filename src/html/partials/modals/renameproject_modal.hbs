@@ -1,13 +1,13 @@
-<script type="text/ng-template" id="SidebarModal.html">
+<script type="text/ng-template" id="RenameProjectModal.html">
     <div class="container-fluid">
         <div class="modal-header">
-            <h3 class="modal-title">Nouveau projet</h3>
+            <h3 class="modal-title">Renommer</h3>
         </div>
         <div class="modal-body">
             <form name="projectForm">
-                <div class="form-group" ng-class="{ 'has-error': projectForm.project_uri.$invalid }">
-                    <label for="project_uri">Project's URI</label>
-                    <input id="project_uri" name="project_uri" ng-model="data.project_uri" type="text" class="form-control" placeholder="http://" ng-trim="true" required />
+                <div class="form-group" ng-class="{ 'has-error': projectForm.project_name.$invalid }">
+                    <label for="project_uri">Project's Name</label>
+                    <input id="project_name" name="project_name" ng-model="data.project_name" type="text" class="form-control" ng-trim="true" required />
                 </div>
             </form>
         </div>

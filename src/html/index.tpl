@@ -23,7 +23,8 @@
         {{$include 'scripts'}}
     </div>
 
-    {{$include 'modals/sidebar_modal'}}
+    {{$include 'modals/newproject_modal'}}
+    {{$include 'modals/renameproject_modal'}}
 
 </body>
 

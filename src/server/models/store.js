@@ -13,6 +13,31 @@
 
     store = {
 
+        updateProject: function (name, project) {
+            var q = Q.defer();
+            if (arguments.length < 2) {
+                q.reject(new Error('needs 2 arguments at least'));
+                //
+            } else {
+                stores[name].update({
+                    project_id: project.project_id
+                }, {
+                    $set: {
+                        name: project.name
+                    }
+                }, {}, function (err, count) {
+                    if (err) {
+                        q.reject(err);
+                    } else {
+                        stores[name].persistence.compactDatafile();
+                        q.resolve(count);
+
+                    }
+                });
+            }
+            return q.promise;
+        },
+
         /**
          *
          * Cree un projet en bdd

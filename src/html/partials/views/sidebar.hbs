@@ -11,7 +11,7 @@ explorer
         </button>
         <ul class="dropdown-menu" role="menu">
             <li>
-                <a href="#" ng-click="openModalProject()">Ouvrir un dossier...</a>
+                <a href="#" ng-click="openModalNewProject()">Ouvrir un dossier...</a>
             </li>
             <li class="divider" ng-if="projects"></li>
             <li ng-repeat="obj in projects">
@@ -24,7 +24,7 @@ explorer
     </div>
 
     <ul class="files">
-        <li ng-repeat="page in project.items">
+        <li ngif="project.items.length" ng-repeat="page in project.items">
             <a href="" ng-click="viewPage(page.path)">
                 <span>{{$ldim}}page.name{{$rdim}}</span>
             </a>
