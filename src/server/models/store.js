@@ -50,15 +50,14 @@
          * Supprime un projet de la bdd
          *
          */
-        deleteProject: function (name, project_path) {
-            var q = Q.defer(),
-                valid = arguments.length < 2 || !lodash.isString(project_path) || lodash.isEmpty(project_path.trim());
-            if (valid) {
+        deleteProject: function (name, project_id) {
+            var q = Q.defer();
+            if (arguments.length < 2) {
                 q.reject(new Error('needs 2 argument at least'));
                 //
             } else {
                 stores[name].remove({
-                    project_id: md5(project_path)
+                    project_id: project_id
                 }, function (err, count) {
                     if (err) {
                         q.reject(err);
@@ -75,14 +74,14 @@
          * Supprime un projet de la bdd
          *
          */
-        findOneProject: function (name, project_path) {
+        findOneProject: function (name, project_id) {
             var q = Q.defer();
-            if (arguments.length < 2 || !lodash.isString(project_path) || lodash.isEmpty(project_path.trim())) {
+            if (arguments.length < 2 || !lodash.isString(project_id) || lodash.isEmpty(project_id.trim())) {
                 q.reject(new Error('needs 2 argument at least'));
                 //
             } else {
                 stores[name].findOne({
-                    project_id: md5(project_path)
+                    project_id: project_id
                 }, function (err, doc) {
                     if (err) {
                         q.reject(err);
@@ -143,7 +142,7 @@
                             callback('ReadmePad is unable to load database: %s');
                         }
                     } else {
-                        console.log('DataBase %s loaded', name);
+                        console.log('DataBase %s loaded', name); // @TODO replace by debug mode
                         stores[name].ensureIndex({
                             unique: true,
                             fieldName: 'project_id'

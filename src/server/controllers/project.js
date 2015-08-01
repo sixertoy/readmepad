@@ -1,5 +1,12 @@
 /*jslint indent: 4, nomen: true, plusplus: true */
 /*globals require, module, console*/
+/**
+ *
+ * HTTP Status Code
+ * @see http://www.restapitutorial.com/httpstatuscodes.html
+ *
+ *
+ */
 (function () {
 
     'use strict';
@@ -17,7 +24,9 @@
         scandir = require('scandir-async').exec,
         projectUtils = require('./../helpers/project-utils');
 
-    router = express.Router();
+    router = express.Router({
+        caseSensitive: true
+    });
 
     /**
      *
@@ -26,67 +35,52 @@
      * @param path [String] Chemin absolu du projet
      *
      */
-    router.get('/open', function (req, res) {
+    router.get('/open/:project_id', function (req, res) {
         var project_path,
-            valid = !req.body.hasOwnProperty('project_path') || !lodash.isString(req.body.project_path) || lodash.isEmpty(req.body.project_path.trim());
-        if (valid) {
-            res.status(400).send('invalid arguments');
-        } else {
-            project_path = req.body.project_path.trim();
-            __model.findOneProject(__name, project_path).then(function (doc) {
-                if (doc) {
-                    scandir(project_path).then(function(data){
-                        res.status(200).send(data);
-                    }, function(err){
-                        res.status(500).send();
-                    });
-                } else {
-                    res.status(404).send('unable to find project');
-                }
-            }, function (err) {
-                res.status(503).send(err.message);
-            });
-        }
+            project_id = req.params.project_id;
+        __model.findOneProject(__name, project_id).then(function (doc) {
+            if (doc) {
+                project_path = doc.path;
+                scandir(project_path).then(function (data) {
+                    res.send(data);
+                }, function (err) {
+                    res.sendStatus(503);
+                });
+            } else {
+                res.sendStatus(204);
+            }
+        }, function (err) {
+            res.sendStatus(503);
+        });
     });
 
 
-    router.delete('/delete', function (req, res) {
-        var project_path,
-            valid = !req.body.hasOwnProperty('project_path') || !lodash.isString(req.body.project_path) || lodash.isEmpty(req.body.project_path.trim());
-        if (valid) {
-            res.status(400).send('invalid arguments');
-        } else {
-            project_path = req.body.project_path.trim();
-            __model.deleteProject(__name, project_path).then(function (count) {
-                if(count > 0){
-                    res.status(200).send();
-                } else {
-                    res.status(204).send();
-                }
-            }, function (err) {
-                res.status(503).send(err.message);
-            });
-        }
+    router.delete('/delete/:project_id', function (req, res) {
+        var project_id = req.params.project_id;
+        __model.deleteProject(__name, project_id).then(function (count) {
+            if (count > 0) {
+                res.sendStatus(200);
+            } else {
+                res.sendStatus(204);
+            }
+        }, function (err) {
+            res.sendStatus(503);
+        });
     });
 
-    /**
-     *
-     * Creation d'un nouveau projet
-     * Si le projet existe on retourne le projet
-     *
-     */
     router.post('/create', function (req, res) {
-        var project_path, name,
-            valid = !req.body.hasOwnProperty('project_path') || !lodash.isString(req.body.project_path) || lodash.isEmpty(req.body.project_path.trim());
+        var project_path, project_id, name,
+            valid = !req.body.hasOwnProperty('project_path') || !lodash.isString(req.body.project_path) || lodash.isEmpty(req.body.project_path);
         if (valid) {
-            res.status(400).send('invalid arguments');
+            res.sendStatus(400);
         } else {
-            project_path = req.body.project_path.trim();
+            project_path = req.body.project_path;
             fs.stat(project_path, function (err) {
                 if (err) {
-                    res.status(403).send(err.message);
+                    res.sendStatus(403);
                 } else {
-                    __model.findOneProject(__name, project_path).then(function (doc) {
+                    project_id =  md5(project_path);
+                    __model.findOneProject(__name, project_id).then(function (doc) {
                         if (doc) {
                             // si le projet existe
                             res.status(200).send(doc);
@@ -97,12 +91,11 @@
                             __model.createProject(__name, name, project_path).then(function (doc) {
                                 res.status(201).send(doc);
                             }, function (err) {
-                                res.status(404).send(err.message);
+                                res.sendStatus(404);
                             });
                         }
-
                     }, function (err) {
-                        res.status(503).send(err.message);
+                        res.sendStatus(503);
                     });
                 }
             });
@@ -113,7 +106,7 @@
         __model.findAll(__name).then(function (data) {
             res.status(200).send(data);
         }, function (err) {
-            res.status(503).send(err.message);
+            res.sendStatus(503);
         });
     });
 

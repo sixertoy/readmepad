@@ -39,81 +39,45 @@
     describe('controllers/project', function () {
 
         describe('[GET] /project/open', function () {
-            it('fail no project_path param', function (done) {
+            it('fails', function (done) {
+                request(app)
+                    .post('/project/open')
+                    .send()
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.status).toEqual(404); // Cannot POST /project/open
+                        done();
+                    });
+            });
+            it('fail no project_id param', function (done) {
                 request(app)
                     .get('/project/open')
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.statusCode).toEqual(400);
-                        expect(res.error.status).toEqual(400);
-                        expect(res.text).toEqual('invalid arguments');
-                        expect(res.error.text).toEqual('invalid arguments');
+                        expect(res.status).toEqual(404); // Cannot GET /project/open
                         done();
                     });
             });
-            it('fail empty project_path param', function (done) {
-                var params = {
-                    project_path: ''
-                };
+            it('fail code 404', function (done) {
+                var project_id = md5('   ');
                 request(app)
-                    .get('/project/open')
-                    .send(params)
+                    .get('/project/open/' + project_id)
+                    .send()
                     .expect('Content-Type', /json/)
-                    .expect(400)
                     .end(function (err, res) {
-                        expect(res.statusCode).toEqual(400);
-                        expect(res.error.status).toEqual(400);
-                        expect(res.text).toEqual('invalid arguments');
-                        expect(res.error.text).toEqual('invalid arguments');
+                        expect(res.status).toEqual(204);
                         done();
                     });
             });
-            it('fails untrimmed empty project_path param', function (done) {
-                var params = {
-                    project_path: '   '
-                };
+            it('fail code 404', function (done) {
+                var project_id = md5('path/to/non/exists');
                 request(app)
-                    .get('/project/open')
-                    .send(params)
+                    .get('/project/open/' + project_id)
+                    .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.statusCode).toEqual(400);
-                        expect(res.error.status).toEqual(400);
-                        expect(res.text).toEqual('invalid arguments');
-                        expect(res.error.text).toEqual('invalid arguments');
-                        done();
-                    });
-            });
-            it('fail object project_path param', function (done) {
-                var params = {
-                    project_path: {}
-                };
-                request(app)
-                    .get('/project/open')
-                    .send(params)
-                    .expect('Content-Type', /json/)
-                    .end(function (err, res) {
-                        expect(res.statusCode).toEqual(400);
-                        expect(res.error.status).toEqual(400);
-                        expect(res.text).toEqual('invalid arguments');
-                        expect(res.error.text).toEqual('invalid arguments');
-                        done();
-                    });
-            });
-            it('fail project not exists', function (done) {
-                var params = {
-                    project_path: 'path/to/non/exists'
-                };
-                request(app)
-                    .get('/project/open')
-                    .send(params)
-                    .expect('Content-Type', /json/)
-                    .end(function (err, res) {
-                        expect(res.statusCode).toEqual(404);
-                        expect(res.error.status).toEqual(404);
-                        expect(res.text).toEqual('unable to find project');
-                        expect(res.error.text).toEqual('unable to find project');
+                        expect(res.status).toEqual(204);
                         done();
                     });
             });
@@ -121,9 +85,6 @@
 
         describe('[DELETE] /project/delete', function () {
             it('fails', function (done) {
-                var params = {
-                    project_path: 'path/to/toto'
-                };
                 request(app)
                     .post('/project/delete')
                     .send()
@@ -132,40 +93,43 @@
                         done();
                     });
             });
-            it('returns status code 400', function (done) {
-                var params = {
-                    project_path: ''
-                };
+            it('fail code 404', function (done) {
                 request(app)
                     .delete('/project/delete')
-                    .send(params)
+                    .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.statusCode).toEqual(400);
-                        expect(res.text).toEqual('invalid arguments');
+                        expect(res.statusCode).toEqual(404);
                         done();
                     });
             });
-            it('returns status code 200', function (done) {
-                var params = {
-                    project_path: 'path/to/toto'
-                };
+            it('success code 204', function (done) {
+                var project_id = md5('project/non/exists');
                 request(app)
-                    .delete('/project/delete')
-                    .send(params)
+                    .delete('/project/delete/' + project_id)
+                    .send()
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.statusCode).toEqual(204);
+                        done();
+                    });
+            });
+            it('success code 200', function (done) {
+                var project_id = md5('path/to/toto');
+                request(app)
+                    .delete('/project/delete/' + project_id)
+                    .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
                         expect(res.statusCode).toEqual(200);
                         done();
                     });
             });
-            it('returns status code 204', function (done) {
-                var params = {
-                    project_path: 'path/to/toto'
-                };
+            it('success code 204', function (done) {
+                var project_id = md5('path/to/toto');
                 request(app)
-                    .delete('/project/delete')
-                    .send(params)
+                    .delete('/project/delete/' + project_id)
+                    .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
                         expect(res.statusCode).toEqual(204);
@@ -200,7 +164,6 @@
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
                         expect(res.statusCode).toEqual(400);
-                        expect(res.text).toEqual('invalid arguments');
                         done();
                     });
             });
@@ -214,7 +177,6 @@
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
                         expect(res.statusCode).toEqual(400);
-                        expect(res.text).toEqual('invalid arguments');
                         done();
                     });
             });
@@ -228,7 +190,6 @@
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
                         expect(res.statusCode).toEqual(403);
-                        expect(res.text.indexOf('ENOENT') !== -1).toEqual(true);
                         done();
                     });
             });
@@ -239,7 +200,7 @@
                     },
                     doc = {
                         name: 'docs',
-                        path: path.join(cwd, 'src', 'docs')
+                        path: fullpath
                     };
                 request(app)
                     .post('/project/create')
@@ -260,7 +221,7 @@
                     },
                     doc = {
                         name: 'docs',
-                        path: path.join(cwd, 'src', 'docs')
+                        path: fullpath
                     };
                 request(app)
                     .post('/project/create')
@@ -308,23 +269,14 @@
         });
 
         describe('[GET] /project/open', function () {
-            it('fails', function (done) {
-                request(app)
-                    .post('/project/delete')
-                    .send()
-                    .end(function (err, res) {
-                        expect(res.statusCode).toEqual(404);
-                        done();
-                    });
-            });
             it('returns a files tree', function (done) {
-                var params = {
-                    project_path: path.join(cwd, 'src', 'docs')
-                };
-                scandir(params.project_path).then(function (data) {
+                var project_id,
+                    project_path = path.join(cwd, 'src', 'docs');
+                scandir(project_path).then(function (data) {
+                    project_id = md5(project_path);
                     request(app)
-                        .get('/project/open')
-                        .send(params)
+                        .get('/project/open/' + project_id)
+                        .send()
                         .expect('Content-Type', /json/)
                         .end(function (err, res) {
                             expect(res.statusCode).toEqual(200);

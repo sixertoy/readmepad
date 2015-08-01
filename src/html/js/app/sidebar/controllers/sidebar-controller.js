@@ -31,7 +31,7 @@
             }
 
             $scope.initialize = function () {
-                ProjectsService.load(ProjectsService.LOAD_URI)
+                ProjectsService.loadall(ProjectsService.LOADALL_URI)
                     .then(function (data) {
                         console.log(data.length);
                         console.log(data);
@@ -45,6 +45,15 @@
 
             $scope.openProject = function (project_uri) {
                 ProjectsService.open(ProjectsService.OPEN_URI, project_uri)
+                    .then(function (data) {
+                        hydrateProject(data);
+                    }, function (err) {
+                        // console.log(err);
+                    });
+            };
+
+            $scope.removeProject = function (project_uri) {
+                ProjectsService.remove(ProjectsService.REMOVE_URI, project_uri)
                     .then(function (data) {
                         hydrateProject(data);
                     }, function (err) {
@@ -69,17 +78,6 @@
 
             $scope.removeProject = function (project_uri) {
                 // console.log(project_uri);
-            };
-
-            $scope.viewPage = function (path) {
-                ProjectsService.view(ProjectsService.VIEW_URI, path)
-                    .then(function (data) {
-                        console.log(data);
-
-                    }, function (err) {
-                        // console.log('$scope.createProject :: err');
-                        console.log(err);
-                    });
             };
 
             $scope.openModalProject = function () {

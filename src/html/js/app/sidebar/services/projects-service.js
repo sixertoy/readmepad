@@ -15,10 +15,17 @@
                 $http[method](uri, params)
                     .success(function (data, status) {
                         // @TODO log errors
-                        if (status === 200) {
+                        switch (status) {
+                        case 200:
+                        case 204:
                             return deferred.resolve(data);
-                        } else {
+                            break;
+                        case 400:
+                        case 500:
+                        default:
                             return deferred.reject('error');
+                            break;
+
                         }
                     })
                     .error(function () {
@@ -31,8 +38,9 @@
 
                 VIEW_URI: '/view',
                 OPEN_URI: '/project/open',
-                LOAD_URI: '/project/loadall',
+                REMOVE_URI: '/project/delete',
                 CREATE_URI: '/project/create',
+                LOADALL_URI: '/project/loadall',
 
 
                 /**
@@ -45,7 +53,7 @@
                     params = {
                         project_path: project_uri
                     };
-                    return call('post', uri, params);
+                    return call('get', uri, params);
                 },
 
                 /**
@@ -54,7 +62,7 @@
                  * @param [String] uri:self.LOAD_URI
                  *
                  */
-                load: function (uri) {
+                loadall: function (uri) {
                     params = {};
                     return call('get', uri, params);
                 },
@@ -76,17 +84,17 @@
 
                 /**
                  *
-                 * Chargement du contenu d'un fichier
+                 * Creation d'un projest
                  *
-                 * @param [String] uri:self.CREATE_URI
+                 * @param [String] uri:self.REMOVE_URI
                  * @param [String] project_uri
                  *
                  */
-                view: function (uri, project_uri) {
+                remove: function (uri, project_uri) {
                     params = {
                         project_path: project_uri
                     };
-                    return call('post', uri, params);
+                    return call('delete', uri, params);
                 }
             };
 

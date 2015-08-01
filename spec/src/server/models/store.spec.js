@@ -59,8 +59,8 @@
             });
             it('resolve with false project not found', function (done) {
                 dbname = 'store';
-                project = 'toto/project';
-                storeModel.findOneProject(dbname, project).then(function (data) {
+                var project_id = md5('toto/project');
+                storeModel.findOneProject(dbname, project_id).then(function (data) {
                     expect(data).toEqual(false);
                     done();
                 }, function (err) {});
@@ -83,18 +83,19 @@
             });
             it('reject needs more argument', function (done) {
                 dbname = 'name';
-                storeModel.createProject(dbname, 'path/project').then(function () {}, function (err) {
+                storeModel.createProject(dbname, md5('path/project')).then(function () {}, function (err) {
                     expect(err.message).toEqual('needs 3 arguments at least');
                     done();
                 });
             });
             it('create a new project', function (done) {
-                var name = 'toto',
+                var project_id,
+                    name = 'toto',
                     fullpath = 'path/to/toto';
                 dbname = 'store';
                 storeModel.createProject(dbname, name, fullpath).then(function (doc) {
-                    fullpath = md5(fullpath);
-                    expect(doc.project_id).toEqual(fullpath);
+                    project_id = md5(fullpath);
+                    expect(doc.project_id).toEqual(project_id);
                     done();
                 }, function (err) {});
             });
@@ -112,9 +113,9 @@
         describe('findOneProject', function () {
             it('returns a document', function (done) {
                 dbname = 'store';
-                project = 'path/to/toto';
-                storeModel.findOneProject(dbname, project).then(function (doc) {
-                    expect(md5(project)).toEqual(doc.project_id);
+                var project_id = md5('path/to/toto');
+                storeModel.findOneProject(dbname, project_id).then(function (doc) {
+                    expect(project_id).toEqual(doc.project_id);
                     done();
                 }, function (err) {});
             });
@@ -122,45 +123,30 @@
 
         describe('deleteProject', function () {
             it('reject more argument', function (done) {
+                storeModel.deleteProject().then(function () {}, function (err) {
+                    expect(err.message).toEqual('needs 2 argument at least');
+                    done();
+                });
+            });
+            it('reject more argument', function (done) {
                 dbname = 'store';
                 storeModel.deleteProject(dbname).then(function () {}, function (err) {
                     expect(err.message).toEqual('needs 2 argument at least');
                     done();
                 });
             });
-            it('reject more argument', function (done) {
-                dbname = 'store';
-                storeModel.deleteProject(dbname, {}).then(function () {}, function (err) {
-                    expect(err.message).toEqual('needs 2 argument at least');
-                    done();
-                });
-            });
-            it('reject more argument', function (done) {
-                dbname = 'store';
-                storeModel.deleteProject(dbname, '').then(function () {}, function (err) {
-                    expect(err.message).toEqual('needs 2 argument at least');
-                    done();
-                });
-            });
-            it('reject more argument', function (done) {
-                dbname = 'store';
-                storeModel.deleteProject(dbname, '     ').then(function () {}, function (err) {
-                    expect(err.message).toEqual('needs 2 argument at least');
-                    done();
-                });
-            });
             it('resolve with value 1', function (done) {
                 dbname = 'store';
-                project = 'path/to/toto';
-                storeModel.deleteProject(dbname, project).then(function (num) {
+                var project_id = md5('path/to/toto');
+                storeModel.deleteProject(dbname, project_id).then(function (num) {
                     expect(num).toEqual(1);
                     done();
                 }, function () {});
             });
             it('resolve with value 0 if document not exists', function (done) {
                 dbname = 'store';
-                project = 'path/to/toto';
-                storeModel.deleteProject(dbname, project).then(function (num) {
+                var project_id = md5('path/to/toto');
+                storeModel.deleteProject(dbname, project_id).then(function (num) {
                     expect(num).toEqual(0);
                     done();
                 }, function (err) {
