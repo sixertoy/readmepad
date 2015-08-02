@@ -4,6 +4,5 @@ module.exports = {
     server: ['./build/server/**/*'],
     html: ['./build/public/html/**/*'],
     documentation: ['./build/docs/**/*'],
-    bower: ['./src/html/js/li/**/*', './src/html/css/**/*'],
-    jasmine: ['./spec/fixtures/nedb/**/*.nedb']
+    bower: ['./src/html/js/li/**/*', './src/html/css/**/*']
 };
