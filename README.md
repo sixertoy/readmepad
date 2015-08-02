@@ -21,7 +21,6 @@ git checkout <branch_name>
 #
 # installation des dependences
 npm install
-bower install --allow-root
 #
 # Build + Lancement du serveur
 npm start

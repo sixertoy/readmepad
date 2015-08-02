@@ -5,8 +5,12 @@
   "main": "index.js",
   "scripts": {
     "clean_modules": "rm -rf node_modules",
+
+    "postinstall": "bower install --allow-root",
+
     "pretest": "sh scripts/pretest",
     "test": "istanbul cover ./scripts/jasmine_node -x **/*.spec.js --captureExceptions spec/src",
+
     "prestart": "grunt build",
     "start": "node index"
   },
