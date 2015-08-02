@@ -1,33 +1,12 @@
 /*jslint indent: 4 */
-/*globals angular, window */
+/*globals angular, window, lodash, markdownit */
 (function () {
 
     'use strict';
 
-    // Markdown Module
-    /*
-    angular.module('isuri', [])
-        .factory('isuri', function () {
-            return window.markdownit();
-        });
-        */
-
-    angular.module('markdownIt', [])
-        .factory('markdownIt', function () {
-            return window.markdownit();
-        });
-
-    angular.module('lodash', [])
-        .factory('_', function () {
-            return window._;
-        });
-
-    angular.module('md5', [])
-        .factory('md5', function () {
-            return window.md5;
-        });
-
-    angular.module('readmepadApp', ['readmepadAppSidebar'])
+    angular.module('readmepadApp', ['readmepadAppSidebar', 'readmepadAppViewer'])
+        .constant('lodash', _)
+        .constant('markdownit', markdownit)
         .run(function () {});
 
 }());

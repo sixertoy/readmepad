@@ -5,19 +5,27 @@
 
     'use strict';
 
-    var $scope, $controller;
+    var $scope, $controller, $rootScope;
 
     describe('ViewerController', function () {
 
-        beforeEach(module('readmepadAppSidebar'));
+        beforeEach(function () {
 
-        beforeEach(inject(function (_$controller_, $rootScope) {
-            $scope = $rootScope.$new();
-            $controller = _$controller_;
-            $controller('ViewerController', {
-                $scope: $scope
+            module('readmepadApp');
+            module('readmepadAppViewer');
+
+            inject(function ($injector) {
+                $rootScope = $injector.get('$rootScope');
+                $scope = $rootScope.$new();
+                //
+                $controller = $injector.get('$controller');
+                $controller('ViewerController', {
+                    $scope: $scope
+                });
             });
-        }));
+
+
+        });
 
         describe('changeEditMode', function () {
             it('set scope.editMode to true', function () {

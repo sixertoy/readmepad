@@ -4,7 +4,7 @@
 
     'use strict';
 
-    angular.module('readmepadAppSidebar', [])
+    angular.module('readmepadAppViewer')
         .controller('ViewerController', ['$scope', function ($scope) {
 
             $scope.editMode = false;

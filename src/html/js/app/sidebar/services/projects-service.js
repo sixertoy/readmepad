@@ -7,39 +7,41 @@
     angular.module('readmepadAppSidebar')
         .factory('ProjectsService', ['$sce', '$q', '$http', 'md5', function ($sce, $q, $http, md5) {
 
-            var deferred,
+            var q,
                 params = {};
 
             function call(method, uri, params) {
-                deferred = $q.defer();
+                if (arguments.length < 3) {
+                    params = {};
+                }
+                q = $q.defer();
                 $http[method](uri, params)
                     .success(function (data, status) {
                         // @TODO log errors
                         switch (status) {
                         case 200:
                         case 201:
-                            return deferred.resolve(data);
+                            return q.resolve(data);
                         case 204: // if project doesn't exists
                         case 400:
                         case 404:
                         case 503:
-                            return deferred.reject(status);
+                            return q.reject(status);
                         default:
                             break;
                         }
                     })
                     .error(function () {
-                        return deferred.reject('error');
+                        return q.reject('error');
                     });
-                return deferred.promise;
+                return q.promise;
             }
 
             return {
 
-                VIEW_URI: '/view',
                 OPEN_URI: '/project/open',
                 REMOVE_URI: '/project/delete',
-                UDPATE_URI: '/project/update',
+                UPDATE_URI: '/project/update',
                 CREATE_URI: '/project/create',
                 LOADALL_URI: '/project/loadall',
 
@@ -52,7 +54,7 @@
                  */
                 open: function (uri, project_path) {
                     var q = $q.defer();
-                    uri += '/' + md5(project_path);
+                    uri += '/' + md5.createHash(project_path);
                     call('get', uri).then(function (data) {
                         q.resolve(data);
                     }, function (status) {
@@ -68,8 +70,13 @@
                  *
                  */
                 loadall: function (uri) {
-                    params = {};
-                    return call('get', uri, params);
+                    var q = $q.defer();
+                    call('get', uri).then(function (data) {
+                        q.resolve(data);
+                    }, function (status) {
+                        q.reject(status);
+                    });
+                    return q.promise;
                 },
 
                 /**
@@ -112,7 +119,7 @@
                  */
                 remove: function (uri, project_path) {
                     params = {
-                        project_id: md5(project_path)
+                        project_id: md5.createHash(project_path)
                     };
                     return call('delete', uri, params);
                 }

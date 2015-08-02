@@ -6,23 +6,34 @@ module.exports = function (config) {
         basePath: './',
         autoWatch: false,
         frameworks: ['jasmine'],
+        browsers: ['PhantomJS'],
         plugins: [
             'karma-jasmine',
             'karma-chrome-launcher',
             'karma-phantomjs-launcher'
         ],
-        browsers: ['PhantomJS'],
         files: [
             'src/html/js/lib/angular.min.js',
             'src/html/js/lib/angular-mocks.js',
-            //'src/html/js/app.js',
-            'src/html/js/app/viewer/controllers/viewer-controller.js',
-            'spec/src/html/js/app/viewer/controllers/viewer-controller.spec.js'
+            'src/html/js/lib/angular-sanitize.min.js',
+            'src/html/js/lib/ui-bootstrap-tpls.js',
+            'src/html/js/lib/lodash.min.js',
+            'src/html/js/lib/markdown-it.min.js',
+            'src/html/js/lib/angular-md5.min.js',
             //
-        ],
-        junitReporter: {
-            outputFile: 'test_out/unit.xml',
-            suite: 'unit'
-        }
+            'src/html/js/app.js',
+            // Viewer
+            'src/html/js/app/viewer/index.js',
+            'src/html/js/app/viewer/controllers/viewer-controller.js',
+            //
+            // Sidebar
+            'src/html/js/app/sidebar/index.js',
+            'src/html/js/app/sidebar/services/projects-service.js',
+            'src/html/js/app/sidebar/controllers/sidebar-controller.js',
+            /* *** specs *** */
+            'spec/src/html/js/app/sidebar/services/projects-service.spec.js',
+            'spec/src/html/js/app/viewer/controllers/viewer-controller.spec.js',
+            'spec/src/html/js/app/sidebar/controllers/sidebar-controller.spec.js'
+        ]
     });
 };

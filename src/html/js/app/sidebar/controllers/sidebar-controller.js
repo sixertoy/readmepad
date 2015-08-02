@@ -20,11 +20,9 @@
      *
      */
     angular.module('readmepadAppSidebar')
-        .controller('SidebarController', ['$scope', '$http', '$modal', 'ProjectsService', '_', function ($scope, $http, $modal, ProjectsService, _) {
+        .controller('SidebarController', ['$scope', '$http', '$modal', 'lodash', 'ProjectsService', function ($scope, $http, $modal, lodash, ProjectsService) {
 
-            _.assign($scope, options);
-
-            $scope.projects = [];
+            lodash.assign($scope, options);
 
             $scope.initProject = function (data) {
                 $scope.project = data;
@@ -71,10 +69,6 @@
                     }, function (err) {
                         console.log(err);
                     });
-            };
-
-            $scope.removeProject = function (project_uri) {
-                // console.log(project_uri);
             };
 
             $scope.openModalRenameProject = function () {

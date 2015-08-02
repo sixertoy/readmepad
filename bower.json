@@ -5,7 +5,7 @@
   "authors": [
     "sixertoy <sixertoy.github@gmail.com>"
   ],
-  "description": "Mardown Explorer",
+  "description": "ReadmePad",
   "moduleType": [
     "node"
   ],
@@ -17,14 +17,14 @@
   "license": "MIT",
   "dependencies": {
     "angular": "~1.4.2",
-    "markdown-it": "~4.3.0",
+    "angular-mocks": "~1.4.3",
     "angular-ui-ace": "bower",
+    "markdown-it": "~4.3.0",
     "angular-bootstrap": "~0.13.0",
     "satellizer": "~0.11.2",
     "bootstrap": "~3.3.5",
     "normalize.css": "~3.0.3",
     "lodash": "~3.10.0",
-    "md5": "~0.3.0",
-    "angular-mocks": "~1.4.3"
+    "angular-md5": "~0.1.8"
   }
 }
