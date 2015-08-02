@@ -13,7 +13,7 @@
         */
 
     angular.module('markdownIt', [])
-        .factory('MarkdownIt', function () {
+        .factory('markdownIt', function () {
             return window.markdownit();
         });
 

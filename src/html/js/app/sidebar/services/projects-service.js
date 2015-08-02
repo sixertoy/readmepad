@@ -5,7 +5,7 @@
     'use strict';
 
     angular.module('readmepadAppSidebar')
-        .factory('ProjectsService', ['$sce', '$q', '$http', 'md5', 'MarkdownIt', function ($sce, $q, $http, md5, MarkdownIt) {
+        .factory('ProjectsService', ['$sce', '$q', '$http', 'md5', function ($sce, $q, $http, md5) {
 
             var deferred,
                 params = {};
@@ -54,14 +54,9 @@
                     var q = $q.defer();
                     uri += '/' + md5(project_path);
                     call('get', uri).then(function (data) {
-
                         q.resolve(data);
-
                     }, function (status) {
-
-                        console.log(status);
                         q.reject(status);
-
                     });
                     return q.promise;
                 },

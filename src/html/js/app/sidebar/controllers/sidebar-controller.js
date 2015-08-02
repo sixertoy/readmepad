@@ -80,6 +80,7 @@
             $scope.openModalRenameProject = function () {
                 modalInstance = $modal.open({
                     animation: true,
+                    backdrop: false,
                     templateUrl: 'RenameProjectModal.html',
                     controller: 'RenameProjectModalController',
                     resolve: {

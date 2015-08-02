@@ -24,8 +24,6 @@
         }])
         .controller('RenameProjectModalController', ['$scope', '$modalInstance', 'project_name', function ($scope, $modalInstance, project_name) {
 
-            console.log(project_name);
-
             $scope.data = {
                 project_name: project_name
             };
