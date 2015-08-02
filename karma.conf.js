@@ -13,8 +13,9 @@ module.exports = function (config) {
         ],
         browsers: ['PhantomJS'],
         files: [
-            'src/html/js/**/*.js',
-            'spec/src/html/js/**/*.spec.js'
+            'src/html/js/lib/angular.min.js',
+            'src/html/js/lib/angular-mocks.min.js',
+            'spec/src/html/*.spec.js'
         ],
         junitReporter: {
             outputFile: 'test_out/unit.xml',

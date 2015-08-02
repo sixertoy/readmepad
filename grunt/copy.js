@@ -18,7 +18,7 @@ module.exports = {
         flatten: true,
         cwd: './bower_components/',
         dest: './src/html/js/lib/',
-        src: ['ace-builds/src-min-noconflict/ace.js', 'ace-builds/src-min-noconflict//mode-markdown.js', 'angular-sanitize/angular-sanitize.min.js', 'angular/angular.min.js', 'markdown-it/dist/markdown-it.min.js', 'angular-ui-ace/ui-ace.min.js', 'angular-bootstrap/ui-bootstrap-tpls.js', 'lodash/lodash.min.js', 'md5/build/md5.min.js']
+        src: ['ace-builds/src-min-noconflict/ace.js', 'ace-builds/src-min-noconflict//mode-markdown.js', 'angular-sanitize/angular-sanitize.min.js', 'angular/angular.min.js', 'markdown-it/dist/markdown-it.min.js', 'angular-ui-ace/ui-ace.min.js', 'angular-bootstrap/ui-bootstrap-tpls.js', 'lodash/lodash.min.js', 'md5/build/md5.min.js', 'angular-mocks/angular-mocks.js']
     },
     bower_css: {
         expand: true,

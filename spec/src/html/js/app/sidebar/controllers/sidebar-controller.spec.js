@@ -11,7 +11,7 @@
 
     describe('SidebarController', function () {
 
-        beforeEach(module('app'));
+        beforeEach(module('readmepadApp'));
 
         var $controller;
 
