@@ -4,40 +4,15 @@
 
     'use strict';
 
-    /*
-    angular.module('readmepadApp', ['servicesApp', 'ui.ace'])
-        .controller('ViewerCcontroller', ['$scope', '$http', 'MarkdownService', function ($scope, $http, MarkdownService) {
-            //
-            // variables
-            $scope.edit = false;
-            $scope.markdownSrv = MarkdownService;
+    angular.module('readmepadAppSidebar', [])
+        .controller('ViewerController', ['$scope', function ($scope) {
+
+            $scope.editMode = false;
 
             $scope.changeEditMode = function () {
-                $scope.edit = !$scope.edit;
+                $scope.editMode = !$scope.editMode;
             };
-
-            $scope.saveDocumentChanges = function () {
-                $http.post('/save', {
-                        content: $scope.markdownSrv.raw
-                    })
-                    .success(function (data, status) {
-                        if (status === 200) {
-                            console.log('saved');
-                            // MarkdownService.parse(data);
-                        }
-                        else {
-                            // @TODO log errors
-                        }
-                    });
-            };
-
-            $scope.aceChanged = function (e) {
-                $scope.markdownSrv.setHTML($scope.markdownSrv.raw);
-            };
-
-
 
         }]);
-*/
 
 }());

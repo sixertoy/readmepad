@@ -1,3 +1,4 @@
+grunt build_bower
 rm -rf ./spec/fixtures/nedb
 mkdir ./src/docs/pages
 exit 0
