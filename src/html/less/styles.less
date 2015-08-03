@@ -52,18 +52,32 @@ html,
  *
  *
  ------------------------------------------------------------- */
+// classic theme colors
 @grey: #AFAFAF;
 @dark: #1C1C1E;
 @blue: #74DDF1;
+@menu: #337ab7;
 @rouge: #FF0000;
 @white: #FFFFF8;
 @hover: #2D2E30;
+@viewer: #F7F7F7;
 @divider: #767C7F;
-@viewer-blue: #2B303B;
-@tooltip-blue: #3C3F41;
+@tooltip: #3C3F41;
+// variables
+@header-height: 54px;
+@footer-height: 40px;
 #page {
     position: relative;
     #header {
+        z-index: 200;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin: 0;
+        position: absolute;
+        height: @header-height;
+        min-height: @header-height;
+        max-height: @header-height;
         padding-top: 12px;
         padding-bottom: 10px;
         box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.25);
@@ -81,12 +95,21 @@ html,
         }
     }
     #main {
+        z-index: 100;
+        left: 0;
+        right: 0;
+        margin: 0;
+        display: flex;
+        position: absolute;
+        top: @header-height;
+        bottom: @footer-height;
         > .row {
             height: 100%;
             min-height: 100%;
         }
     }
     #footer {
+        z-index: 300;
         left: 0;
         right: 0;
         bottom: 0;
@@ -98,11 +121,14 @@ html,
         background: @grey;
         position: absolute;
         text-align: center;
+        height: @footer-height;
+        max-height: @footer-height;
+        min-height: @footer-height;
         > div {
             padding-top: 12px;
             padding-bottom: 12px;
         }
-        .octicon{
+        .octicon {
             color: @rouge;
         }
     }
@@ -146,6 +172,7 @@ html,
 .viewer {
     padding-left: 0;
     position: relative;
+    background-color: @viewer;
     .menu {
         top: 5px;
         right: 5px;
@@ -170,8 +197,11 @@ html,
     padding-right: 0;
     .menu {
         width: 100%;
+        background: @menu;
         .btn {
+            border: 0;
             padding: 10px;
+            background: transparent;
         }
     }
     .dropdown-menu {
@@ -212,23 +242,25 @@ html,
  *
  ------------------------------------------------------------- */
 
-@dark: #1C1C1E;
-@blue: #74DDF1;
-@white: #FFFFF8;
-@rouge: #FF0000;
-@hover: #2D2E30;
-@divider: #767C7F;
-@viewer-blue: #2B303B;
-@tooltip-blue: #3C3F41;
 .dark {
+    // dark theme colors
+    @dark: #1C1C1E;
+    @blue: #74DDF1;
+    @white: #FFFFF8;
+    @rouge: #FF0000;
+    @hover: #2D2E30;
+    @viewer: #2B303B;
+    @divider: #767C7F;
+    @tooltip: #3C3F41;
+    //
     color: @white;
     background-color: #47484B;
     .popover, .dropdown-menu {
-        background-color: @tooltip-blue;
+        background-color: @tooltip;
         &.bottom > .arrow {
-            border-bottom-color: @tooltip-blue;
+            border-bottom-color: @tooltip;
             &:after {
-                border-bottom-color: @tooltip-blue;
+                border-bottom-color: @tooltip;
             }
         }
     }
@@ -263,7 +295,8 @@ html,
         }
         #main {
             .sidebar {
-                .btn-group {
+                .menu {
+                    background: transparent;
                     border-top: 1px solid #4F5053;
                     .btn {
                         border: 0;
@@ -293,12 +326,12 @@ html,
                 }
             }
             .viewer {
-                background-color: @viewer-blue;
+                background-color: @viewer;
             }
         }
         #footer {
             background: @dark;
-            .octicon{
+            .octicon {
                 color: @rouge;
             }
         }
