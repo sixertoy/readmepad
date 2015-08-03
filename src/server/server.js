@@ -14,6 +14,7 @@
         multer = require('multer'),
         express = require('express'),
         bodyParser = require('body-parser'),
+        compression = require('compression'),
         serveFavicon = require('serve-favicon'),
         // scandirAsync = require('scandir-async'),
         // FS = require('fs'),
@@ -21,27 +22,28 @@
         //
         // Facade = require('./facade'),
         store = require('./models/store'),
+        www = path.join(__dirname, '..', 'public', 'html'),
         projectController = require('./controllers/project');
-        // documentController = require('./controllers/document')
+    // documentController = require('./controllers/document')
     //
     // creation de la BDD
     // creation du serveur
     server = express();
     //
-    // le serveur express sert des ressouces statiques
-    www = path.join(__dirname, '..', 'public', 'html');
-    server.use(express.static(www));
-    //
     // express middlewares
     favicon = path.join(www, 'favicon.ico');
     favicon = serveFavicon(favicon); // favicon du client
     //
+    server.use(compression()); // gzip
     server.use(favicon); // utilisation du favicon
     server.use(multer()); // for parsing multipart/form-data
     server.use(bodyParser.json()); // for parsing application/json
     server.use(bodyParser.urlencoded({ // for parsing application/x-www-form-urlencoded
         extended: true
     }));
+    //
+    // le serveur express sert des ressouces statiques;
+    server.use(express.static(www));
     //
     // routers/controllers
     server.use('/project', projectController.router);
