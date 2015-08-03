@@ -1,0 +1,55 @@
+.nice-toggler {
+    input {
+        opacity: 0;
+        max-width: 0;
+        max-height: 0;
+        + span {
+            width: 50px;
+            height: 30px;
+            display: block;
+            position: relative;
+            border-radius: 15px;
+            text-indent: -5000px;
+            box-shadow: inset 0 0 0px 1px #d5d5d5;
+            &:before {
+                top: 0;
+                left: 0;
+                content: "";
+                width: 30px;
+                height: 30px;
+                display: block;
+                position: absolute;
+                border-radius: 15px;
+                background: rgba(19, 191, 17, 0);
+                transition: .25s ease-in-out;
+                -moz-transition: .25s ease-in-out;
+                -webkit-transition: .25s ease-in-out;
+            }
+            &:after {
+                top: 0;
+                left: 0px;
+                content: "";
+                width: 30px;
+                height: 30px;
+                display: block;
+                background: white;
+                position: absolute;
+                border-radius: 15px;
+                transition: .25s ease-in-out;
+                -moz-transition: .25s ease-in-out;
+                -webkit-transition: .25s ease-in-out;
+                box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .2), 0 2px 4px rgba(0, 0, 0, .2);
+            }
+        }
+        &:checked {
+            + span:before {
+                width: 50px;
+                background: rgba(19, 191, 17, 1);
+            }
+            + span:after {
+                left: 20px;
+                box-shadow: inset 0 0 0 1px rgba(19, 191, 17, 1), 0 2px 4px rgba(0, 0, 0, .2);
+            }
+        }
+    }
+}

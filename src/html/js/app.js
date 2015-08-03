@@ -1,10 +1,10 @@
-/*jslint indent: 4 */
-/*globals angular, window, lodash, markdownit */
+/*jslint indent: 4, nomen: true, plusplus: true */
+/*globals angular, window, lodash, markdownit, _ */
 (function () {
 
     'use strict';
 
-    angular.module('readmepadApp', ['readmepadAppSidebar', 'readmepadAppViewer'])
+    angular.module('readmepadApp', ['readmepadAppSidebar', 'readmepadAppViewer', 'readmepadAppToolbar'])
         .constant('lodash', _)
         .constant('markdownit', markdownit)
         .run(function () {});

@@ -3,7 +3,7 @@
 module.exports = {
     options: {
         cwd: '.',
-        livereload: true,
+        livereload: 1337,
         livereloadOnError: false
     },
     html: {

@@ -9,13 +9,18 @@
     {{$include 'commons/styles'}}
 </head>
 
-<body class="dark">
+<body class="" ng-class="[theme]">
 
     <div id="page" class="container-fluid">
-        <div class="row">
-            <h1 class="title col-md-12"><span>Readme PAD</span></h1>
+        <div id="header" class="row">
+            {{$include 'views/toolbar'}}
+        </div>
+        <div id="main" class="main row">
             {{$include 'views/sidebar'}}
             {{$include 'views/viewer'}}
+        </div>
+        <div id="footer" class="row">
+            {{$include 'commons/footer'}}
         </div>
     </div>
 
@@ -25,6 +30,9 @@
 
     {{$include 'modals/newproject_modal'}}
     {{$include 'modals/renameproject_modal'}}
+    {{$include 'modals/preferences_popover'}}
+
+    {{$livereload}}
 
 </body>
 

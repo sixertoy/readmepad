@@ -1,3 +1,4 @@
+@import url('nice-toggler');
 @grey: #E4E4E4;
 /* -------------------------------------------------------------
  *
@@ -11,8 +12,13 @@
     box-sizing: border-box;
 }
 
+body {
+    font-family: 'OpenSans', 'Arial', 'Verdana', sans-serif;
+}
+
 body,
-html {
+html,
+#page {
     height: 100%;
     min-height: 100%;
 }
@@ -31,6 +37,11 @@ html {
  * bootstrap
  */
 
+.checkbox-inline.right {
+    padding-left: 0;
+    padding-right: 20px;
+}
+
 .btn .caret {
     margin-left: 4px;
 }
@@ -41,40 +52,106 @@ html {
  *
  *
  ------------------------------------------------------------- */
-
+@grey: #AFAFAF;
+@dark: #1C1C1E;
+@blue: #74DDF1;
+@rouge: #FF0000;
+@white: #FFFFF8;
+@hover: #2D2E30;
+@divider: #767C7F;
+@viewer-blue: #2B303B;
+@tooltip-blue: #3C3F41;
 #page {
-    color: #FFFFF8;
-    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.45);
-    &, > .row {
-        height: 100%;
-        min-height: 100%;
+    position: relative;
+    #header {
+        padding-top: 12px;
+        padding-bottom: 10px;
+        box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.25);
+        a.octicon {
+            &:hover, &:focus, &:active, &:visited {
+                text-decoration: none;
+            }
+        }
+        .tools {
+            text-align: right;
+            line-height: 32px;
+            a {
+                padding-left: 10px;
+            }
+        }
     }
-    > .row {
-        h1 {
-            text-align: left;
-            margin-bottom: 30px;
+    #main {
+        > .row {
+            height: 100%;
+            min-height: 100%;
+        }
+    }
+    #footer {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        color: @white;
+        font-size: 0.8em;
+        background: @grey;
+        position: absolute;
+        text-align: center;
+        > div {
+            padding-top: 12px;
+            padding-bottom: 12px;
+        }
+        .octicon{
+            color: @rouge;
         }
     }
 }
 
-#footer{
-    background: #1C1C1E;
+.popover {
+    font-family: 'OpenSans', 'Arial', 'Verdana', sans-serif;
+    .title {
+        margin-bottom: 17px;
+        text-transform: uppercase;
+        span {
+            float: left;
+            width: auto;
+            display: block;
+            + span {
+                float: right;
+                color: @grey;
+                font-size: 0.5em;
+                line-height: 16px;
+                font-weight: bolder;
+            }
+        }
+    }
+    .tools &.user-popover {
+        min-width: 300px;
+        top: 28px !important;
+        left: 66% !important;
+        &.bottom > .arrow {
+            left: 92%;
+        }
+        .form-group {
+            padding: 0 20px;
+            .checkbox-inline.right {
+                padding-left: 0;
+                padding-right: 10px;
+            }
+        }
+    }
 }
 
-.view {
-    height: 100%;
-    min-height: 100%;
-}
-
-.viewer{
+.viewer {
     padding-left: 0;
     position: relative;
-    .menu{
+    .menu {
         top: 5px;
         right: 5px;
         position: absolute;
-        .btn{
-            border:0;
+        .btn {
+            border: 0;
             padding: 4px 8px;
             background-color: rgba(0, 0, 0, 0.25);
         }
@@ -109,7 +186,7 @@ html {
                     line-height: 1.2em;
                 }
                 small {
-                    color: #AFAFAF;
+                    color: @grey;
                 }
             }
             &:first-child {
@@ -127,44 +204,103 @@ html {
         }
     }
 }
+/* -------------------------------------------------------------
+ *
+ *
+ * Dark Theme
+ *
+ *
+ ------------------------------------------------------------- */
 
+@dark: #1C1C1E;
+@blue: #74DDF1;
+@white: #FFFFF8;
+@rouge: #FF0000;
+@hover: #2D2E30;
+@divider: #767C7F;
+@viewer-blue: #2B303B;
+@tooltip-blue: #3C3F41;
 .dark {
+    color: @white;
     background-color: #47484B;
-    #page {
-        color: #6D787A;
-        .sidebar {
-            .btn-group {
-                border-top: 1px solid #4F5053;
-                box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.25);
-                .btn {
-                    border: 0;
+    .popover, .dropdown-menu {
+        background-color: @tooltip-blue;
+        &.bottom > .arrow {
+            border-bottom-color: @tooltip-blue;
+            &:after {
+                border-bottom-color: @tooltip-blue;
+            }
+        }
+    }
+    .nice-toggler {
+        input {
+            + span {
+                box-shadow: inset 0 0 0px 1px @divider;
+                &:before {
                     background: transparent;
                 }
-                &.open {
-                    .dropdown-toggle {
-                        box-shadow: none;
-                        -webkit-box-shadow: none;
-                    }
+                &:after {
+                    background: @divider;
                 }
-                .dropdown-menu {
-                    background-color: #3C3F41;
-                    .divider {
-                        background-color: #2D2E30;
-                    }
-                    .close,
-                    > li > a {
-                        color: #FFFFF8;
-                    }
-                    > li > a:focus,
-                    > li > a:hover {
-                        color: #74DDF1;
-                        background-color: #2D2E30;
-                    }
+            }
+            &:checked {
+                + span:before {
+                    background: @blue;
+                }
+                + span:after {
+                    box-shadow: inset 0 0 0 1px @blue, 0 2px 4px rgba(0, 0, 0, 0.2);
                 }
             }
         }
-        .viewer {
-            background-color: #2B303B;
+    }
+    #page {
+        color: @white;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.45);
+        #header {
+            a {
+                color: @white;
+            }
+        }
+        #main {
+            .sidebar {
+                .btn-group {
+                    border-top: 1px solid #4F5053;
+                    .btn {
+                        border: 0;
+                        background: transparent;
+                    }
+                    &.open {
+                        .dropdown-toggle {
+                            box-shadow: none;
+                            -webkit-box-shadow: none;
+                        }
+                    }
+                    .dropdown-menu {
+                        .divider {
+                            background-color: @divider;
+                        }
+                        .close,
+                        > li > a {
+                            color: @white;
+                            text-shadow: none;
+                        }
+                        > li > a:focus,
+                        > li > a:hover {
+                            color: @blue;
+                            background-color: @hover;
+                        }
+                    }
+                }
+            }
+            .viewer {
+                background-color: @viewer-blue;
+            }
+        }
+        #footer {
+            background: @dark;
+            .octicon{
+                color: @rouge;
+            }
         }
     }
 }

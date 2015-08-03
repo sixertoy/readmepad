@@ -14,8 +14,10 @@ cd readmepad
 # changer de branche au besoin
 # - master (default)
 # - develop
-# - feature/app
 # - feature/docker
+# - feature/sidebar
+# - feature/toolbar
+# - feature/restapi
 #
 git checkout <branch_name>
 #
