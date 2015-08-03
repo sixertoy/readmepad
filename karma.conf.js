@@ -30,6 +30,7 @@ module.exports = function (config) {
             'src/html/js/app/sidebar/index.js',
             'src/html/js/app/sidebar/services/projects-service.js',
             'src/html/js/app/sidebar/controllers/sidebar-controller.js',
+            //
             /* *** specs *** */
             'spec/src/html/js/app/sidebar/services/projects-service.spec.js',
             'spec/src/html/js/app/viewer/controllers/viewer-controller.spec.js',

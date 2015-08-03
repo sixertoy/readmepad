@@ -63,6 +63,9 @@
             $scope.createProject = function (project_uri) {
                 ProjectsService.create(ProjectsService.CREATE_URI, project_uri)
                     .then(function (data) {
+                        if(!$scope.projects){
+                            $scope.projects = [];
+                        }
                         $scope.initProject(data);
                         $scope.projects.push(data);
                         $scope.openModalRenameProject();

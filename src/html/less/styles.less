@@ -37,16 +37,66 @@ html {
 /* -------------------------------------------------------------
  *
  *
- * Views
+ * Styles
  *
  *
  ------------------------------------------------------------- */
-.view{
-    margin-top: 40px;
+
+#page {
+    color: #FFFFF8;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.45);
+    &, > .row {
+        height: 100%;
+        min-height: 100%;
+    }
+    > .row {
+        h1 {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+    }
+}
+
+#footer{
+    background: #1C1C1E;
+}
+
+.view {
+    height: 100%;
+    min-height: 100%;
+}
+
+.viewer{
+    padding-left: 0;
+    position: relative;
+    .menu{
+        top: 5px;
+        right: 5px;
+        position: absolute;
+        .btn{
+            border:0;
+            padding: 4px 8px;
+            background-color: rgba(0, 0, 0, 0.25);
+        }
+    }
+    .editors {
+        width: 100%;
+        height: 100%;
+        min-width: 100%;
+        min-height: 100%;
+        padding-left: 0;
+    }
 }
 
 .sidebar {
-    height: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    .menu {
+        width: 100%;
+        .btn {
+            padding: 10px;
+        }
+    }
     .dropdown-menu {
         font-size: 12px;
         li {
@@ -72,19 +122,49 @@ html {
     ul.files {
         padding-left: 10px;
         list-style-type: none;
-        a:hover{
+        a:hover {
             text-decoration: none;
         }
     }
 }
 
-.viewer,
-.sidebar {
-    h1 {
-        text-align: center;
-        margin-bottom: 40px;
-    }
-    > .menu {
-        margin-bottom: 10px;
+.dark {
+    background-color: #47484B;
+    #page {
+        color: #6D787A;
+        .sidebar {
+            .btn-group {
+                border-top: 1px solid #4F5053;
+                box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.25);
+                .btn {
+                    border: 0;
+                    background: transparent;
+                }
+                &.open {
+                    .dropdown-toggle {
+                        box-shadow: none;
+                        -webkit-box-shadow: none;
+                    }
+                }
+                .dropdown-menu {
+                    background-color: #3C3F41;
+                    .divider {
+                        background-color: #2D2E30;
+                    }
+                    .close,
+                    > li > a {
+                        color: #FFFFF8;
+                    }
+                    > li > a:focus,
+                    > li > a:hover {
+                        color: #74DDF1;
+                        background-color: #2D2E30;
+                    }
+                }
+            }
+        }
+        .viewer {
+            background-color: #2B303B;
+        }
     }
 }
