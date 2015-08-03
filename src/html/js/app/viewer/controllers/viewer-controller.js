@@ -13,6 +13,10 @@
                 $scope.editMode = !$scope.editMode;
             };
 
+            $scope.initialize = function(){
+
+            };
+
         }]);
 
 }());

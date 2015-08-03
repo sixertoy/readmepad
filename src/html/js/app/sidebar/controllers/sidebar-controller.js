@@ -22,6 +22,13 @@
     angular.module('readmepadAppSidebar')
         .controller('SidebarController', ['$scope', '$http', '$modal', 'lodash', 'ProjectsService', function ($scope, $http, $modal, lodash, ProjectsService) {
 
+            $scope.showFiles = function(obj){
+                if(!obj.hasOwnProperty('active')){
+                    obj.active = false;
+                }
+                obj.active = !obj.active;
+            };
+
             lodash.assign($scope, options);
 
             $scope.initProject = function (data) {
@@ -63,7 +70,7 @@
             $scope.createProject = function (project_uri) {
                 ProjectsService.create(ProjectsService.CREATE_URI, project_uri)
                     .then(function (data) {
-                        if(!$scope.projects){
+                        if (!$scope.projects) {
                             $scope.projects = [];
                         }
                         $scope.initProject(data);

@@ -1,21 +1,21 @@
-<!--
+<div class="view viewer" ng-controller="ViewerController" ng-init="initialize()">
+    <!--
 
-editors
+viewer
 
 -->
-<div class="view viewer col-sm-9 col-md-9" ng-controller="ViewerController">
+    <div class="inner">
+        <div class="menu">
+            <div class="btn-group">
+                <label class="btn btn-primary btn-xs" ng-click="" ng-model="radioModel" btn-radio="'Right'">HTML</label>
+                <label class="btn btn-primary btn-xs" ng-click="" ng-model="radioModel" btn-radio="'Left'">Raw</label>
+            </div>
+        </div>
 
-    <div class="menu">
-        <div class="btn-group">
-            <label class="btn btn-primary btn-xs" ng-click="" ng-model="radioModel" btn-radio="'Right'">HTML</label>
-            <label class="btn btn-primary btn-xs" ng-click="" ng-model="radioModel" btn-radio="'Left'">Raw</label>
+        <div class="editors">
+            <div id="markdown-editor" ui-ace="{useWrapMode: true, mode: 'markdown', onChange: aceChanged}" ng-readonly="checked" ng-show="edit" ng-model="markdownSrv.raw"></div>
+            <div id="markdown-viewer" ng-hide="edit" ng-bind-html="markdownSrv.html"></div>
         </div>
     </div>
-
-    <div class="editors col-md-12">
-        <div id="markdown-editor" ui-ace="{useWrapMode: true, mode: 'markdown', onChange: aceChanged}" ng-readonly="checked" ng-show="edit" ng-model="markdownSrv.raw"></div>
-        <div id="markdown-viewer" ng-hide="edit" ng-bind-html="markdownSrv.html"></div>
-    </div>
-
 </div>
-<!-- endof editors -->
+<!-- endof viewer -->

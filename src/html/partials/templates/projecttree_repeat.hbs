@@ -1,0 +1,12 @@
+<script type="text/ng-template" id="projectTree">
+    <a href="" class="file" ng-if="!document.files" ng-click="viewPage(document.path)">
+        <span>{{$ldim}}document.name{{$rdim}}</span>
+    </a>
+    <a href="" class="folder" ng-if="document.files" ng-click="showFiles(document)">
+        <span class="octicon octicon-chevron-right" ng-class="{'octicon-chevron-down': document.active, 'octicon-chevron-right': !document.active }"></span>
+        <span>{{$ldim}}document.name{{$rdim}}</span>
+    </a>
+    <ul class="list" ng-if="document.files" ng-show="document.active">
+        <li ng-repeat="document in document.files" ng-include="'projectTree'"></li>
+    </ul>
+</script>
