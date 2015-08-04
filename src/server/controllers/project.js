@@ -41,7 +41,9 @@
         __model.findOneProject(__name, project_id).then(function (doc) {
             if (doc) {
                 project_path = doc.path;
-                scandir(project_path).then(function (data) {
+                scandir(project_path, {
+                    sorted: true
+                }).then(function (data) {
                     res.send(data);
                 }, function (err) {
                     res.sendStatus(503);

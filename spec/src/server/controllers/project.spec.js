@@ -314,7 +314,9 @@
             it('returns a files tree', function (done) {
                 var project_id,
                     project_path = path.join(cwd, 'src', 'docs');
-                scandir(project_path).then(function (data) {
+                scandir(project_path, {
+                    sorted: true
+                }).then(function (data) {
                     project_id = md5(project_path);
                     request(app)
                         .get('/project/open/' + project_id)
