@@ -5,11 +5,11 @@
     'use strict';
 
     var modalInstance,
-        options = {
+        defaults = {
             projects: false,
-            project: {
-                items: [],
-                name: 'Ouvrir un dossier...'
+            current: {
+                files: null,
+                name: 'Ouvrir un projet...'
             }
         };
 
@@ -22,46 +22,39 @@
     angular.module('readmepadAppSidebar')
         .controller('SidebarController', ['$scope', '$http', '$log', '$modal', 'lodash', 'ProjectsService', function ($scope, $http, $log, $modal, lodash, ProjectsService) {
 
-            $scope.showFiles = function (obj) {
-                if (!obj.hasOwnProperty('active')) {
-                    obj.active = false;
+            $scope.initialize = function () {
+                lodash.assign($scope, defaults);
+                $scope.loadAll();
+            };
+
+            $scope.openProjectSubfolder = function (document) {
+                if (!document.hasOwnProperty('active')) {
+                    document.active = false;
                 }
-                obj.active = !obj.active;
+                document.active = !document.active;
                 $scope.$broadcast('rebuild:me'); // scrollbar broadcast
             };
 
-            lodash.assign($scope, options);
-
-            $scope.initProject = function (data) {
-                $scope.project = data;
-                $scope.project.items = [];
-            };
-
-            $scope.initialize = function () {
-                ProjectsService.loadall(ProjectsService.LOADALL_URI)
+            $scope.openProject = function (project) {
+                ProjectsService.open(ProjectsService.OPEN_URI, project)
                     .then(function (data) {
-                        if (data.length) {
-                            //data.sort(sortProjectByName);
-                            $scope.projects = data;
-                        }
+                        $scope.current = project;
+                        $scope.current.files = data.files;
+                        $scope.$broadcast('rebuild:me');
                     }, function (err) {});
             };
 
-            $scope.openProject = function (project_uri) {
-                // console.log('updateProject');
-                ProjectsService.open(ProjectsService.OPEN_URI, project_uri)
-                    .then(function (data) {
-                        $scope.project.items = data.files;
-                        $scope.$broadcast('rebuild:me'); // scrollbar broadcast
+            $scope.loadAll = function(){
+                ProjectsService.loadall(ProjectsService.LOADALL_URI)
+                    .then(function (projects) {
+                        $scope.projects = projects;
                     }, function (err) {});
             };
 
             $scope.removeProject = function (index) {
-                // console.log('removeProject');
-                // console.log(index);
                 /*
                 ProjectsService.remove(ProjectsService.REMOVE_URI, index)
-                    .then(function (data) {
+                    .then(function (projects) {
                         console.log(data);
                     }, function (err) {});
                     */
@@ -69,30 +62,38 @@
 
             $scope.updateProject = function (project_name) {
                 ProjectsService.update(ProjectsService.UDPATE_URI, $scope.project)
-                    .then(function (data) {
+                    .then(function (project) {
+                        /*
                         $scope.project.name = project_name;
                         $scope.openProject($scope.project.path);
+                        */
                     }, function (err) {
                         $log.error(err);
                     });
             };
 
+            /**
+             *
+             * Creation d'un nouveau projet
+             *
+             */
             $scope.createProject = function () {
-                var list;
                 ProjectsService.create(ProjectsService.CREATE_URI, $scope.projectForm)
-                    .then(function (data) {
-                        if (!$scope.projects) {
-                            $scope.projects = [];
-                        }
-                        $scope.projects.push(data);
-                        list = $scope.projects;
-                        //list.sort(sortProjectByName);
-                        $scope.projects = list;
-                        $scope.initProject(data);
+                    .then(function (result) {
+                        // reinit du modal form
+                        // de creation d'un projet
                         $scope.projectForm = {
                             name: '',
                             uri: null
                         };
+                        // mise a jour de la liste des projets
+                        if(result.projects){
+                            // si le projet n'existe pas dans la liste
+                            // on met a jour la liste des projets
+                            $scope.projects = result.projects;
+                        }
+                        // on ouvre les fichiers du nouveau projet
+                        $scope.openProject(result.project);
                     }, function (err) {
                         $log.error(err);
                     });

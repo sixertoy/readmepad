@@ -2,7 +2,7 @@
     <a href="" class="file" ng-if="!document.files" ng-click="viewPage(document.path)">
         <span>{{$ldim}}document.name{{$rdim}}</span>
     </a>
-    <a href="" class="folder" ng-if="document.files" ng-click="showFiles(document)">
+    <a href="" class="folder" ng-if="document.files" ng-click="openProjectSubfolder(document)">
         <span class="octicon octicon-triangle-right" ng-class="{'octicon-triangle-down': document.active, 'octicon-triangle-right': !document.active }"></span>
         <span>{{$ldim}}document.name{{$rdim}}</span>
     </a>

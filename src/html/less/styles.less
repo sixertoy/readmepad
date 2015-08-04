@@ -347,7 +347,9 @@ body {
         background: @menu;
         > .btn {
             border: 0;
+            width: 100%;
             padding: 10px;
+            text-align: left;
             background: transparent;
         }
         .dropdown-menu {
@@ -487,6 +489,9 @@ body {
                     .btn {
                         border: 0;
                         background: transparent;
+                        &:focus{
+                            background: @dark;
+                        }
                     }
                     &.open {
                         .dropdown-toggle {

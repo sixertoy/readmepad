@@ -5,7 +5,9 @@
     'use strict';
 
     angular.module('readmepadAppSidebar')
-        .factory('ProjectsService', ['$sce', '$q', '$http', 'md5', function ($sce, $q, $http, md5) {
+        .factory('ProjectsService', ['$sce', '$q', '$http', 'lodash', 'md5', function ($sce, $q, $http, lodash, md5) {
+
+            var projects = [];
 
             return {
 
@@ -49,9 +51,9 @@
                  * @param [String] uri:self.OPEN_URI
                  *
                  */
-                open: function (uri, project_path) {
+                open: function (uri, project) {
                     var q = $q.defer();
-                    uri += '/' + md5.createHash(project_path);
+                    uri += '/' + md5.createHash(project.path);
                     this.call('get', uri).then(function (data) {
                         q.resolve(data);
                     }, function (status) {
@@ -69,7 +71,18 @@
                 loadall: function (uri) {
                     var q = $q.defer();
                     this.call('get', uri).then(function (data) {
-                        q.resolve(data);
+                        // si il existent de projets en BDD
+                        if (data.length) {
+                            projects = lodash.sortBy(data, function (obj) {
+                                return obj.name.toLowerCase();
+                            });
+                            q.resolve(projects);
+                        } else {
+                            // sinon on renvoi null
+                            // a l'init de l'app
+                            // le menu projet sera vide
+                            q.resolve(null);
+                        }
                     }, function (status) {
                         q.reject(status);
                     });
@@ -78,20 +91,42 @@
 
                 /**
                  *
-                 * Creation d'un projest
+                 * Creation d'un projet
+                 * Si le projet existe dans la liste des projets
+                 * On Retourne uniquement le projet
+                 * Sinon on cree le projet en BDD
                  *
                  * @param [String] uri:self.CREATE_URI
-                 * @param [String] project_uri
-                 * @param [String] project_name
+                 * @param [Object] params {uri, name}
                  *
                  */
                 create: function (uri, params) {
-                    var q = $q.defer();
-                    this.call('post', uri, params).then(function (data) {
-                        q.resolve(data);
-                    }, function (status) {
-                        q.reject(status);
-                    });
+                    var q = $q.defer(),
+                        project_id = md5.createHash(params.uri),
+                        project = lodash.find(projects, function (obj) {
+                            return (obj.project_id === project_id);
+                        });
+                    if (project) {
+                        q.resolve({
+                            projects: false,
+                            project: project
+                        });
+                    } else {
+                        this.call('post', uri, params).then(function (project) {
+                            // on ajoute le nouveau projet a la liste
+                            projects.push(project);
+                            // mise a jour de la liste des projets
+                            projects = lodash.sortBy(projects, function (obj) {
+                                return obj.name.toLowerCase();
+                            });
+                            q.resolve({
+                                projects: projects,
+                                project: project
+                            });
+                        }, function (status) {
+                            q.reject(status);
+                        });
+                    }
                     return q.promise;
                 },
 
@@ -123,10 +158,11 @@
                  * @param [String] project_uri
                  *
                  */
-                remove: function (uri, project_path) {
-                    var q = $q.defer();
+                remove: function (uri, index) {
+                    var q = $q.defer(),
+                        project_id = projects[index].project_id;
                     this.call('delete', uri, {
-                        project_id: md5.createHash(project_path)
+                        project_id: project_id
                     }).then(function (data) {
                         q.resolve(data);
                     }, function (status) {

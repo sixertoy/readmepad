@@ -36,9 +36,9 @@
         {{$include 'commons/scripts'}}
     </div>
 
-    {{$include 'templates/newproject_modal'}}
+    {{$include 'templates/import-project_modal'}}
     {{$include 'templates/preferences_popover'}}
-    {{$include 'templates/projecttree_repeat'}}
+    {{$include 'templates/project-explorer_repeat'}}
 
     <!-- livereload -->
     {{!-- $livereload --}}

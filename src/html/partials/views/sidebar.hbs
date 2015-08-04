@@ -6,7 +6,7 @@ explorer
 -->
     <div class="menu btn-group" dropdown>
         <button type="button" class="btn btn-primary dropdown-toggle btn-sm" dropdown-toggle ng-disabled="disabled">
-            <span>{{$ldim}}project.name{{$rdim}}&nbsp;<span class="caret"></span></span>
+            <span>{{$ldim}}current.name{{$rdim}}&nbsp;<span class="caret"></span></span>
         </button>
         <ul class="dropdown-menu" role="menu">
             <li>
@@ -14,9 +14,9 @@ explorer
             </li>
             <li class="divider" ng-if="projects"></li>
             <li ng-repeat="project in projects">
-                <a href="#">
-                    <span class="close" aria-label="Close" ng-click="removeProject($index)">&times;</span>
-                    <span type="button" aria-label="project.path" ng-click="openProject(project.path)">
+                <a href="#" class="clearfix">
+                    <span class="close pull-left" aria-label="Close" ng-click="removeProject($index)">&times;</span>
+                    <span type="button" aria-label="project.path" ng-click="openProject(project)">
                         <span>{{$ldim}}project.name{{$rdim}}</span> - <small>{{$ldim}}project.path{{$rdim}}</small>
                     </span>
                 </a>
@@ -26,7 +26,7 @@ explorer
 
     <div class="explorer" ng-scrollbar rebuild-on-resize rebuild-on="rebuild:me">
         <ul class="files">
-            <li ng-repeat="document in project.items" ng-include="'projectTree'"></li>
+            <li ng-repeat="document in current.files" ng-include="'projectTree'"></li>
         </ul>
     </div>
 
