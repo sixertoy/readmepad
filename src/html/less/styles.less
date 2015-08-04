@@ -91,6 +91,7 @@ body {
 #page {
     height: 100%;
     min-height: 100%;
+    overflow: hidden;
     position: relative;
     #header {
         z-index: 200;
@@ -160,8 +161,20 @@ body {
 }
 
 .view,
+#main,
+#header,
+#footer,
 .splitter {
     transition: all 0.25s;
+}
+
+.screen-full {
+    #page #main {
+        bottom: 0;
+    }
+    #page #footer {
+        bottom: -40px;
+    }
 }
 
 .view {
