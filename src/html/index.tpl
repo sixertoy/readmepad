@@ -41,7 +41,7 @@
     {{$include 'templates/projecttree_repeat'}}
 
     <!-- livereload -->
-    {{$livereload}}
+    {{!-- $livereload --}}
 
 </body>
 

@@ -86,7 +86,7 @@
                         }
                         $scope.projects.push(data);
                         list = $scope.projects;
-                        list.sort(sortProjectByName);
+                        //list.sort(sortProjectByName);
                         $scope.projects = list;
                         $scope.initProject(data);
                         $scope.projectForm = {

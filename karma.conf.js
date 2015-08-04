@@ -28,20 +28,20 @@ module.exports = function (config) {
             'src/html/js/app.js',
             // Viewer
             'src/html/js/app/viewer/index.js',
-            'src/html/js/app/viewer/controllers/viewer-controller.js',
+            'src/html/js/app/viewer/viewer-controller.js',
             // Toolbar
             'src/html/js/app/toolbar/index.js',
-            'src/html/js/app/toolbar/controllers/toolbar-controller.js',
+            'src/html/js/app/toolbar/toolbar-controller.js',
             //
             // Sidebar
             'src/html/js/app/sidebar/index.js',
-            'src/html/js/app/sidebar/services/projects-service.js',
-            'src/html/js/app/sidebar/controllers/sidebar-controller.js',
+            'src/html/js/app/sidebar/sidebar-service.js',
+            'src/html/js/app/sidebar/sidebar-controller.js',
             //
             /* *** specs *** */
-            'spec/src/html/js/app/sidebar/services/projects-service.spec.js',
-            'spec/src/html/js/app/viewer/controllers/viewer-controller.spec.js',
-            'spec/src/html/js/app/sidebar/controllers/sidebar-controller.spec.js'
+            'spec/src/html/js/app/sidebar/sidebar-service.spec.js',
+            'spec/src/html/js/app/viewer/viewer-controller.spec.js',
+            'spec/src/html/js/app/sidebar/sidebar-controller.spec.js'
         ]
     });
 };
