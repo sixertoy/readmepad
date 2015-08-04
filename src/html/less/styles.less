@@ -33,6 +33,7 @@ html {
 }
 
 a {
+    outline: none;
     &:hover, &:focus, &:active, &:visited {
         text-decoration: none;
     }
@@ -62,11 +63,11 @@ a {
 }
 
 .ngsb-wrap .ngsb-scrollbar {
-    .ngsb-track{
+    .ngsb-track {
         width: 5px;
         background: @light-grey;
     }
-    .ngsb-thumb-pos .ngsb-thumb{
+    .ngsb-thumb-pos .ngsb-thumb {
         width: 5px;
         background: @dark;
         border-radius: 2px;
@@ -103,12 +104,12 @@ body {
         padding-top: 12px;
         padding-bottom: 10px;
         box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.25);
-        .logo{
-            padding-left:15px;
+        .logo {
+            padding-left: 15px;
         }
         .tools {
             line-height: 32px;
-            padding-right:15px;
+            padding-right: 15px;
             a {
                 padding-left: 10px;
             }
@@ -145,7 +146,7 @@ body {
         }
         .octicon {
             color: @rouge;
-            &.pull-right{
+            &.pull-right {
                 color: @white;
             }
         }
@@ -232,6 +233,41 @@ body {
     }
 }
 
+.modal {
+    font-size: 0.8em;
+    text-transform: uppercase;
+    font-family: 'OpenSans', 'Arial', 'Verdana', sans-serif;
+    .btn-group-sm > .btn, .btn-sm {
+        border-radius: 0;
+    }
+    .form-control {
+        border-radius: 0;
+    }
+    &-title {
+        line-height: 26px;
+        font-weight: bold;
+        text-transform: uppercase;
+        .mega-octicon {
+            font-size: 24px;
+            margin-right: 7px;
+        }
+    }
+    &-footer {
+        border-top: 0;
+        padding: 0 15px 15px 15px;
+    }
+    &-content {
+        border-radius: 0;
+        background-color: @viewer;
+    }
+    &-dialog {
+        margin: 160px auto 10px auto;
+    }
+    &-backdrop.in {
+        opacity: 0.7;
+    }
+}
+
 .popover {
     font-family: 'OpenSans', 'Arial', 'Verdana', sans-serif;
     .title {
@@ -281,6 +317,9 @@ body {
                 border: 0;
                 padding: 4px 8px;
                 background-color: rgba(0, 0, 0, 0.25);
+                &.active {
+                    background-color: rgba(0, 0, 0, 1);
+                }
             }
         }
         .editors {
@@ -329,7 +368,7 @@ body {
     .explorer {
         left: 0;
         right: 0;
-        top:48px;
+        top: 48px;
         bottom: 10px;
         position: absolute;
         ul.files {
@@ -400,6 +439,11 @@ body {
             }
         }
     }
+    .modal{
+        &-content{
+            background-color: @tooltip;
+        }
+    }
     .nice-toggler {
         input {
             + span {
@@ -421,6 +465,7 @@ body {
             }
         }
     }
+    .popover {}
     #page {
         color: @white;
         text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.45);
@@ -467,6 +512,9 @@ body {
             }
             .viewer {
                 background-color: @viewer;
+                .inner .menu .btn.active {
+                    background-color: @blue;
+                }
             }
             .splitter a {
                 background: #3D3D42;
@@ -476,7 +524,7 @@ body {
             background: @dark;
             .octicon {
                 color: @rouge;
-                &.pull-right{
+                &.pull-right {
                     color: @blue;
                 }
             }
