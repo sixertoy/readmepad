@@ -37,7 +37,6 @@
     </div>
 
     {{$include 'templates/newproject_modal'}}
-    {{$include 'templates/renameproject_modal'}}
     {{$include 'templates/preferences_popover'}}
     {{$include 'templates/projecttree_repeat'}}
 

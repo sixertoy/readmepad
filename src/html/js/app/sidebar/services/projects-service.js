@@ -82,13 +82,12 @@
                  *
                  * @param [String] uri:self.CREATE_URI
                  * @param [String] project_uri
+                 * @param [String] project_name
                  *
                  */
-                create: function (uri, project_path) {
+                create: function (uri, params) {
                     var q = $q.defer();
-                    this.call('post', uri, {
-                        project_path: project_path
-                    }).then(function (data) {
+                    this.call('post', uri, params).then(function (data) {
                         q.resolve(data);
                     }, function (status) {
                         q.reject(status);
@@ -98,7 +97,7 @@
 
                 /**
                  *
-                 * Mise a jour d'un projest
+                 * Mise a jour d'un projet
                  *
                  * @param [String] uri:self.CREATE_URI
                  * @param [String] project_uri

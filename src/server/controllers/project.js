@@ -73,16 +73,15 @@
 
     router.post('/create', function (req, res) {
         var project_path, project_id, name,
-            valid = !req.body.hasOwnProperty('project_path') || !lodash.isString(req.body.project_path) || lodash.isEmpty(req.body.project_path);
+            valid = !req.body.hasOwnProperty('uri') || !lodash.isString(req.body.uri) || lodash.isEmpty(req.body.uri);
         if (valid) {
             res.sendStatus(400);
         } else {
-            project_path = req.body.project_path;
-            fs.stat(project_path, function (err) {
+            fs.stat(req.body.uri, function (err) {
                 if (err) {
                     res.sendStatus(403);
                 } else {
-                    project_id = md5(project_path);
+                    project_id = md5(req.body.uri);
                     __model.findOneProject(__name, project_id).then(function (doc) {
                         if (doc) {
                             // si le projet existe
@@ -90,8 +89,8 @@
                         } else {
                             // si le projet n'existe pas
                             // on cree un nouveau document en BDD
-                            name = projectUtils.name(project_path);
-                            __model.createProject(__name, name, project_path).then(function (doc) {
+                            name = lodash.isEmpty(req.body.name) ? projectUtils.name(req.body.uri) : req.body.name;
+                            __model.createProject(__name, name, req.body.uri).then(function (doc) {
                                 res.status(201).send(doc);
                             }, function (err) {
                                 res.sendStatus(404);

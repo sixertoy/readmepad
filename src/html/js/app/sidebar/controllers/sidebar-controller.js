@@ -20,10 +20,10 @@
      *
      */
     angular.module('readmepadAppSidebar')
-        .controller('SidebarController', ['$scope', '$http', '$modal', 'lodash', 'ProjectsService', function ($scope, $http, $modal, lodash, ProjectsService) {
+        .controller('SidebarController', ['$scope', '$http', '$log', '$modal', 'lodash', 'ProjectsService', function ($scope, $http, $log, $modal, lodash, ProjectsService) {
 
-            $scope.showFiles = function(obj){
-                if(!obj.hasOwnProperty('active')){
+            $scope.showFiles = function (obj) {
+                if (!obj.hasOwnProperty('active')) {
                     obj.active = false;
                 }
                 obj.active = !obj.active;
@@ -47,6 +47,7 @@
             };
 
             $scope.openProject = function (project_uri) {
+                console.log('updateProject');
                 ProjectsService.open(ProjectsService.OPEN_URI, project_uri)
                     .then(function (data) {
                         $scope.project.items = data.files;
@@ -54,9 +55,15 @@
                     }, function (err) {});
             };
 
-            $scope.removeProject = function (project_uri) {
-                ProjectsService.remove(ProjectsService.REMOVE_URI, project_uri)
-                    .then(function (data) {}, function (err) {});
+            $scope.removeProject = function (index) {
+                console.log('removeProject');
+                console.log(index);
+                /*
+                ProjectsService.remove(ProjectsService.REMOVE_URI, index)
+                    .then(function (data) {
+                        console.log(data);
+                    }, function (err) {});
+                    */
             };
 
             $scope.updateProject = function (project_name) {
@@ -65,48 +72,51 @@
                         $scope.project.name = project_name;
                         $scope.openProject($scope.project.path);
                     }, function (err) {
-                        console.log(err);
+                        $log.error(err);
                     });
             };
 
-            $scope.createProject = function (project_uri) {
-                ProjectsService.create(ProjectsService.CREATE_URI, project_uri)
+            $scope.createProject = function () {
+                ProjectsService.create(ProjectsService.CREATE_URI, $scope.projectForm)
                     .then(function (data) {
                         if (!$scope.projects) {
                             $scope.projects = [];
                         }
                         $scope.initProject(data);
                         $scope.projects.push(data);
-                        $scope.openModalRenameProject();
+                        $scope.projectForm = {
+                            name: '',
+                            uri: null
+                        };
                     }, function (err) {
-                        console.log(err);
+                        $log.error(err);
                     });
             };
 
-            $scope.openModalRenameProject = function () {
-                modalInstance = $modal.open({
-                    animation: true,
-                    backdrop: false,
-                    templateUrl: 'RenameProjectModal.html',
-                    controller: 'RenameProjectModalController',
-                    resolve: {
-                        project_name: function () {
-                            return $scope.project.name;
-                        }
-                    }
-                }).result.then(function (project_name) {
-                    $scope.updateProject(project_name);
-                }, function () {});
+            /**
+             *
+             * Open modal
+             * Import a project
+             *
+             */
+            $scope.projectForm = {
+                name: '',
+                uri: null
             };
-
             $scope.openModalNewProject = function () {
                 modalInstance = $modal.open({
+                    scope: $scope,
                     animation: true,
                     templateUrl: 'NewProjectModal.html',
-                    controller: 'NewProjectModalController'
-                }).result.then(function (project_uri) {
-                    $scope.createProject(project_uri);
-                }, function () {});
+                    controller: 'NewProjectModalController',
+                    resolve: {
+                        data: function () {
+                            return $scope.projectForm;
+                        }
+                    }
+                }).result.then($scope.createProject, function () {
+                    $log.info('import project modal dismissed at: ' + new Date());
+                });
             };
 
         }]);

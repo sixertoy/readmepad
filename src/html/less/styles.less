@@ -5,7 +5,7 @@
 @dark: #1C1C1E;
 @blue: #74DDF1;
 @menu: #337ab7;
-@rouge: #FF0000;
+@alert: #FF0000;
 @white: #FFFFF8;
 @hover: #2D2E30;
 @viewer: #F7F7F7;
@@ -145,12 +145,17 @@ body {
             padding: 12px 15px;
         }
         .octicon {
-            color: @rouge;
+            color: @alert;
             &.pull-right {
                 color: @white;
             }
         }
     }
+}
+
+.valid-error {
+    color: @grey;
+    text-transform: lowercase;
 }
 
 .view,
@@ -259,6 +264,10 @@ body {
     &-content {
         border-radius: 0;
         background-color: @viewer;
+        input + .valid-error {
+            display: block;
+            margin-top: 4px;
+        }
     }
     &-dialog {
         margin: 160px auto 10px auto;
@@ -344,16 +353,20 @@ body {
         .dropdown-menu {
             font-size: 12px;
             li {
-                a {
+                a{
                     padding-left: 10px;
+                    button{
+                        border: 0;
+                        background: none;
+                    }
+                    small {
+                        color: @grey;
+                    }
                     .close {
                         float: left;
                         font-size: 17px;
                         margin-right: 7px;
                         line-height: 1.2em;
-                    }
-                    small {
-                        color: @grey;
                     }
                 }
                 &:first-child a {
@@ -439,8 +452,8 @@ body {
             }
         }
     }
-    .modal{
-        &-content{
+    .modal {
+        &-content {
             background-color: @tooltip;
         }
     }
@@ -523,7 +536,7 @@ body {
         #footer {
             background: @dark;
             .octicon {
-                color: @rouge;
+                color: @alert;
                 &.pull-right {
                     color: @blue;
                 }

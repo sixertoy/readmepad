@@ -14,9 +14,11 @@ explorer
             </li>
             <li class="divider" ng-if="projects"></li>
             <li ng-repeat="project in projects">
-                <a href="#" ng-click="openProject(project.path)">
-                    <button type="button" class="close" aria-label="Close" ng-click="removeProject(project.path)">&times;</button>
-                    <span>{{$ldim}}project.name{{$rdim}}</span> - <small>{{$ldim}}project.path{{$rdim}}</small>
+                <a href="#">
+                    <span class="close" aria-label="Close" ng-click="removeProject($index)">&times;</span>
+                    <button type="button" ng-click="openProject(project.path)">
+                        <span>{{$ldim}}project.name{{$rdim}}</span> - <small>{{$ldim}}project.path{{$rdim}}</small>
+                    </button>
                 </a>
             </li>
         </ul>
