@@ -4,6 +4,8 @@
   "description": "Project generated with Yeoman generator-gruntproject v0.1.20",
   "main": "index.js",
   "scripts": {
+    "karma": "karma start karma.conf.js --single-run",
+    "jasmine": "istanbul cover scripts/jasmine_node -x **/*.spec.js --captureExceptions spec/src/server",
     "clean_modules": "rm -rf node_modules && rm -rf bower_components",
     "preinstall": "bower install --allow-root",
     "postinstall": "npm test",
@@ -43,7 +45,7 @@
     "multer": "^0.1.8",
     "nedb": "^1.1.2",
     "q": "^1.4.1",
-    "scandir-async": "^0.1.11",
+    "scandir-async": "^0.1.12",
     "serve-favicon": "^2.3.0",
     "winston": "^1.0.1"
   },

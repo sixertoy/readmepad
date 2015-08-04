@@ -18,7 +18,7 @@ module.exports = {
         flatten: true,
         cwd: './bower_components/',
         dest: './src/html/js/lib/',
-        src: ['ace-builds/src-min-noconflict/ace.js', 'ace-builds/src-min-noconflict//mode-markdown.js', 'angular-sanitize/angular-sanitize.min.js', 'angular/angular.min.js', 'markdown-it/dist/markdown-it.min.js', 'angular-ui-ace/ui-ace.min.js', 'angular-bootstrap/ui-bootstrap-tpls.js', 'lodash/lodash.min.js', 'angular-md5/angular-md5.min.js', 'angular-mocks/angular-mocks.js', 'ng-scrollbar/dist/ng-scrollbar.min.js']
+        src: ['ace-builds/src-min-noconflict/ace.js', 'ace-builds/src-min-noconflict//mode-markdown.js', 'angular-sanitize/angular-sanitize.min.js', 'angular/angular.min.js', 'markdown-it/dist/markdown-it.min.js', 'angular-ui-ace/ui-ace.min.js', 'angular-bootstrap/ui-bootstrap-tpls.min.js', 'lodash/lodash.min.js', 'angular-md5/angular-md5.min.js', 'angular-mocks/angular-mocks.js', 'ng-scrollbar/dist/ng-scrollbar.min.js']
     },
     bower_css: {
         expand: true,

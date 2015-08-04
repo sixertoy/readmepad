@@ -20,7 +20,7 @@
     "angular-mocks": "~1.4.3",
     "angular-ui-ace": "bower",
     "markdown-it": "~4.3.0",
-    "angular-bootstrap": "~0.13.0",
+    "angular-bootstrap": "~0.13.2",
     "satellizer": "~0.11.2",
     "bootstrap": "~3.3.5",
     "normalize.css": "~3.0.3",

@@ -16,7 +16,7 @@ module.exports = function (config) {
             'src/html/js/lib/angular.min.js',
             'src/html/js/lib/angular-mocks.js',
             'src/html/js/lib/angular-sanitize.min.js',
-            'src/html/js/lib/ui-bootstrap-tpls.js',
+            'src/html/js/lib/ui-bootstrap-tpls.min.js',
             'src/html/js/lib/lodash.min.js',
             'src/html/js/lib/markdown-it.min.js',
             'src/html/js/lib/angular-md5.min.js',
