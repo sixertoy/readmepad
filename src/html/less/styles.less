@@ -4,6 +4,7 @@
 @grey: #AFAFAF;
 @dark: #1C1C1E;
 @blue: #74DDF1;
+@dark-blue: #204d74;
 @menu: #337ab7;
 @alert: #FF0000;
 @white: #FFFFF8;
@@ -211,9 +212,11 @@ body {
             right: 0;
         }
     }
-    .has-sidebar & .viewer,
-    .has-cheatsheet & .viewer {
+    .has-sidebar & .viewer {
         width: 78%;
+    }
+    .has-cheatsheet & .viewer {
+        width: 57%;
     }
     .has-sidebar & {
         .sidebar {
@@ -225,15 +228,15 @@ body {
     }
     .has-cheatsheet & {
         .cheatsheet {
-            width: 22%;
+            width: 43%;
         }
         .splitter-cheatsheet {
-            right: 22%;
+            right: 43%;
         }
     }
     .has-sidebar.has-cheatsheet & {
         .viewer {
-            width: 56%;
+            width: 35%;
         }
     }
 }
@@ -341,6 +344,31 @@ body {
     }
 }
 
+.cheatsheet {
+    .inner {
+        .title {
+            margin: 0;
+            color: @white;
+            padding: 12px 0;
+            font-weight: bold;
+            background: @menu;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        dl {
+            padding: 0 12px;
+            dt {
+                padding-top: 10px;
+            }
+            dd {
+                > p {
+                    font-size: 0.85em
+                }
+            }
+        }
+    }
+}
+
 .sidebar {
     .menu {
         width: 100%;
@@ -355,7 +383,7 @@ body {
         .dropdown-menu {
             font-size: 12px;
             li {
-                a{
+                a {
                     padding-left: 10px;
                     small {
                         color: @grey;
@@ -475,7 +503,20 @@ body {
             }
         }
     }
-    .popover {}
+    .cheatsheet {
+        .inner {
+            dl {
+                dt {
+                    color: @menu;
+                }
+                dd {
+                    pre {
+                        text-shadow: none;
+                    }
+                }
+            }
+        }
+    }
     #page {
         color: @white;
         text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.45);
@@ -489,7 +530,7 @@ body {
                     .btn {
                         border: 0;
                         background: transparent;
-                        &:focus{
+                        &:focus {
                             background: @dark;
                         }
                     }

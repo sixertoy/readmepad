@@ -4,7 +4,7 @@
 
     'use strict';
 
-    angular.module('readmepadApp', ['readmepadAppSidebar', 'readmepadAppViewer', 'readmepadAppToolbar'])
+    angular.module('readmepadApp', ['readmepadAppSidebar', 'readmepadAppViewer', 'readmepadAppToolbar', 'readmepadAppCheatsheet'])
         .constant('lodash', _)
         .constant('markdownit', markdownit)
         .run(function () {});
