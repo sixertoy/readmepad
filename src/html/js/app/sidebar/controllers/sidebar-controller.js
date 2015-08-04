@@ -41,13 +41,14 @@
                 ProjectsService.loadall(ProjectsService.LOADALL_URI)
                     .then(function (data) {
                         if (data.length) {
+                            //data.sort(sortProjectByName);
                             $scope.projects = data;
                         }
                     }, function (err) {});
             };
 
             $scope.openProject = function (project_uri) {
-                console.log('updateProject');
+                // console.log('updateProject');
                 ProjectsService.open(ProjectsService.OPEN_URI, project_uri)
                     .then(function (data) {
                         $scope.project.items = data.files;
@@ -56,8 +57,8 @@
             };
 
             $scope.removeProject = function (index) {
-                console.log('removeProject');
-                console.log(index);
+                // console.log('removeProject');
+                // console.log(index);
                 /*
                 ProjectsService.remove(ProjectsService.REMOVE_URI, index)
                     .then(function (data) {
@@ -77,13 +78,17 @@
             };
 
             $scope.createProject = function () {
+                var list;
                 ProjectsService.create(ProjectsService.CREATE_URI, $scope.projectForm)
                     .then(function (data) {
                         if (!$scope.projects) {
                             $scope.projects = [];
                         }
-                        $scope.initProject(data);
                         $scope.projects.push(data);
+                        list = $scope.projects;
+                        list.sort(sortProjectByName);
+                        $scope.projects = list;
+                        $scope.initProject(data);
                         $scope.projectForm = {
                             name: '',
                             uri: null

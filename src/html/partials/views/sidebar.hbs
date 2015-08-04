@@ -16,9 +16,9 @@ explorer
             <li ng-repeat="project in projects">
                 <a href="#">
                     <span class="close" aria-label="Close" ng-click="removeProject($index)">&times;</span>
-                    <button type="button" ng-click="openProject(project.path)">
+                    <span type="button" aria-label="project.path" ng-click="openProject(project.path)">
                         <span>{{$ldim}}project.name{{$rdim}}</span> - <small>{{$ldim}}project.path{{$rdim}}</small>
-                    </button>
+                    </span>
                 </a>
             </li>
         </ul>
