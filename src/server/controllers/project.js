@@ -61,11 +61,7 @@
     router.delete('/delete/:project_id', function (req, res) {
         var project_id = req.params.project_id;
         __model.deleteProject(__name, project_id).then(function (count) {
-            if (count > 0) {
-                res.sendStatus(200);
-            } else {
-                res.sendStatus(204);
-            }
+            res.send((count > 0));
         }, function (err) {
             res.sendStatus(503);
         });

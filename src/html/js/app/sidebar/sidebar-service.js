@@ -52,10 +52,16 @@
                  *
                  */
                 open: function (uri, project) {
-                    var q = $q.defer();
+                    var list,
+                        q = $q.defer();
                     uri += '/' + md5.createHash(project.path);
-                    this.call('get', uri).then(function (data) {
-                        q.resolve(data);
+                    this.call('get', uri).then(function (scan) {
+
+                        // supprime le projet courant
+                        // dans la liste des projets
+                        list = projects.concat([]);
+                        lodash.pullAt(list, lodash.findIndex(list, project));
+                        q.resolve({projects: list, project: project, data: scan});
                     }, function (status) {
                         q.reject(status);
                     });
@@ -159,12 +165,13 @@
                  *
                  */
                 remove: function (uri, index) {
-                    var q = $q.defer(),
-                        project_id = projects[index].project_id;
-                    this.call('delete', uri, {
-                        project_id: project_id
-                    }).then(function (data) {
-                        q.resolve(data);
+                    var q = $q.defer();
+                    uri += '/' + projects[index].project_id;
+                    this.call('delete', uri).then(function (data) {
+                        if(data){
+                            lodash.pullAt(projects, index);
+                        }
+                        q.resolve(projects);
                     }, function (status) {
                         q.reject(status);
                     });

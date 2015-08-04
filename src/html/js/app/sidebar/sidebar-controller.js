@@ -27,6 +27,17 @@
                 $scope.loadAll();
             };
 
+            $scope.setProjectsList = function (projects) {
+                // evite l'affichage du divider du menu
+                // dans la liste des projets
+                // si la liste des projets est vide
+                if (!projects.length) {
+                    $scope.projects = false;
+                } else {
+                    $scope.projects = projects;
+                }
+            };
+
             $scope.openProjectSubfolder = function (document) {
                 if (!document.hasOwnProperty('active')) {
                     document.active = false;
@@ -37,37 +48,31 @@
 
             $scope.openProject = function (project) {
                 ProjectsService.open(ProjectsService.OPEN_URI, project)
-                    .then(function (data) {
-                        $scope.current = project;
-                        $scope.current.files = data.files;
+                    .then(function (result) {
+                        $scope.setProjectsList(result.projects);
+                        $scope.current = result.project;
+                        $scope.current.files = result.data.files;
                         $scope.$broadcast('rebuild:me');
                     }, function (err) {});
             };
 
-            $scope.loadAll = function(){
+            $scope.loadAll = function () {
                 ProjectsService.loadall(ProjectsService.LOADALL_URI)
                     .then(function (projects) {
-                        $scope.projects = projects;
+                        $scope.setProjectsList(projects);
                     }, function (err) {});
             };
 
             $scope.removeProject = function (index) {
-                /*
                 ProjectsService.remove(ProjectsService.REMOVE_URI, index)
                     .then(function (projects) {
-                        console.log(data);
+                        $scope.setProjectsList(projects);
                     }, function (err) {});
-                    */
             };
 
             $scope.updateProject = function (project_name) {
                 ProjectsService.update(ProjectsService.UDPATE_URI, $scope.project)
-                    .then(function (project) {
-                        /*
-                        $scope.project.name = project_name;
-                        $scope.openProject($scope.project.path);
-                        */
-                    }, function (err) {
+                    .then(function (project) {}, function (err) {
                         $log.error(err);
                     });
             };
@@ -86,12 +91,6 @@
                             name: '',
                             uri: null
                         };
-                        // mise a jour de la liste des projets
-                        if(result.projects){
-                            // si le projet n'existe pas dans la liste
-                            // on met a jour la liste des projets
-                            $scope.projects = result.projects;
-                        }
                         // on ouvre les fichiers du nouveau projet
                         $scope.openProject(result.project);
                     }, function (err) {

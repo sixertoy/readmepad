@@ -40,6 +40,9 @@ npm start
 
 ## Issues
 
+- files list width | break word
+- scrollbars no update on fullscreen
+
 ## History
 
 [grunt-img]: https://cdn.gruntjs.com/builtwith.png
