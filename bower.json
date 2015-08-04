@@ -27,6 +27,6 @@
     "lodash": "~3.10.0",
     "angular-md5": "~0.1.8",
     "octicons": "~2.4.1",
-    "bootstrap-toggle": "~2.2.0"
+    "ng-scrollbar": "~0.0.8"
   }
 }

@@ -22,7 +22,7 @@ explorer
         </ul>
     </div>
 
-    <div class="explorer">
+    <div class="explorer" ng-scrollbar rebuild-on-resize rebuild-on="rebuild:me">
         <ul class="files">
             <li ng-repeat="document in project.items" ng-include="'projectTree'"></li>
         </ul>

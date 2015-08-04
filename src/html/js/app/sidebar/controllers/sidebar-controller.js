@@ -27,6 +27,7 @@
                     obj.active = false;
                 }
                 obj.active = !obj.active;
+                $scope.$broadcast('rebuild:me'); // scrollbar broadcast
             };
 
             lodash.assign($scope, options);
@@ -49,6 +50,7 @@
                 ProjectsService.open(ProjectsService.OPEN_URI, project_uri)
                     .then(function (data) {
                         $scope.project.items = data.files;
+                        $scope.$broadcast('rebuild:me'); // scrollbar broadcast
                     }, function (err) {});
             };
 

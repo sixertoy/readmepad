@@ -4,7 +4,7 @@
 
     'use strict';
 
-    angular.module('readmepadAppSidebar', ['ngSanitize', 'ui.bootstrap', 'angular-md5'])
+    angular.module('readmepadAppSidebar', ['ngSanitize', 'ui.bootstrap', 'angular-md5', 'ngScrollbar'])
         .run(function () {});
 
 }());

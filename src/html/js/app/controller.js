@@ -8,7 +8,7 @@
         .controller('AppController', ['$scope', '$rootScope', function ($scope, $rootScope) {
 
             $scope.sidebarVisible = true;
-            $scope.sidebarCheatsheet = false;
+            $scope.cheatsheetVisible = false;
 
             $scope.showSidebar = function () {
                 $scope.sidebarVisible = !$scope.sidebarVisible;
@@ -16,8 +16,8 @@
             };
 
             $scope.showCheatsheet = function () {
-                $scope.sidebarCheatsheet = !$scope.sidebarCheatsheet;
-                $rootScope.hasCheatsheet = $scope.sidebarCheatsheet ? 'has-cheatsheet' : '';
+                $scope.cheatsheetVisible = !$scope.cheatsheetVisible;
+                $rootScope.hasCheatsheet = $scope.cheatsheetVisible ? 'has-cheatsheet' : '';
             };
 
             $scope.initialize = function(){

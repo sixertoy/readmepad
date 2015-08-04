@@ -3,7 +3,8 @@
 module.exports = {
     development: {
         options:{
-            compress: true
+            compress: true,
+            sourceMap: true
         },
         files: {
             "./build/public/html/css/styles.min.css": "./src/html/less/styles.less",
