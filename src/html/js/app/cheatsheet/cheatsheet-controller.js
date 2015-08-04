@@ -7,14 +7,17 @@
     angular.module('readmepadAppCheatsheet')
         .controller('CheatsheetController', ['$scope', '$rootScope', function ($scope, $rootScope) {
 
-            $scope.cheatsheetVisible = $scope.$parent.cheatsheetVisible;
-
-            $scope.initialize = function(){
-//                $scope.$watch($scope.$parent.cheatsheetVisible, function() {
-//                    $scope.$broadcast('rebuild:cheatsheet');
-//                });
+            $scope.initialize = function () {
+                // a l'init du controller
+                // on ecoute les changements
+                // sur la variable cheatsheetVisible du parent
+                // on reconstruit alors la scrollbar
+                $scope.$parent.$watch('cheatsheetVisible', function () {
+                    setTimeout(function () {
+                        $scope.$broadcast('rebuild:cheatsheet');
+                    }, 300);
+                });
             };
 
         }]);
-
 }());

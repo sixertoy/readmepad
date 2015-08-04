@@ -345,18 +345,23 @@ body {
 }
 
 .cheatsheet {
-    .inner {
-        .title {
-            margin: 0;
-            color: @white;
-            padding: 12px 0;
-            font-weight: bold;
-            background: @menu;
-            text-align: center;
-            text-transform: uppercase;
-        }
+    .title {
+        margin: 0;
+        color: @white;
+        padding: 12px 0;
+        font-weight: bold;
+        background: @menu;
+        text-align: center;
+        text-transform: uppercase;
+    }
+    .scrollpanel {
+        left: 0;
+        right: 0;
+        top: 53px;
+        bottom: 10px;
+        position: absolute;
         dl {
-            padding: 0 12px;
+            padding: 0 17px 0 12px;
             dt {
                 padding-top: 10px;
             }
@@ -472,49 +477,37 @@ body {
         background-color: @tooltip;
         &.bottom > .arrow {
             border-bottom-color: @tooltip;
-            &:after {
-                border-bottom-color: @tooltip;
-            }
+        }
+        &.bottom > .arrow:after {
+            border-bottom-color: @tooltip;
         }
     }
-    .modal {
-        &-content {
-            background-color: @tooltip;
-        }
+    .modal-content {
+        background-color: @tooltip;
     }
     .nice-toggler {
-        input {
-            + span {
-                box-shadow: inset 0 0 0px 1px @divider;
-                &:before {
-                    background: transparent;
-                }
-                &:after {
-                    background: @divider;
-                }
-            }
-            &:checked {
-                + span:before {
-                    background: @blue;
-                }
-                + span:after {
-                    box-shadow: inset 0 0 0 1px @blue, 0 2px 4px rgba(0, 0, 0, 0.2);
-                }
-            }
+        input + span {
+            box-shadow: inset 0 0 0px 1px @divider;
+        }
+        input + span:before {
+            background: transparent;
+        }
+        input + span:after {
+            background: @divider;
+        }
+        input:checked + span:before {
+            background: @blue;
+        }
+        input:checked + span:after {
+            box-shadow: inset 0 0 0 1px @blue, 0 2px 4px rgba(0, 0, 0, 0.2);
         }
     }
     .cheatsheet {
-        .inner {
-            dl {
-                dt {
-                    color: @menu;
-                }
-                dd {
-                    pre {
-                        text-shadow: none;
-                    }
-                }
-            }
+        dl dt {
+            color: @menu;
+        }
+        dl dd pre {
+            text-shadow: none;
         }
     }
     #page {
@@ -534,10 +527,8 @@ body {
                             background: @dark;
                         }
                     }
-                    &.open {
-                        .dropdown-toggle {
-                            box-shadow: none;
-                        }
+                    &.open .dropdown-toggle {
+                        box-shadow: none;
                     }
                     .dropdown-menu {
                         .divider {
@@ -555,12 +546,10 @@ body {
                         }
                     }
                 }
-                ul.files {
-                    a {
-                        color: @white;
-                        &.folder {
-                            color: #A6B9BD;
-                        }
+                ul.files a {
+                    color: @white;
+                    &.folder {
+                        color: #A6B9BD;
                     }
                 }
             }
