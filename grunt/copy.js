@@ -18,13 +18,13 @@ module.exports = {
         flatten: true,
         cwd: './bower_components/',
         dest: './src/html/js/lib/',
-        src: ['ace-builds/src-min-noconflict/ace.js', 'ace-builds/src-min-noconflict//mode-markdown.js', 'angular-sanitize/angular-sanitize.min.js', 'angular/angular.min.js', 'markdown-it/dist/markdown-it.min.js', 'angular-ui-ace/ui-ace.min.js', 'angular-bootstrap/ui-bootstrap-tpls.js', 'lodash/lodash.min.js', 'angular-md5/angular-md5.min.js', 'angular-mocks/angular-mocks.js', 'bootstrap-toggle/js/bootstrap2-toggle.min.js', 'perfect-scrollbar/min/perfect-scrollbar.min.js', 'ng-scrollbar/dist/ng-scrollbar.min.js']
+        src: ['ace-builds/src-min-noconflict/ace.js', 'ace-builds/src-min-noconflict//mode-markdown.js', 'angular-sanitize/angular-sanitize.min.js', 'angular/angular.min.js', 'markdown-it/dist/markdown-it.min.js', 'angular-ui-ace/ui-ace.min.js', 'angular-bootstrap/ui-bootstrap-tpls.js', 'lodash/lodash.min.js', 'angular-md5/angular-md5.min.js', 'angular-mocks/angular-mocks.js', 'ng-scrollbar/dist/ng-scrollbar.min.js']
     },
     bower_css: {
         expand: true,
         flatten: true,
         dest: './src/html/css/',
         cwd: './bower_components/',
-        src: ['bootstrap/dist/css/bootstrap.min.css', 'normalize.css/normalize.css', 'octicons/octicons/octicons.css', 'octicons/octicons/octicons.ttf', 'octicons/octicons/octicons.woff', 'octicons/octicons/octicons.eot', 'octicons/octicons/octicons.svg', 'bootstrap-toggle/css/bootstrap2-toggle.min.css', 'ng-scrollbar/dist/ng-scrollbar.min.css']
+        src: ['bootstrap/dist/css/bootstrap.min.css', 'normalize.css/normalize.css', 'octicons/octicons/octicons.css', 'octicons/octicons/octicons.ttf', 'octicons/octicons/octicons.woff', 'octicons/octicons/octicons.eot', 'octicons/octicons/octicons.svg', 'ng-scrollbar/dist/ng-scrollbar.min.css']
     }
 };
