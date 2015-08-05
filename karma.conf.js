@@ -21,6 +21,9 @@ module.exports = function (config) {
             // Viewer
             'src/html/js/app/viewer/index.js',
             'src/html/js/app/viewer/viewer-controller.js',
+            // Cheatsheet
+            'src/html/js/app/cheatsheet/index.js',
+            'src/html/js/app/cheatsheet/cheatsheet-controller.js',
             // Toolbar
             'src/html/js/app/toolbar/index.js',
             'src/html/js/app/toolbar/toolbar-controller.js',
