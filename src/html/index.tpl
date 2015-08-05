@@ -10,6 +10,8 @@
 
 <body class="" ng-class="[theme, hasSidebar, hasCheatsheet, isLoading]">
 
+    <div id="screen-locker"></div>
+
     <div id="page" class="container-fluid" ng-controller="AppController" ng-init="initialize()">
         <div id="header" class="row">
             {{$include 'views/toolbar'}}

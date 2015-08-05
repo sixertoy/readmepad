@@ -160,6 +160,26 @@ body {
     text-transform: lowercase;
 }
 
+#screen-locker {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.15;
+    z-index: 9999;
+    display: block;
+    background: @white;
+    position: absolute;
+    visibility: visible;
+    transition: all 0.25s;
+}
+
+.loading-completed #screen-locker {
+    opacity: 0;
+    display: none;
+    visibility: hidden;
+}
+
 .view,
 #main,
 #header,
@@ -486,6 +506,9 @@ body {
     //
     color: @white;
     background-color: #47484B;
+    #screen-locker {
+        background: @dark;
+    }
     .popover, .dropdown-menu {
         background-color: @tooltip;
         &.bottom > .arrow {

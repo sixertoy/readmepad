@@ -6,7 +6,7 @@
 
     var defaults = {
             sidebarVisible: true,
-            cheatsheetVisible: false,
+            cheatsheetVisible: false
         },
         rootDefaults = {
             isLoading: '',
@@ -21,7 +21,7 @@
             $scope.initialize = function () {
                 lodash.assign($scope, defaults);
                 lodash.assign($rootScope, rootDefaults);
-            }
+            };
 
             $scope.showSidebar = function () {
                 $scope.sidebarVisible = !$scope.sidebarVisible;
@@ -40,16 +40,16 @@
              *
              */
             $rootScope.$on('cfpLoadingBar:loading', function () {
-                $rootScope.isLoading = 'barloader-isloading';
+                $rootScope.isLoading = 'loading-proceed';
             });
             $rootScope.$on('cfpLoadingBar:loaded', function () {
-                $rootScope.isLoading = 'barloader-isloaded';
+                $rootScope.isLoading = 'loading-loaded';
             });
             $rootScope.$on('cfpLoadingBar:started', function () {
-                $rootScope.isLoading = 'barloader-isstarted';
+                $rootScope.isLoading = 'loading-started';
             });
             $rootScope.$on('cfpLoadingBar:completed', function () {
-                $rootScope.isLoading = 'barloader-iscompleted';
+                $rootScope.isLoading = 'loading-completed';
             });
 
         }]);
