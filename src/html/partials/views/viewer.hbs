@@ -1,32 +1,46 @@
-<div class="view viewer" ng-controller="ViewerController" ng-init="initialize()">
-    <!--
+<!--
+
 
 viewer
 
+
 -->
-    <div class="inner">
+<div class="view viewer" ng-controller="ViewerController" ng-init="initialize()">
+
+
+
+
+    <div ui-view="editor"></div>
+
+
+
+</div>
+<!-- viewer template -->
+<script type="text/ng-template" id="viewer/editor.html">
+
+    <div class="inner" ng-init="initialize()">
+
         <div class="menu">
             <div class="btn-group">
                 <!--
-                <label class="btn btn-primary btn-xs" ng-click="" ng-model="radioModel" btn-radio="'Left'">
-                    <span class="octicon octicon-pencil"></span>
-                </label>
-                <label class="btn btn-primary btn-xs" ng-click="" ng-model="radioModel" btn-radio="'Right'">
-                    <span class="octicon octicon-eye"></span>
-                </label>
-                -->
+            <label class="btn btn-primary btn-xs" ng-click="" ng-model="radioModel" btn-radio="'Left'">
+                <span class="octicon octicon-pencil"></span>
+            </label>
+            <label class="btn btn-primary btn-xs" ng-click="" ng-model="radioModel" btn-radio="'Right'">
+                <span class="octicon octicon-eye"></span>
+            </label>
+            -->
             </div>
         </div>
 
-        <div ui-view></div>
-
-        <!--
-        <div class="editors">
+        <div ui-view="editor">
+            <!--
             <div id="markdown-editor" ui-ace="{useWrapMode: true, mode: 'markdown', onChange: aceChanged}" ng-readonly="checked" ng-show="edit" ng-model="markdownSrv.raw"></div>
             <div id="markdown-viewer" ng-hide="edit" ng-bind-html="markdownSrv.html"></div>
+            -->
         </div>
-        -->
 
     </div>
-</div>
+
+</script>
 <!-- endof viewer -->

@@ -14,11 +14,11 @@
         .controller('SidebarTreeController', ['$scope', function ($scope) {
             //
         }])
-        .directive('uiStateHyperlink', ['$base64', '$state', function ($base64, $state) {
+        .directive('hrefHyperlink', ['$base64', '$state', function ($base64, $state) {
             return {
                 restrict: 'AE',
                 link: function (scope, element, attrs) {
-                    var fullpath = scope.$eval(attrs.uiStateHyperlink);
+                    var fullpath = scope.$eval(attrs.hrefHyperlink);
                     fullpath = $state.href('document', {
                         id: encodeURIComponent($base64.encode(fullpath))
                     });

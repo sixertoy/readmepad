@@ -4,29 +4,18 @@
 
     'use strict';
 
+    var defaults = {
+        document: false,
+        editMode: false
+    };
+
     angular.module('readmepadAppViewer')
-        .controller('ViewerController', ['$scope', function ($scope) {
-
-            $scope.editMode = false;
-
-            $scope.changeEditMode = function () {
-                $scope.editMode = !$scope.editMode;
-            };
+        .controller('ViewerController', ['$scope', 'lodash', function ($scope, lodash) {
 
             $scope.initialize = function () {
-
+                lodash.assign($scope, defaults);
             };
 
-        }])
-        .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
-            $stateProvider
-                .state('document', {
-                    url: '/document/:id',
-                    controller: function ($scope, $stateParams) {
-                        console.log($stateParams);
-                    }
-                });
-            $urlRouterProvider.otherwise('/');
         }]);
 
 }());

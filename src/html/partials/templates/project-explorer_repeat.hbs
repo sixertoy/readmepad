@@ -1,5 +1,5 @@
-<script type="text/ng-template" id="projectTree">
-    <a href ui-state-hyperlink="document.fullpath" class="file" ng-if="!document.files">
+<script type="text/ng-template" id="sidebar/tree.html">
+    <a href-hyperlink="document.fullpath" class="file" ng-if="!document.files">
         <span>{{$ldim}}document.name{{$rdim}}</span>
     </a>
     <a href class="folder" ng-if="document.files" ng-click="openProjectSubfolder(document)">
@@ -7,6 +7,6 @@
         <span>{{$ldim}}document.name{{$rdim}}</span>
     </a>
     <ul class="list" ng-if="document.files" ng-show="document.active">
-        <li ng-repeat="document in document.files" ng-include="'projectTree'"></li>
+        <li ng-repeat="document in document.files" ng-include="'sidebar/tree.html'"></li>
     </ul>
 </script>

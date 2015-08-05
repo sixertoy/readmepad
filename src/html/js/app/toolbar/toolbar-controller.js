@@ -17,7 +17,7 @@
 
             $scope.preferencesPopover = {
                 theme: $scope.darktheme,
-                templateUrl: 'preferences-popover.html'
+                templateUrl: 'toolbar/preferences.html'
             };
 
         }]);
