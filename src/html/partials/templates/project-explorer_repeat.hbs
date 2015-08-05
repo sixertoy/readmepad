@@ -1,8 +1,8 @@
 <script type="text/ng-template" id="projectTree">
-    <a href="#/document" class="file" ng-if="!document.files">
+    <a href="#" routelink="createDocumentLink(document.fullpath)" class="file" ng-if="!document.files">
         <span>{{$ldim}}document.name{{$rdim}}</span>
     </a>
-    <a href="" class="folder" ng-if="document.files" ng-click="openProjectSubfolder(document)">
+    <a href class="folder" ng-if="document.files" ng-click="openProjectSubfolder(document)">
         <span class="octicon octicon-triangle-right" ng-class="{'octicon-triangle-down': document.active, 'octicon-triangle-right': !document.active }"></span>
         <span>{{$ldim}}document.name{{$rdim}}</span>
     </a>
