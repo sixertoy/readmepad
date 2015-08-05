@@ -14,16 +14,8 @@ module.exports = function (config) {
         ],
         files: [
             'src/html/js/lib/angular.min.js',
-            'src/html/js/lib/angular-mocks.js',
-            'src/html/js/lib/angular-sanitize.min.js',
-            'src/html/js/lib/ui-bootstrap-tpls.min.js',
-            'src/html/js/lib/lodash.min.js',
-            'src/html/js/lib/markdown-it.min.js',
-            'src/html/js/lib/angular-md5.min.js',
-            'src/html/js/lib/ace.js',
-            'src/html/js/lib/ng-scrollbar.min.js',
-            'src/html/js/lib/ui-ace.min.js',
-            'src/html/js/lib/ui-bootstrap.tpls.js',
+            'src/html/js/lib/angular/**/*.js',
+            'src/html/js/lib/globals/**/*.js',
             //
             'src/html/js/app.js',
             // Viewer

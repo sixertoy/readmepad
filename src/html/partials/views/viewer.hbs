@@ -7,19 +7,30 @@ viewer
     <div class="inner">
         <div class="menu">
             <div class="btn-group">
+                <!--
                 <label class="btn btn-primary btn-xs" ng-click="" ng-model="radioModel" btn-radio="'Left'">
                     <span class="octicon octicon-pencil"></span>
                 </label>
                 <label class="btn btn-primary btn-xs" ng-click="" ng-model="radioModel" btn-radio="'Right'">
                     <span class="octicon octicon-eye"></span>
                 </label>
+                -->
             </div>
         </div>
 
+        <tabset justified="true">
+            <tab heading="Justified">Justified content</tab>
+            <tab heading="SJ">Short Labeled Justified content</tab>
+            <tab heading="Long Justified">Long Labeled Justified content</tab>
+        </tabset>
+
+        <!--
         <div class="editors">
             <div id="markdown-editor" ui-ace="{useWrapMode: true, mode: 'markdown', onChange: aceChanged}" ng-readonly="checked" ng-show="edit" ng-model="markdownSrv.raw"></div>
             <div id="markdown-viewer" ng-hide="edit" ng-bind-html="markdownSrv.html"></div>
         </div>
+        -->
+
     </div>
 </div>
 <!-- endof viewer -->

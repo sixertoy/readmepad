@@ -28,6 +28,7 @@
     "angular-md5": "~0.1.8",
     "octicons": "~2.4.1",
     "ng-scrollbar": "~0.0.8",
-    "angular-sanitize": "~1.4.3"
+    "angular-sanitize": "~1.4.3",
+    "angular-ui-router": "~0.2.15"
   }
 }
