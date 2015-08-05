@@ -9,11 +9,6 @@
 
             $scope.editMode = false;
 
-            $scope.tabs = [
-                {titre: 'tab1'},
-                {titre: 'tab2'}
-            ];
-
             $scope.changeEditMode = function () {
                 $scope.editMode = !$scope.editMode;
             };
@@ -22,6 +17,16 @@
 
             };
 
+        }])
+        .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
+            $stateProvider
+                .state('document', {
+                    url: '/document/:id',
+                    controller: function ($scope, $stateParams) {
+                        console.log($stateParams);
+                    }
+                });
+            $urlRouterProvider.otherwise('/');
         }]);
 
 }());

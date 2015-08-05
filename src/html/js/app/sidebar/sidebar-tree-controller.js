@@ -11,28 +11,20 @@
      *
      */
     angular.module('readmepadAppSidebar')
-        .controller('SidebarTreeController', ['$scope', '$base64', '$urlMatcherFactory', function ($scope, $base64, $urlMatcherFactory) {
-
-            /*
-            $scope.createDocumentLink = function (path) {
-                return $urlMatcherFactory.compile('/document/:id').format({
-                    id: encodeURIComponent($base64.encode(path))
-                });
-            };
-            */
-
-        }]);
-        /*
-        .directive('routelink', [function () {
-
+        .controller('SidebarTreeController', ['$scope', function ($scope) {
+            //
+        }])
+        .directive('uiStateHyperlink', ['$base64', '$state', function ($base64, $state) {
             return {
-                restrict: 'A',
+                restrict: 'AE',
                 link: function (scope, element, attrs) {
-                    var url = scope.$eval(attrs.routelink);
-                    element.attr('href', url);
+                    var fullpath = scope.$eval(attrs.uiStateHyperlink);
+                    fullpath = $state.href('document', {
+                        id: encodeURIComponent($base64.encode(fullpath))
+                    });
+                    element.attr('href', fullpath);
                 }
             };
 
         }]);
-        */
 }());
