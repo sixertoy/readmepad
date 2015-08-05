@@ -24,11 +24,17 @@
      *
      */
     angular.module('readmepadAppSidebar')
-        .controller('SidebarController', ['$scope', '$rootScope', '$http', '$log', '$modal', 'lodash', 'ProjectsService', function ($scope, $rootScope, $http, $log, $modal, lodash, ProjectsService) {
+        .controller('SidebarController', ['$scope', '$rootScope', '$http', '$log', '$modal', 'lodash', 'ProjectsService', '$urlRouter', 'base64', function ($scope, $rootScope, $http, $log, $modal, lodash, ProjectsService, $urlRouter, base64) {
 
             $scope.initialize = function () {
                 lodash.assign($scope, defaults);
                 $scope.loadAll();
+            };
+
+            $scope.createRoute = function(path){
+                return $urlRouter.href(new UrlMatcher("/document/:id"), {
+                    id: base64.encode(path);
+                });
             };
 
             $scope.setProjectsList = function (projects) {

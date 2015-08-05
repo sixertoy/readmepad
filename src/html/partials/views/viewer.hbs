@@ -19,8 +19,10 @@ viewer
         </div>
 
         <tabset justified="true">
-            <tab ng-repeat="item in tabs" heading="{{item.titre}}">tab content</tab>
+            <tab ng-repeat="item in tabs" heading="{{$ldim}}item.titre{{$rdim}}">tab content</tab>
         </tabset>
+
+        <div ui-view></div>
 
         <!--
         <div class="editors">
