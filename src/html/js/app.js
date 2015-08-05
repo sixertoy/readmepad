@@ -8,7 +8,10 @@
         'readmepadAppViewer',
         'readmepadAppSidebar',
         'readmepadAppToolbar',
-        'readmepadAppCheatsheet'
+        'readmepadAppCheatsheet',
+        // third party
+        'ngAnimate',
+        'angular-loading-bar'
     ];
 
     angular.module('readmepadApp', dependencies)

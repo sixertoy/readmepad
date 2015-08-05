@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" /> {{$include 'commons/styles'}}
 </head>
 
-<body class="" ng-class="[theme, hasSidebar, hasCheatsheet]">
+<body class="" ng-class="[theme, hasSidebar, hasCheatsheet, isLoading]">
 
     <div id="page" class="container-fluid" ng-controller="AppController" ng-init="initialize()">
         <div id="header" class="row">
