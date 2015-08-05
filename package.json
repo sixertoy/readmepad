@@ -4,7 +4,9 @@
   "description": "Project generated with Yeoman generator-gruntproject v0.1.20",
   "main": "index.js",
   "scripts": {
+    "prekarma": "grunt build_bower",
     "karma": "karma start karma.conf.js --single-run",
+    "prejasmine": "rm -rf ./spec/fixtures/nedb",
     "jasmine": "istanbul cover scripts/jasmine_node -x **/*.spec.js --captureExceptions spec/src/server",
     "clean_modules": "rm -rf node_modules && rm -rf bower_components",
     "preinstall": "bower install --allow-root",

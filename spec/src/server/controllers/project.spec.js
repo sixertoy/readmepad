@@ -103,36 +103,39 @@
                         done();
                     });
             });
-            it('success code 204', function (done) {
+            it('success code 200 but no document', function (done) {
                 var project_id = md5('project/non/exists');
                 request(app)
                     .delete('/project/delete/' + project_id)
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.statusCode).toEqual(204);
-                        done();
-                    });
-            });
-            it('success code 200', function (done) {
-                var project_id = md5('path/to/toto');
-                request(app)
-                    .delete('/project/delete/' + project_id)
-                    .send()
-                    .expect('Content-Type', /json/)
-                    .end(function (err, res) {
+                        expect(res.body).toEqual(false);
                         expect(res.statusCode).toEqual(200);
                         done();
                     });
             });
-            it('success code 204', function (done) {
+            it('success code 200 document has been deleted', function (done) {
                 var project_id = md5('path/to/toto');
                 request(app)
                     .delete('/project/delete/' + project_id)
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.statusCode).toEqual(204);
+                        expect(res.body).toEqual(true);
+                        expect(res.statusCode).toEqual(200);
+                        done();
+                    });
+            });
+            it('success code 200 but no document', function (done) {
+                var project_id = md5('path/to/toto');
+                request(app)
+                    .delete('/project/delete/' + project_id)
+                    .send()
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.body).toEqual(false);
+                        expect(res.statusCode).toEqual(200);
                         done();
                     });
             });
@@ -182,7 +185,8 @@
             });
             it('fails project not exists', function (done) {
                 var params = {
-                    project_path: path.join(__dirname, 'src', 'docs')
+                    name: 'docs',
+                    uri: path.join(__dirname, 'src', 'docs')
                 };
                 request(app)
                     .post('/project/create')
@@ -196,11 +200,8 @@
             it('success project created', function (done) {
                 var fullpath = path.join(cwd, 'src', 'docs'),
                     params = {
-                        project_path: fullpath
-                    },
-                    doc = {
                         name: 'docs',
-                        path: fullpath
+                        uri: fullpath
                     };
                 request(app)
                     .post('/project/create')
@@ -208,20 +209,16 @@
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
                         expect(res.statusCode).toEqual(201);
-                        result = JSON.parse(res.text);
-                        expect(result.name).toEqual(doc.name);
-                        expect(result.path).toEqual(doc.path);
+                        expect(res.body.path).toEqual(params.uri);
+                        expect(res.body.name).toEqual(params.name);
                         done();
                     });
             });
             it('success but project already exists', function (done) {
                 var fullpath = path.join(cwd, 'src', 'docs'),
                     params = {
-                        project_path: fullpath
-                    },
-                    doc = {
                         name: 'docs',
-                        path: fullpath
+                        uri: fullpath
                     };
                 request(app)
                     .post('/project/create')
@@ -229,9 +226,8 @@
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
                         expect(res.statusCode).toEqual(200);
-                        result = JSON.parse(res.text);
-                        expect(result.name).toEqual(doc.name);
-                        expect(result.path).toEqual(doc.path);
+                        expect(res.body.path).toEqual(params.uri);
+                        expect(res.body.name).toEqual(params.name);
                         done();
                     });
             });
@@ -290,8 +286,7 @@
                     });
             });
             it('success', function (done) {
-                var p,
-                    doc = {
+                var doc = {
                         name: 'ReadmePad',
                         path: path.join(cwd, 'src', 'docs')
                     };
@@ -301,10 +296,9 @@
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
                         expect(res.statusCode).toEqual(200);
-                        result = JSON.parse(res.text);
-                        expect(result.length).toEqual(1);
-                        expect(result[0].name).toEqual(doc.name);
-                        expect(result[0].path).toEqual(doc.path);
+                        expect(res.body.length).toEqual(1);
+                        expect(res.body[0].path).toEqual(doc.path);
+                        expect(res.body[0].name).toEqual(doc.name);
                         done();
                     });
             });
@@ -324,8 +318,7 @@
                         .expect('Content-Type', /json/)
                         .end(function (err, res) {
                             expect(res.statusCode).toEqual(200);
-                            result = JSON.parse(res.text);
-                            expect(data).toEqual(result);
+                            expect(res.body).toEqual(data);
                             done();
                         });
                 }, function () {});

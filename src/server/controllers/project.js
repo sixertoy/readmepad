@@ -68,7 +68,7 @@
     });
 
     router.post('/create', function (req, res) {
-        var project_path, project_id, name,
+        var project_id, name,
             valid = !req.body.hasOwnProperty('uri') || !lodash.isString(req.body.uri) || lodash.isEmpty(req.body.uri);
         if (valid) {
             res.sendStatus(400);
