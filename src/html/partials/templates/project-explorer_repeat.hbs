@@ -1,5 +1,5 @@
 <script type="text/ng-template" id="projectTree">
-    <a href="" class="file" ng-if="!document.files" ng-click="viewPage(document.path)">
+    <a href="#/document" class="file" ng-if="!document.files">
         <span>{{$ldim}}document.name{{$rdim}}</span>
     </a>
     <a href="" class="folder" ng-if="document.files" ng-click="openProjectSubfolder(document)">

@@ -10,6 +10,10 @@
             current: {
                 files: null,
                 name: 'Ouvrir un projet...'
+            },
+            projectForm: {
+                name: '',
+                uri: null
             }
         };
 
@@ -20,7 +24,7 @@
      *
      */
     angular.module('readmepadAppSidebar')
-        .controller('SidebarController', ['$scope', '$http', '$log', '$modal', 'lodash', 'ProjectsService', function ($scope, $http, $log, $modal, lodash, ProjectsService) {
+        .controller('SidebarController', ['$scope', '$rootScope', '$http', '$log', '$modal', 'lodash', 'ProjectsService', function ($scope, $rootScope, $http, $log, $modal, lodash, ProjectsService) {
 
             $scope.initialize = function () {
                 lodash.assign($scope, defaults);
@@ -52,7 +56,7 @@
                         $scope.setProjectsList(result.projects);
                         $scope.current = result.project;
                         $scope.current.files = result.data.files;
-                        $scope.$broadcast('rebuild:me');
+                        $scope.$broadcast('rebuild:sidebar');
                     }, function (err) {});
             };
 
@@ -87,10 +91,7 @@
                     .then(function (result) {
                         // reinit du modal form
                         // de creation d'un projet
-                        $scope.projectForm = {
-                            name: '',
-                            uri: null
-                        };
+                        $scope.projectForm = defaults.projectForm;
                         // on ouvre les fichiers du nouveau projet
                         $scope.openProject(result.project);
                     }, function (err) {
@@ -104,10 +105,6 @@
              * Import a project
              *
              */
-            $scope.projectForm = {
-                name: '',
-                uri: null
-            };
             $scope.openModalNewProject = function () {
                 modalInstance = $modal.open({
                     scope: $scope,
