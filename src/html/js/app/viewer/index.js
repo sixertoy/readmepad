@@ -4,7 +4,14 @@
 
     'use strict';
 
-    angular.module('readmepadAppViewer', [])
+    angular.module('readmepadAppViewer', ['ui.router', 'base64'])
+        .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+            $urlRouterProvider.otherwise('/');
+            $stateProvider
+                .state('document/view', {
+                    url: '/document/view/:content'
+                });
+        }])
         .run(function () {});
 
 }());

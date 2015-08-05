@@ -9,11 +9,16 @@
 
             $scope.editMode = false;
 
+            $scope.tabs = [
+                {titre: 'tab1'},
+                {titre: 'tab2'}
+            ];
+
             $scope.changeEditMode = function () {
                 $scope.editMode = !$scope.editMode;
             };
 
-            $scope.initialize = function(){
+            $scope.initialize = function () {
 
             };
 

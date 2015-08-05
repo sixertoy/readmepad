@@ -19,9 +19,7 @@ viewer
         </div>
 
         <tabset justified="true">
-            <tab heading="Justified">Justified content</tab>
-            <tab heading="SJ">Short Labeled Justified content</tab>
-            <tab heading="Long Justified">Long Labeled Justified content</tab>
+            <tab ng-repeat="item in tabs" heading="{{item.titre}}">tab content</tab>
         </tabset>
 
         <!--

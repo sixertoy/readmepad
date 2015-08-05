@@ -29,6 +29,7 @@
     "octicons": "~2.4.1",
     "ng-scrollbar": "~0.0.8",
     "angular-sanitize": "~1.4.3",
-    "angular-ui-router": "~0.2.15"
+    "angular-ui-router": "~0.2.15",
+    "angular-base64": "~2.0.5"
   }
 }
