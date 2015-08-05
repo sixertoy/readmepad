@@ -42,7 +42,7 @@ a {
 /* -------------------------------------------------------------
  *
  *
- * Components
+ * Third Party
  *
  *
  ------------------------------------------------------------- */
@@ -74,6 +74,11 @@ a {
         border-radius: 2px;
     }
 }
+
+#loading-bar-spinner {
+    top: 50%;
+    left: 50%;
+}
 /* -------------------------------------------------------------
  *
  *
@@ -86,6 +91,57 @@ body {
     color: @dark;
     background: @white;
     font-family: 'OpenSans', 'Arial', 'Verdana', sans-serif;
+}
+
+.valid-error {
+    color: @grey;
+    text-transform: lowercase;
+}
+
+#screen-locker {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.15;
+    z-index: 9999;
+    display: block;
+    background: @white;
+    position: absolute;
+    visibility: visible;
+    transition: all 0.25s;
+    .loading-completed & {
+        opacity: 0;
+        display: none;
+        visibility: hidden;
+    }
+}
+
+.view {
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    &.sidebar {
+        z-index: 110;
+        width: 0%;
+    }
+    &.viewer {
+        z-index: 120;
+        width: 100%;
+        background-color: @viewer;
+    }
+    &.cheatsheet {
+        z-index: 130;
+        width: 0%;
+    }
+}
+
+#main,
+#header,
+#footer,
+.view,
+.splitter {
+    transition: all 0.25s;
 }
 
 #page {
@@ -126,6 +182,9 @@ body {
         position: absolute;
         top: @header-height;
         bottom: @footer-height;
+        .screen-full & {
+            bottom: 0;
+        }
     }
     #footer {
         z-index: 300;
@@ -152,67 +211,9 @@ body {
                 color: @white;
             }
         }
-    }
-}
-
-.valid-error {
-    color: @grey;
-    text-transform: lowercase;
-}
-
-#screen-locker {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    opacity: 0.15;
-    z-index: 9999;
-    display: block;
-    background: @white;
-    position: absolute;
-    visibility: visible;
-    transition: all 0.25s;
-}
-
-.loading-completed #screen-locker {
-    opacity: 0;
-    display: none;
-    visibility: hidden;
-}
-
-.view,
-#main,
-#header,
-#footer,
-.splitter {
-    transition: all 0.25s;
-}
-
-.screen-full {
-    #page #main {
-        bottom: 0;
-    }
-    #page #footer {
-        bottom: -40px;
-    }
-}
-
-.view {
-    height: 100%;
-    overflow: hidden;
-    position: relative;
-    &.sidebar {
-        z-index: 110;
-        width: 0%;
-    }
-    &.viewer {
-        z-index: 120;
-        width: 100%;
-        background-color: @viewer;
-    }
-    &.cheatsheet {
-        z-index: 130;
-        width: 0%;
+        .screen-full & {
+            bottom: -40px;
+        }
     }
 }
 
@@ -485,6 +486,7 @@ body {
         }
     }
 }
+
 /* -------------------------------------------------------------
  *
  *
@@ -509,7 +511,8 @@ body {
     #screen-locker {
         background: @dark;
     }
-    .popover, .dropdown-menu {
+    .popover,
+    .dropdown-menu {
         background-color: @tooltip;
         &.bottom > .arrow {
             border-bottom-color: @tooltip;
