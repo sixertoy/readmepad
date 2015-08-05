@@ -5,9 +5,10 @@ module.exports = function (config) {
     config.set({
         basePath: './',
         autoWatch: false,
-        frameworks: ['jasmine'],
+        frameworks: ['jasmine', 'sinon'],
         browsers: ['PhantomJS'],
         plugins: [
+            'karma-sinon',
             'karma-jasmine',
             'karma-chrome-launcher',
             'karma-phantomjs-launcher'

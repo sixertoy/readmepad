@@ -35,7 +35,7 @@
                 // evite l'affichage du divider du menu
                 // dans la liste des projets
                 // si la liste des projets est vide
-                if (!projects.length) {
+                if (!lodash.isArray(projects) || !projects.length) {
                     $scope.projects = false;
                 } else {
                     $scope.projects = projects;
