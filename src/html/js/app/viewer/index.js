@@ -5,15 +5,15 @@
     'use strict';
 
     angular.module('readmepadAppViewer', ['ui.router', 'base64'])
-        .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+        .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
             $urlRouterProvider.otherwise('/');
-            /*
             $stateProvider
-                .state('document/view', {
-                    url: '/document/view/:content'
+                .state('document', {
+                    url: '/document/:id',
+                    controller: function ($scope, $stateParams) {
+                        console.log($stateParams)
+                    }
                 });
-                */
-//            $locationProvider.html5Mode(true);
         }])
         .run(function () {});
 

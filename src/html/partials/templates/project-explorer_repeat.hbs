@@ -1,5 +1,5 @@
 <script type="text/ng-template" id="projectTree">
-    <a href="#" routelink="createDocumentLink(document.fullpath)" class="file" ng-if="!document.files">
+    <a href="#" ui-sref="document({id: 'fooVal'})" class="file" ng-if="!document.files">
         <span>{{$ldim}}document.name{{$rdim}}</span>
     </a>
     <a href class="folder" ng-if="document.files" ng-click="openProjectSubfolder(document)">

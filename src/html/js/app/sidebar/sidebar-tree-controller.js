@@ -13,14 +13,16 @@
     angular.module('readmepadAppSidebar')
         .controller('SidebarTreeController', ['$scope', '$base64', '$urlMatcherFactory', function ($scope, $base64, $urlMatcherFactory) {
 
+            /*
             $scope.createDocumentLink = function (path) {
-                console.log(path);
                 return $urlMatcherFactory.compile('/document/:id').format({
                     id: encodeURIComponent($base64.encode(path))
                 });
             };
+            */
 
-        }])
+        }]);
+        /*
         .directive('routelink', [function () {
 
             return {
@@ -32,4 +34,5 @@
             };
 
         }]);
+        */
 }());
