@@ -109,7 +109,7 @@
                 modalInstance = $modal.open({
                     scope: $scope,
                     animation: true,
-                    templateUrl: 'sidebar/import.html',
+                    templateUrl: 'project/import.html',
                     controller: 'NewProjectModalController',
                     resolve: {
                         data: function () {

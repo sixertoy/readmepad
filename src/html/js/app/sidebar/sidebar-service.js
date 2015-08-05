@@ -168,7 +168,7 @@
                     var q = $q.defer();
                     uri += '/' + projects[index].project_id;
                     this.call('delete', uri).then(function (data) {
-                        if(data){
+                        if (data) {
                             lodash.pullAt(projects, index);
                         }
                         q.resolve(projects);

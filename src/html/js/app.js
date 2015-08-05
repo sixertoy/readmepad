@@ -4,7 +4,14 @@
 
     'use strict';
 
-    angular.module('readmepadApp', ['readmepadAppSidebar', 'readmepadAppViewer', 'readmepadAppToolbar', 'readmepadAppCheatsheet'])
+    var dependencies = [
+        'readmepadAppViewer',
+        'readmepadAppSidebar',
+        'readmepadAppToolbar',
+        'readmepadAppCheatsheet'
+    ];
+
+    angular.module('readmepadApp', dependencies)
         .constant('lodash', _)
         .constant('markdownit', markdownit)
         .run(function () {});

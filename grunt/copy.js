@@ -32,13 +32,13 @@ module.exports = {
         flatten: true,
         cwd: './bower_components/',
         dest: './src/html/js/lib/angular/',
-        src: ['angular-sanitize/angular-sanitize.min.js', 'angular-ui-ace/ui-ace.min.js', 'angular-bootstrap/ui-bootstrap-tpls.min.js', 'angular-md5/angular-md5.min.js', 'angular-mocks/angular-mocks.js', 'ng-scrollbar/dist/ng-scrollbar.min.js', 'angular-ui-router/release/angular-ui-router.min.js', 'angular-base64/angular-base64.min.js']
+        src: ['angular-sanitize/angular-sanitize.min.js', 'angular-ui-ace/ui-ace.min.js', 'angular-bootstrap/ui-bootstrap-tpls.min.js', 'angular-md5/angular-md5.min.js', 'angular-mocks/angular-mocks.js', 'ng-scrollbar/dist/ng-scrollbar.min.js', 'angular-ui-router/release/angular-ui-router.min.js', 'angular-base64/angular-base64.min.js', 'angular-loading-bar/build/loading-bar.min.js', 'angular-animate/angular-animate.min.js']
     },
     bower_css: {
         expand: true,
         flatten: true,
         dest: './src/html/css/',
         cwd: './bower_components/',
-        src: ['bootstrap/dist/css/bootstrap.min.css', 'normalize.css/normalize.css', 'octicons/octicons/octicons.css', 'octicons/octicons/octicons.ttf', 'octicons/octicons/octicons.woff', 'octicons/octicons/octicons.eot', 'octicons/octicons/octicons.svg', 'ng-scrollbar/dist/ng-scrollbar.min.css']
+        src: ['bootstrap/dist/css/bootstrap.min.css', 'normalize.css/normalize.css', 'octicons/octicons/octicons.css', 'octicons/octicons/octicons.ttf', 'octicons/octicons/octicons.woff', 'octicons/octicons/octicons.eot', 'octicons/octicons/octicons.svg', 'ng-scrollbar/dist/ng-scrollbar.min.css', 'angular-loading-bar/build/loading-bar.min.css']
     }
 };
