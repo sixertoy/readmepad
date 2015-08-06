@@ -38,10 +38,13 @@
   },
   "homepage": "https://github.com/sixertoy/readmepad",
   "dependencies": {
+    "archiver": "^0.14.4",
     "body-parser": "^1.13.2",
     "chalk": "^1.1.0",
     "compression": "^1.5.2",
     "express": "^4.13.1",
+    "is-absolute": "^0.2.2",
+    "is-git-url": "^0.2.3",
     "lodash": "^3.10.0",
     "md5": "^2.0.0",
     "multer": "^0.1.8",
