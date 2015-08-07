@@ -1,0 +1,4 @@
+rm -rf ./spec/fixtures/nedb
+rm -rf  ./spec/outputs
+mkdir  ./spec/outputs
+exit 0
