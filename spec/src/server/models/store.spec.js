@@ -1,6 +1,6 @@
 /*jshint unused: false */
 /*jslint indent: 4, nomen: true */
-/*global __dirname, console, jasmine, process, require, define, describe, xdescribe, it, xit, expect, beforeEach, afterEach, afterLast */
+/*global __dirname, console, process, require, define, describe, xdescribe, it, xit, expect, beforeEach, afterEach, afterLast */
 (function () {
 
     'use strict';
@@ -10,6 +10,7 @@
         fs = require('fs'),
         md5 = require('md5'),
         path = require('path'),
+        expect = require('chai'),
         dbfile = path.join(cwd, 'spec', 'fixtures', 'nedb', 'store.nedb'),
         storeModel = require(path.join(cwd, 'src', 'server', 'models', 'store'));
 
@@ -23,7 +24,7 @@
                         console.log(err);
                     } else {
                         stats = fs.statSync(dbfile);
-                        expect(stats.isFile()).toEqual(true);
+                        expect(stats.isFile()).to.equal(true);
                         done();
                     }
                 });
@@ -33,27 +34,27 @@
         describe('findOneProject', function () {
             it('reject no argument', function (done) {
                 storeModel.findOneProject().then(function (data) {}, function (err) {
-                    expect(err.message).toEqual('needs 2 argument at least');
+                    expect(err.message).to.equal('needs 2 argument at least');
                     done();
                 });
             });
             it('reject empty string', function (done) {
                 storeModel.findOneProject('store', '').then(function (data) {}, function (err) {
-                    expect(err.message).toEqual('needs 2 argument at least');
+                    expect(err.message).to.equal('needs 2 argument at least');
                     done();
                 });
             });
             it('reject empty string', function (done) {
                 dbname = 'store';
                 storeModel.findOneProject(dbname, '     ').then(function (data) {}, function (err) {
-                    expect(err.message).toEqual('needs 2 argument at least');
+                    expect(err.message).to.equal('needs 2 argument at least');
                     done();
                 });
             });
             it('reject not a string', function (done) {
                 dbname = 'store';
                 storeModel.findOneProject(dbname, {}).then(function (data) {}, function (err) {
-                    expect(err.message).toEqual('needs 2 argument at least');
+                    expect(err.message).to.equal('needs 2 argument at least');
                     done();
                 });
             });
@@ -61,7 +62,7 @@
                 dbname = 'store';
                 var project_id = md5('toto/project');
                 storeModel.findOneProject(dbname, project_id).then(function (data) {
-                    expect(data).toEqual(false);
+                    expect(data).to.equal(false);
                     done();
                 }, function (err) {});
             });
@@ -70,21 +71,21 @@
         describe('createProject', function () {
             it('reject needs more argument', function (done) {
                 storeModel.createProject().then(function () {}, function (err) {
-                    expect(err.message).toEqual('needs 3 arguments at least');
+                    expect(err.message).to.equal('needs 3 arguments at least');
                     done();
                 });
             });
             it('reject needs more argument', function (done) {
                 dbname = 'name';
                 storeModel.createProject(dbname).then(function () {}, function (err) {
-                    expect(err.message).toEqual('needs 3 arguments at least');
+                    expect(err.message).to.equal('needs 3 arguments at least');
                     done();
                 });
             });
             it('reject needs more argument', function (done) {
                 dbname = 'name';
                 storeModel.createProject(dbname, md5('path/project')).then(function () {}, function (err) {
-                    expect(err.message).toEqual('needs 3 arguments at least');
+                    expect(err.message).to.equal('needs 3 arguments at least');
                     done();
                 });
             });
@@ -95,7 +96,7 @@
                 dbname = 'store';
                 storeModel.createProject(dbname, name, fullpath).then(function (doc) {
                     project_id = md5(fullpath);
-                    expect(doc.project_id).toEqual(project_id);
+                    expect(doc.project_id).to.equal(project_id);
                     done();
                 }, function (err) {});
             });
@@ -104,7 +105,7 @@
                     fullpath = 'path/to/toto';
                 dbname = 'store';
                 storeModel.createProject(dbname, name, fullpath).then(function (doc) {}, function (err) {
-                    expect(err.errorType).toEqual('uniqueViolated');
+                    expect(err.errorType).to.equal('uniqueViolated');
                     done();
                 });
             });
@@ -115,7 +116,7 @@
                 dbname = 'store';
                 var project_id = md5('path/to/toto');
                 storeModel.findOneProject(dbname, project_id).then(function (doc) {
-                    expect(project_id).toEqual(doc.project_id);
+                    expect(project_id).to.equal(doc.project_id);
                     done();
                 }, function (err) {});
             });
@@ -124,14 +125,14 @@
         describe('deleteProject', function () {
             it('reject more argument', function (done) {
                 storeModel.deleteProject().then(function () {}, function (err) {
-                    expect(err.message).toEqual('needs 2 argument at least');
+                    expect(err.message).to.equal('needs 2 argument at least');
                     done();
                 });
             });
             it('reject more argument', function (done) {
                 dbname = 'store';
                 storeModel.deleteProject(dbname).then(function () {}, function (err) {
-                    expect(err.message).toEqual('needs 2 argument at least');
+                    expect(err.message).to.equal('needs 2 argument at least');
                     done();
                 });
             });
@@ -139,7 +140,7 @@
                 dbname = 'store';
                 var project_id = md5('path/to/toto');
                 storeModel.deleteProject(dbname, project_id).then(function (num) {
-                    expect(num).toEqual(1);
+                    expect(num).to.equal(1);
                     done();
                 }, function () {});
             });
@@ -147,7 +148,7 @@
                 dbname = 'store';
                 var project_id = md5('path/to/toto');
                 storeModel.deleteProject(dbname, project_id).then(function (num) {
-                    expect(num).toEqual(0);
+                    expect(num).to.equal(0);
                     done();
                 }, function (err) {
                 });

@@ -13,6 +13,7 @@
         md5 = require('md5'),
         path = require('path'),
         nedb = require('nedb'),
+        expect = require('chai'),
         sinon = require('sinon'),
         multer = require('multer'),
         express = require('express'),
@@ -45,7 +46,7 @@
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.status).toEqual(404); // Cannot POST /project/open
+                        expect(res.status).to.equal(404); // Cannot POST /project/open
                         done();
                     });
             });
@@ -55,7 +56,7 @@
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.status).toEqual(404); // Cannot GET /project/open
+                        expect(res.status).to.equal(404); // Cannot GET /project/open
                         done();
                     });
             });
@@ -66,7 +67,7 @@
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.status).toEqual(204);
+                        expect(res.status).to.equal(204);
                         done();
                     });
             });
@@ -77,7 +78,7 @@
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.status).toEqual(204);
+                        expect(res.status).to.equal(204);
                         done();
                     });
             });
@@ -89,7 +90,7 @@
                     .post('/project/delete')
                     .send()
                     .end(function (err, res) {
-                        expect(res.statusCode).toEqual(404);
+                        expect(res.statusCode).to.equal(404);
                         done();
                     });
             });
@@ -99,7 +100,7 @@
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.statusCode).toEqual(404);
+                        expect(res.statusCode).to.equal(404);
                         done();
                     });
             });
@@ -110,8 +111,8 @@
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.body).toEqual(false);
-                        expect(res.statusCode).toEqual(200);
+                        expect(res.body).to.equal(false);
+                        expect(res.statusCode).to.equal(200);
                         done();
                     });
             });
@@ -122,8 +123,8 @@
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.body).toEqual(true);
-                        expect(res.statusCode).toEqual(200);
+                        expect(res.body).to.equal(true);
+                        expect(res.statusCode).to.equal(200);
                         done();
                     });
             });
@@ -134,8 +135,8 @@
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.body).toEqual(false);
-                        expect(res.statusCode).toEqual(200);
+                        expect(res.body).to.equal(false);
+                        expect(res.statusCode).to.equal(200);
                         done();
                     });
             });
@@ -147,7 +148,7 @@
                     .get('/project/create')
                     .send()
                     .end(function (err, res) {
-                        expect(res.statusCode).toEqual(404);
+                        expect(res.statusCode).to.equal(404);
                         done();
                     });
             });
@@ -156,7 +157,7 @@
                     .put('/project/create')
                     .send()
                     .end(function (err, res) {
-                        expect(res.statusCode).toEqual(404);
+                        expect(res.statusCode).to.equal(404);
                         done();
                     });
             });
@@ -166,7 +167,7 @@
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.statusCode).toEqual(400);
+                        expect(res.statusCode).to.equal(400);
                         done();
                     });
             });
@@ -179,7 +180,7 @@
                     .send(params)
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.statusCode).toEqual(400);
+                        expect(res.statusCode).to.equal(400);
                         done();
                     });
             });
@@ -193,7 +194,7 @@
                     .send(params)
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.statusCode).toEqual(403);
+                        expect(res.statusCode).to.equal(403);
                         done();
                     });
             });
@@ -208,9 +209,9 @@
                     .send(params)
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.statusCode).toEqual(201);
-                        expect(res.body.path).toEqual(params.uri);
-                        expect(res.body.name).toEqual(params.name);
+                        expect(res.statusCode).to.equal(201);
+                        expect(res.body.path).to.equal(params.uri);
+                        expect(res.body.name).to.equal(params.name);
                         done();
                     });
             });
@@ -225,9 +226,9 @@
                     .send(params)
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.statusCode).toEqual(200);
-                        expect(res.body.path).toEqual(params.uri);
-                        expect(res.body.name).toEqual(params.name);
+                        expect(res.statusCode).to.equal(200);
+                        expect(res.body.path).to.equal(params.uri);
+                        expect(res.body.name).to.equal(params.name);
                         done();
                     });
             });
@@ -241,7 +242,7 @@
                     .send(params)
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.statusCode).toEqual(404);
+                        expect(res.statusCode).to.equal(404);
                         done();
                     });
             });
@@ -252,7 +253,7 @@
                     .send(params)
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.statusCode).toEqual(400);
+                        expect(res.statusCode).to.equal(400);
                         done();
                     });
             });
@@ -269,7 +270,7 @@
                     .send(params)
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.statusCode).toEqual(201);
+                        expect(res.statusCode).to.equal(201);
                         done();
                     });
             });
@@ -281,7 +282,7 @@
                     .post('/project/loadall')
                     .send()
                     .end(function (err, res) {
-                        expect(res.statusCode).toEqual(404);
+                        expect(res.statusCode).to.equal(404);
                         done();
                     });
             });
@@ -295,10 +296,10 @@
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.statusCode).toEqual(200);
-                        expect(res.body.length).toEqual(1);
-                        expect(res.body[0].path).toEqual(doc.path);
-                        expect(res.body[0].name).toEqual(doc.name);
+                        expect(res.statusCode).to.equal(200);
+                        expect(res.body.length).to.equal(1);
+                        expect(res.body[0].path).to.equal(doc.path);
+                        expect(res.body[0].name).to.equal(doc.name);
                         done();
                     });
             });
@@ -317,8 +318,8 @@
                         .send()
                         .expect('Content-Type', /json/)
                         .end(function (err, res) {
-                            expect(res.statusCode).toEqual(200);
-                            expect(res.body).toEqual(data);
+                            expect(res.statusCode).to.equal(200);
+                            expect(res.body).to.equal(data);
                             done();
                         });
                 }, function () {});

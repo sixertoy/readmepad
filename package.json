@@ -1,94 +1,92 @@
 {
-    "name": "readmepad",
-    "version": "0.1.1",
-    "description": "Project generated with Yeoman generator-gruntproject v0.1.20",
-    "main": "index.js",
-    "scripts": {
-        "clean_modules": "rm -rf node_modules && rm -rf bower_components",
+  "name": "readmepad",
+  "version": "0.1.1",
+  "description": "Project generated with Yeoman generator-gruntproject v0.1.20",
+  "main": "index.js",
+  "scripts": {
+    "clean_modules": "rm -rf node_modules && rm -rf bower_components",
 
-        "prekarma": "sh scripts/prekarma",
-        "karma": "karma start karma.conf.js --single-run",
+    "prekarma": "sh scripts/prekarma",
+    "karma": "karma start karma.conf.js --single-run",
 
-        "prejasmine": "sh scripts/prejasmine",
-        "jasmine": "istanbul cover scripts/jasmine_node -x **/*.spec.js --captureExceptions spec/src/server",
+    "premocha": "sh scripts/premocha",
+    "mocha": "mocha ./spec/src/server/**/*.spec.js",
 
-        "preinstall": "bower install --allow-root",
-        "postinstall": "npm test",
+    "preinstall": "bower install --allow-root",
+    "postinstall": "npm test",
+    "pretest": "sh scripts/pretest",
+    "test": "istanbul cover scripts/jasmine_node -x **/*.spec.js --captureExceptions spec/src/server && karma start karma.conf.js --single-run",
+    "prestart": "grunt build && npm test",
+    "start": "node index"
 
-        "pretest": "sh scripts/pretest",
-        "test": "istanbul cover scripts/jasmine_node -x **/*.spec.js --captureExceptions spec/src/server && karma start karma.conf.js --single-run",
-
-        "prestart": "grunt build && npm test",
-        "start": "node index"
-
-    },
-    "engines": {
-        "node": ">=0.12.0"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/sixertoy/readmepad"
-    },
-    "keywords": [
+  },
+  "engines": {
+    "node": ">=0.12.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sixertoy/readmepad"
+  },
+  "keywords": [
     "grunt"
   ],
-    "author": [
-        {
-            "name": "sixertoy",
-            "email": "sixertoy.github@gmail.com"
+  "author": [
+    {
+      "name": "sixertoy",
+      "email": "sixertoy.github@gmail.com"
     }
   ],
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/sixertoy/readmepad/issues"
-    },
-    "homepage": "https://github.com/sixertoy/readmepad",
-    "dependencies": {
-        "archiver": "^0.14.4",
-        "body-parser": "^1.13.2",
-        "chalk": "^1.1.0",
-        "compression": "^1.5.2",
-        "express": "^4.13.1",
-        "filenamify": "^1.2.0",
-        "fs-extra": "^0.23.0",
-        "is-absolute": "^0.2.2",
-        "is-git-url": "^0.2.3",
-        "is-url": "^1.2.1",
-        "lodash": "^3.10.0",
-        "md5": "^2.0.0",
-        "multer": "^0.1.8",
-        "nedb": "^1.1.2",
-        "q": "^1.4.1",
-        "scandir-async": "^0.1.14",
-        "serve-favicon": "^2.3.0",
-        "winston": "^1.0.1"
-    },
-    "devDependencies": {
-        "grunt": "^0.4.5",
-        "grunt-autoprefixer": "^3.0.3",
-        "grunt-bump": "^0.3.1",
-        "grunt-contrib-clean": "^0.6.0",
-        "grunt-contrib-connect": "^0.10.1",
-        "grunt-contrib-copy": "^0.8.0",
-        "grunt-contrib-cssmin": "^0.12.3",
-        "grunt-contrib-jshint": "^0.11.2",
-        "grunt-contrib-less": "^1.0.1",
-        "grunt-contrib-watch": "^0.6.1",
-        "grunt-font-base64": "^0.1.4",
-        "grunt-joli-markdown": "latest",
-        "grunt-mustacher": "^1.3.15",
-        "istanbul": "^0.3.16",
-        "jasmine-core": "^2.3.4",
-        "jasmine-node": "^1.14.5",
-        "karma": "^0.13.3",
-        "karma-chrome-launcher": "^0.2.0",
-        "karma-jasmine": "^0.3.6",
-        "karma-junit-reporter": "^0.3.3",
-        "karma-phantomjs-launcher": "^0.2.0",
-        "karma-sinon": "^1.0.4",
-        "load-grunt-config": "^0.17.1",
-        "phantomjs": "^1.9.17",
-        "sinon": "1.15.3",
-        "supertest": "^1.0.1"
-    }
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sixertoy/readmepad/issues"
+  },
+  "homepage": "https://github.com/sixertoy/readmepad",
+  "dependencies": {
+    "archiver": "^0.14.4",
+    "body-parser": "^1.13.2",
+    "chalk": "^1.1.0",
+    "compression": "^1.5.2",
+    "express": "^4.13.1",
+    "filenamify": "^1.2.0",
+    "fs-extra": "^0.23.0",
+    "is-absolute": "^0.2.2",
+    "is-git-url": "^0.2.3",
+    "is-url": "^1.2.1",
+    "lodash": "^3.10.0",
+    "md5": "^2.0.0",
+    "multer": "^0.1.8",
+    "nedb": "^1.1.2",
+    "q": "^1.4.1",
+    "scandir-async": "^0.1.14",
+    "serve-favicon": "^2.3.0",
+    "winston": "^1.0.1"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "grunt": "^0.4.5",
+    "grunt-autoprefixer": "^3.0.3",
+    "grunt-bump": "^0.3.1",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-connect": "^0.10.1",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-contrib-cssmin": "^0.12.3",
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-contrib-less": "^1.0.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-font-base64": "^0.1.4",
+    "grunt-joli-markdown": "latest",
+    "grunt-mustacher": "^1.3.15",
+    "istanbul": "^0.3.16",
+    "karma": "^0.13.3",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-junit-reporter": "^0.3.3",
+    "karma-mocha": "^0.2.0",
+    "karma-phantomjs-launcher": "^0.2.0",
+    "karma-sinon": "^1.0.4",
+    "load-grunt-config": "^0.17.1",
+    "phantomjs": "^1.9.17",
+    "sinon": "1.15.3",
+    "supertest": "^1.0.1"
+  }
 }

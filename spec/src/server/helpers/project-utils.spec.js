@@ -7,6 +7,7 @@
 
     var cwd = process.cwd(),
         path = require('path'),
+        expect = require('chai'),
         scandir = require('scandir-async').exec,
         projectUtils = require(path.join(cwd, 'src', 'server', 'helpers', 'project-utils'));
 
@@ -18,31 +19,31 @@
                 var msg = 'need 2 arguments at least.';
                 expect(function () {
                     projectUtils.files();
-                }).toThrow(msg);
+                }).to.throw(msg);
                 expect(function () {
                     projectUtils.files([], '');
-                }).toThrow(msg);
+                }).to.throw(msg);
                 expect(function () {
                     projectUtils.files([], '    ');
-                }).toThrow(msg);
+                }).to.throw(msg);
                 expect(function () {
                     projectUtils.files(false, 'fullpath/to/project');
-                }).toThrow(msg);
+                }).to.throw(msg);
                 expect(function () {
                     projectUtils.files(123, 'fullpath/to/project');
-                }).toThrow(msg);
+                }).to.throw(msg);
             });
 
             it('not throw', function () {
                 expect(function () {
                     projectUtils.files([], 'fullpath/to/project');
-                }).not.toThrow();
+                }).not.to.throw();
             });
 
             it('returns false', function () {
                 var files = [],
                     result = projectUtils.files(files, 'fullpath/to/project');
-                expect(result).toEqual(false);
+                expect(result).to.equal(false);
             });
 
             it('returns object', function (done) {
@@ -50,13 +51,13 @@
                     fullpath = path.join(cwd, 'src', 'docs');
                 scandir(fullpath).then(function (data) {
                     result = projectUtils.files(data.files, fullpath);
-                    expect(Object.keys(result).length).toEqual(3);
+                    expect(Object.keys(result).length).to.equal(3);
                     name = path.join(cwd, 'src', 'docs', 'index.md');
-                    expect(result[name]).toEqual('index.md');
+                    expect(result[name]).to.equal('index.md');
                     name = path.join(cwd, 'src', 'docs', 'meta.json');
-                    expect(result[name]).toEqual('meta.json');
+                    expect(result[name]).to.equal('meta.json');
                     name = path.join(cwd, 'src', 'docs', 'pages');
-                    expect(result[name]).toEqual('pages');
+                    expect(result[name]).to.equal('pages');
 
                     done();
                 }, function () {});
