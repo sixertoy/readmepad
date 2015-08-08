@@ -28,15 +28,15 @@
         });
 
         describe('changeEditMode', function () {
-            it('set scope.editMode to true', function () {
+            xit('set scope.editMode to true', function () {
                 $scope.editMode = false;
                 $scope.changeEditMode();
-                expect($scope.editMode).toEqual(true);
+                expect($scope.editMode).to.equal(true);
             });
-            it('set scope.editMode to false', function () {
+            xit('set scope.editMode to false', function () {
                 $scope.editMode = true;
                 $scope.changeEditMode();
-                expect($scope.editMode).toEqual(false);
+                expect($scope.editMode).to.equal(false);
             });
         });
 

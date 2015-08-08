@@ -31,7 +31,7 @@
 
         describe('$scope.projects', function () {
             it('returns false by defaults lodash.assign', function () {
-                expect($scope.projects).toEqual(false);
+                expect($scope.projects).to.equal(false);
             });
         });
 
@@ -39,24 +39,24 @@
             it('returns false', function () {
                 var projects = [];
                 $scope.setProjectsList(projects);
-                expect($scope.projects).toEqual(false);
+                expect($scope.projects).to.equal(false);
                 projects = null;
                 $scope.setProjectsList(projects);
-                expect($scope.projects).toEqual(false);
+                expect($scope.projects).to.equal(false);
                 projects = false;
                 $scope.setProjectsList(projects);
-                expect($scope.projects).toEqual(false);
+                expect($scope.projects).to.equal(false);
                 projects = {};
                 $scope.setProjectsList(projects);
-                expect($scope.projects).toEqual(false);
+                expect($scope.projects).to.equal(false);
                 projects = 123;
                 $scope.setProjectsList(projects);
-                expect($scope.projects).toEqual(false);
+                expect($scope.projects).to.equal(false);
             });
             it('returns list', function () {
                 var projects = ['toto', 'titi', 'tutu'];
                 $scope.setProjectsList(projects);
-                expect($scope.projects).toEqual(projects);
+                expect($scope.projects).to.equal(projects);
             });
         });
 

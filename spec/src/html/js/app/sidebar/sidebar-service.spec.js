@@ -30,11 +30,11 @@
 
         describe('service rest api url', function () {
             it('returns true', function () {
-                expect($service.OPEN_URI).toEqual('/project/open');
-                expect($service.REMOVE_URI).toEqual('/project/delete');
-                expect($service.UPDATE_URI).toEqual('/project/update');
-                expect($service.CREATE_URI).toEqual('/project/create');
-                expect($service.LOADALL_URI).toEqual('/project/loadall');
+                expect($service.OPEN_URI).to.equal('/project/open');
+                expect($service.REMOVE_URI).to.equal('/project/delete');
+                expect($service.UPDATE_URI).to.equal('/project/update');
+                expect($service.CREATE_URI).to.equal('/project/create');
+                expect($service.LOADALL_URI).to.equal('/project/loadall');
             });
         });
 

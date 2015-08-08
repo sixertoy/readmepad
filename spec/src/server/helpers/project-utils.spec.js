@@ -1,13 +1,13 @@
 /*jshint unused: false */
 /*jslint indent: 4, nomen: true */
-/*global __dirname, jasmine, process, require, define, describe, xdescribe, it, xit, expect, beforeEach, afterEach, afterLast, console */
+/*global __dirname, jasmine, process, require, define, describe, xdescribe, it, xit, beforeEach, afterEach, afterLast, console */
 (function () {
 
     'use strict';
 
     var cwd = process.cwd(),
         path = require('path'),
-        expect = require('chai'),
+        expect = require('chai').expect,
         scandir = require('scandir-async').exec,
         projectUtils = require(path.join(cwd, 'src', 'server', 'helpers', 'project-utils'));
 

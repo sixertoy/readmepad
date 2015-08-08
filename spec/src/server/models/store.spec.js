@@ -10,7 +10,7 @@
         fs = require('fs'),
         md5 = require('md5'),
         path = require('path'),
-        expect = require('chai'),
+        expect = require('chai').expect,
         dbfile = path.join(cwd, 'spec', 'fixtures', 'nedb', 'store.nedb'),
         storeModel = require(path.join(cwd, 'src', 'server', 'models', 'store'));
 

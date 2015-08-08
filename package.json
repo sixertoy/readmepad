@@ -10,15 +10,15 @@
     "karma": "karma start karma.conf.js --single-run",
 
     "premocha": "sh scripts/premocha",
-    "mocha": "mocha ./spec/src/server/**/*.spec.js",
+    "mocha": "istanbul test node_modules/mocha/bin/_mocha -R spec ./spec/src/server/**/*.spec.js",
 
     "preinstall": "bower install --allow-root",
     "postinstall": "npm test",
-    "pretest": "sh scripts/pretest",
-    "test": "istanbul cover scripts/jasmine_node -x **/*.spec.js --captureExceptions spec/src/server && karma start karma.conf.js --single-run",
+
+    "test": "npm run mocha && npm run karma",
+
     "prestart": "grunt build && npm test",
     "start": "node index"
-
   },
   "engines": {
     "node": ">=0.12.0"
@@ -76,7 +76,6 @@
     "grunt-font-base64": "^0.1.4",
     "grunt-joli-markdown": "latest",
     "grunt-mustacher": "^1.3.15",
-    "istanbul": "^0.3.16",
     "karma": "^0.13.3",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^0.2.0",
@@ -86,7 +85,7 @@
     "karma-sinon": "^1.0.4",
     "load-grunt-config": "^0.17.1",
     "phantomjs": "^1.9.17",
-    "sinon": "1.15.3",
+    "sinon": "^1.15.4",
     "supertest": "^1.0.1"
   }
 }
