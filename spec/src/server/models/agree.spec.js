@@ -193,7 +193,7 @@
                 });
             });
 
-            xdescribe('sub commands', function () {
+            describe('sub commands', function () {
 
                 beforeEach(function () {
                     // sinon.spy(agree, '_execClone'); //.returns(Q.resolve(true));
@@ -214,9 +214,9 @@
                 it('success directory', function (done) {
                     var p = path.join(fxpath, 'agree');
                     result = agree.exec('a name', p, '/path/to/folder').then(function () {
-                        expect(Q.defer.called).to.be(true);
+                        expect(Q.defer.called).to.equal(true);
                         expect(result.inspect()).to.deep.equal(promise);
-                        expect(agree._execPathCopy.calledOnce).to.be(true);
+                        expect(agree._execPathCopy.calledOnce).to.equal(true);
                         done();
                     }, function (err) {
                         console.log(err.message);

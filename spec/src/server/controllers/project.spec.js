@@ -305,7 +305,7 @@
             });
         });
 
-        xdescribe('[GET] /project/open', function () {
+        describe('[GET] /project/open', function () {
             it('returns a files tree', function (done) {
                 var project_id,
                     project_path = path.join(cwd, 'src', 'docs');
@@ -319,7 +319,7 @@
                         .expect('Content-Type', /json/)
                         .end(function (err, res) {
                             expect(res.statusCode).to.equal(200);
-                            expect(res.body).to.equal(data);
+                            expect(res.body).to.deep.equal(data);
                             done();
                         });
                 }, function () {});
