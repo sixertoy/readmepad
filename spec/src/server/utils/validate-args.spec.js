@@ -22,16 +22,41 @@
 
         afterEach(function () {});
 
-        it('throw', function () {
-            expect(function () {
-                validate();
-            }).to.throw('unable to validate args');
+        it('not throw', function () {
+            result = validate();
+            expect(result).to.equal(true);
         });
 
-        it('throw', function () {
+        it('throw not args', function () {
+            expect(function () {
+                validate({}, [_.isString]);
+            }).to.throw('missing arguments');
+        });
+
+        it('throw not array', function () {
+            expect(function () {
+                args = buildArguments(1224, '');
+                validate(args, '');
+            }).to.throw('missing arguments');
+        });
+
+        it('throw not params and not array', function () {
             expect(function () {
                 validate({}, '');
-            }).to.throw('unable to validate args');
+            }).to.throw('missing arguments');
+        });
+
+        it('throw null args', function () {
+            expect(function () {
+                validate(null, '');
+            }).to.throw('missing arguments');
+        });
+
+        it('throw null validators', function () {
+            expect(function () {
+                args = buildArguments(1224, '');
+                validate(args, null);
+            }).to.throw('missing arguments');
         });
 
         it('returns true optionals arguments', function () {
@@ -40,9 +65,15 @@
             expect(result).to.equal(true);
         });
 
-        it('returns false less arguments', function () {
-            args = buildArguments();
+        it('returns false less arguments more validators', function () {
+            args = buildArguments(); // no arguments
             result = validate(args, [_.isString]);
+            expect(result).to.equal(false);
+        });
+
+        it('returns false less arguments more validators', function () {
+            args = buildArguments(123); // no arguments
+            result = validate(args, [_.isString, _.isString]);
             expect(result).to.equal(false);
         });
 
@@ -57,7 +88,17 @@
                 result = validate(args, [_.isString, _.isString]);
                 expect(result).to.equal(false);
             });
-            it('returns true', function () {
+            it('returns true 0 arg', function () {
+                args = buildArguments();
+                result = validate(args);
+                expect(result).to.equal(true);
+            });
+            it('returns true 1 arg', function () {
+                args = buildArguments('not empty');
+                result = validate(args, [_.isString]);
+                expect(result).to.equal(true);
+            });
+            it('returns true 2 arg', function () {
                 args = buildArguments('not empty', 'not empty');
                 result = validate(args, [_.isString, _.isString]);
                 expect(result).to.equal(true);
