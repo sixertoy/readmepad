@@ -18,11 +18,11 @@
         express = require('express'),
         request = require('supertest'),
         expect = require('chai').expect,
+        filenamify = require('filenamify'),
         bodyParser = require('body-parser'),
         scandir = require('scandir-async').exec,
         dbfile = path.join(cwd, 'spec', 'fixtures', 'nedb', 'project.nedb'),
         storeModel = require(path.join(cwd, 'src', 'server', 'models', 'store')),
-        projectUtils = require(path.join(cwd, 'src', 'server', 'helpers', 'project-utils')),
         projectController = require(path.join(cwd, 'src', 'server', 'controllers', 'project'));
     //
     app = express();
@@ -35,11 +35,14 @@
     //
     projectController.name(dbname);
     projectController.model(storeModel);
-    storeModel.createProject(dbname, 'toto', 'path/to/toto', []);
+    storeModel.createProject(dbname, {
+        name: 'toto',
+        path: 'path/to/toto'
+    }, []);
 
-    describe('controllers/project', function () {
+    describe('projectController', function () {
 
-        describe('[GET] /project/open', function () {
+        describe('[GET]/project/open', function () {
             it('fails', function (done) {
                 request(app)
                     .post('/project/open')
@@ -84,7 +87,7 @@
             });
         });
 
-        describe('[DELETE] /project/delete', function () {
+        describe('[DELETE]/project/delete', function () {
             it('fails', function (done) {
                 request(app)
                     .post('/project/delete')
@@ -105,9 +108,9 @@
                     });
             });
             it('success code 200 but no document', function (done) {
-                var project_id = md5('project/non/exists');
+                var pid = md5('project/non/exists');
                 request(app)
-                    .delete('/project/delete/' + project_id)
+                    .delete('/project/delete/' + pid)
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
@@ -117,9 +120,9 @@
                     });
             });
             it('success code 200 document has been deleted', function (done) {
-                var project_id = md5('path/to/toto');
+                var pid = md5('path/to/toto');
                 request(app)
-                    .delete('/project/delete/' + project_id)
+                    .delete('/project/delete/' + pid)
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
@@ -129,9 +132,9 @@
                     });
             });
             it('success code 200 but no document', function (done) {
-                var project_id = md5('path/to/toto');
+                var pid = md5('path/to/toto');
                 request(app)
-                    .delete('/project/delete/' + project_id)
+                    .delete('/project/delete/' + pid)
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
@@ -142,7 +145,7 @@
             });
         });
 
-        describe('[POST] /project/create', function () {
+        describe('[POST]/project/create', function () {
             it('fails', function (done) {
                 request(app)
                     .get('/project/create')
@@ -173,7 +176,8 @@
             });
             it('fails empty project_path param', function (done) {
                 var params = {
-                    project_path: ''
+                    name: '',
+                    path: ''
                 };
                 request(app)
                     .post('/project/create')
@@ -186,8 +190,8 @@
             });
             it('fails project not exists', function (done) {
                 var params = {
-                    name: 'docs',
-                    uri: path.join(__dirname, 'src', 'docs')
+                    name: 'an ui project name',
+                    path: path.join(__dirname, 'src', 'docs')
                 };
                 request(app)
                     .post('/project/create')
@@ -198,11 +202,11 @@
                         done();
                     });
             });
-            it('success project created', function (done) {
-                var fullpath = path.join(cwd, 'src', 'docs'),
+            it('success project non exists created', function (done) {
+                var name,
                     params = {
-                        name: 'docs',
-                        uri: fullpath
+                        name: 'AN ui project name',
+                        path: path.join(cwd, 'src', 'docs')
                     };
                 request(app)
                     .post('/project/create')
@@ -210,31 +214,36 @@
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
                         expect(res.statusCode).to.equal(201);
-                        expect(res.body.path).to.equal(params.uri);
-                        expect(res.body.name).to.equal(params.name);
+
+                        expect(res.body.path).to.equal(params.path);
+                        expect(res.body.uiname).to.equal(params.name);
+
+                        name = filenamify(params.name);
+                        expect(res.body.name).not.to.equal(name);
+                        name = filenamify(params.name).replace(/([\s])/g, '_').toLowerCase();
+                        expect(res.body.name).to.equal(name);
                         done();
                     });
             });
             it('success but project already exists', function (done) {
-                var fullpath = path.join(cwd, 'src', 'docs'),
-                    params = {
-                        name: 'docs',
-                        uri: fullpath
-                    };
+                var params = {
+                    name: 'AN ui project name',
+                    path: path.join(cwd, 'src', 'docs')
+                };
                 request(app)
                     .post('/project/create')
                     .send(params)
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
                         expect(res.statusCode).to.equal(200);
-                        expect(res.body.path).to.equal(params.uri);
-                        expect(res.body.name).to.equal(params.name);
+                        expect(res.body.path).to.equal(params.path);
+                        expect(res.body.uiname).to.equal(params.name);
                         done();
                     });
             });
         });
 
-        describe('[PUT] /project/update', function () {
+        describe('[PUT]/project/update', function () {
             it('fails', function (done) {
                 var params = {};
                 request(app)
@@ -258,13 +267,10 @@
                     });
             });
             it('success rename project', function (done) {
-                var fullpath = path.join(cwd, 'src', 'docs'),
-                    params = {
-                        project: {
-                            name: 'ReadmePad',
-                            project_id: md5(fullpath)
-                        }
-                    };
+                var params = {
+                    name: 'ReadmePad',
+                    pid: md5(path.join(cwd, 'src', 'docs'))
+                };
                 request(app)
                     .put('/project/update')
                     .send(params)
@@ -276,7 +282,7 @@
             });
         });
 
-        describe('[GET] /project/loadall', function () {
+        describe('[GET]/project/loadall', function () {
             it('fails', function (done) {
                 request(app)
                     .post('/project/loadall')
@@ -288,9 +294,9 @@
             });
             it('success', function (done) {
                 var doc = {
-                        name: 'ReadmePad',
-                        path: path.join(cwd, 'src', 'docs')
-                    };
+                    name: 'ReadmePad',
+                    path: path.join(cwd, 'src', 'docs')
+                };
                 request(app)
                     .get('/project/loadall')
                     .send()
@@ -299,13 +305,14 @@
                         expect(res.statusCode).to.equal(200);
                         expect(res.body.length).to.equal(1);
                         expect(res.body[0].path).to.equal(doc.path);
-                        expect(res.body[0].name).to.equal(doc.name);
+                        expect(res.body[0].uiname).to.equal(doc.name);
+                        expect(res.body[0].name).to.equal(filenamify(doc.name).replace(/([\s])/g, '_').toLowerCase());
                         done();
                     });
             });
         });
 
-        describe('[GET] /project/open', function () {
+        describe('[GET]/project/open', function () {
             it('returns a files tree', function (done) {
                 var project_id,
                     project_path = path.join(cwd, 'src', 'docs');

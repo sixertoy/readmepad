@@ -18,7 +18,7 @@
         agree = require(path.join(cwd, 'src', 'server', 'models', 'agree')),
         fxpath = path.join(cwd, 'spec', 'fixtures');
 
-    describe('agree', function () {
+    describe('agreeModel', function () {
 
         beforeEach(function () {
             sinon.spy(Q, 'defer');
@@ -31,13 +31,13 @@
         describe('_execPathCopy', function () {
             it('it throw', function () {
                 var o = path.join(fxpath, '..', 'outputs');
-                expect(function(){
+                expect(function () {
                     agree._execPathCopy(null, o);
                 }).to.throw('missing arguments');
             });
             it('it throw', function () {
                 var p = path.join(fxpath, 'agree');
-                expect(function(){
+                expect(function () {
                     agree._execPathCopy(p, null);
                 }).to.throw('missing arguments');
             });
@@ -147,6 +147,8 @@
                         done();
                     });
                 });
+            });
+            describe('input is not a path', function () {
                 // ------------------------------ fails input arg not a path --------------------
                 it('fails input path non exists/not a path', function (done) {
                     agree.exec('a name', '../file/path', '/path/to/folder').then(function () {}, function (err) {
@@ -188,6 +190,16 @@
                 it('fails not a github repo', function (done) {
                     agree.exec('a name', 'http://github.com/user/repo', 'c:\\path\\to\\folder').then(function () {}, function (err) {
                         expect(err.message).to.equal('invalid url must target a zip file or a git repository');
+                        done();
+                    });
+                });
+            });
+
+            describe('name is not valid', function () {
+                it('reject invalid char', function(done){
+                    var p = path.join(fxpath, 'agree');
+                    agree.exec('a <name', p, '/path/to/folder').then(function () {}, function (err) {
+                        expect(err.message).to.equal('invalid file name');
                         done();
                     });
                 });

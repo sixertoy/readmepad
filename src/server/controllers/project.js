@@ -21,8 +21,7 @@
         chalk = require('chalk'),
         lodash = require('lodash'),
         express = require('express'),
-        scandir = require('scandir-async').exec,
-        projectUtils = require('./../helpers/project-utils');
+        scandir = require('scandir-async').exec;
 
     router = express.Router({
         caseSensitive: true
@@ -68,29 +67,34 @@
     });
 
     router.post('/create', function (req, res) {
-        var project_id, name,
-            valid = !req.body.hasOwnProperty('uri') || !lodash.isString(req.body.uri) || lodash.isEmpty(req.body.uri);
-        if (valid) {
+        var pid, name, doc,
+            pathvalid = req.body.hasOwnProperty('path') && lodash.isString(req.body.path) && !lodash.isEmpty(req.body.path.trim()),
+            namevalid = req.body.hasOwnProperty('name') && lodash.isString(req.body.name) && !lodash.isEmpty(req.body.name.trim());
+        if (!pathvalid || !namevalid) {
             res.sendStatus(400);
         } else {
-            fs.stat(req.body.uri, function (err) {
+            fs.stat(req.body.path, function (err) {
                 if (err) {
                     res.sendStatus(403);
                 } else {
-                    project_id = md5(req.body.uri);
-                    __model.findOneProject(__name, project_id).then(function (doc) {
-                        if (doc) {
+                    pid = md5(req.body.path);
+                    __model.findOneProject(__name, pid).then(function (document) {
+                        if (document) {
                             // si le projet existe
-                            res.status(200).send(doc);
+                            res.status(200).send(document);
                         } else {
                             // si le projet n'existe pas
                             // on cree un nouveau document en BDD
-                            name = lodash.isEmpty(req.body.name) ? projectUtils.name(req.body.uri) : req.body.name;
-                            __model.createProject(__name, name, req.body.uri).then(function (doc) {
-                                res.status(201).send(doc);
+                            doc = {
+                                name: req.body.name.trim(),
+                                path: req.body.path.trim()
+                            }
+                            __model.createProject(__name, doc).then(function (document) {
+                                res.status(201).send(document);
                             }, function (err) {
                                 res.sendStatus(404);
                             });
+
                         }
                     }, function (err) {
                         res.sendStatus(503);
@@ -102,11 +106,15 @@
 
     router.put('/update', function (req, res) {
         var project,
-            valid = !req.body.hasOwnProperty('project') || lodash.isEmpty(req.body.project) || !lodash.isPlainObject(req.body.project);
-        if (valid) {
+            pidvalid = req.body.hasOwnProperty('pid') && lodash.isString(req.body.pid) && !lodash.isEmpty(req.body.pid.trim()),
+            namevalid = req.body.hasOwnProperty('name') && lodash.isString(req.body.name) && !lodash.isEmpty(req.body.name.trim());
+        if (!pidvalid || !namevalid) {
             res.sendStatus(400);
         } else {
-            project = req.body.project;
+            project = {
+                name: req.body.name.trim(),
+                pid: req.body.pid.trim(),
+            };
             __model.updateProject(__name, project).then(function (count) {
                 if (count > 0) {
                     res.sendStatus(201);

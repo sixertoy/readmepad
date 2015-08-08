@@ -13,8 +13,8 @@
         isurl = require('is-url'),
         archiver = require('archiver'),
         isgiturl = require('is-git-url'),
-        filenamify = require('filenamify'),
-        isabsolute = require('is-absolute');
+        isabsolute = require('is-absolute'),
+        validFilename = require('valid-filename');
 
     agree = {
 
@@ -91,7 +91,9 @@
                 name = args[0];
                 input = args[1];
                 output = args[2];
-                slug = filenamify(name);
+                if(!validFilename(name)){
+                    q.reject(new Error('invalid file name'));
+                }
                 // check input path
                 if (isgiturl(input)) {
                     // si est un repo git
