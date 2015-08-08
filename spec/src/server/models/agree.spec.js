@@ -33,53 +33,52 @@
                 var o = path.join(fxpath, '..', 'outputs');
                 expect(function(){
                     agree._execPathCopy(null, o);
-                }).to.throw('path must be a string');
+                }).to.throw('missing arguments');
             });
-            xit('reject error', function (done) {
+            it('it throw', function () {
                 var p = path.join(fxpath, 'agree');
                 expect(function(){
                     agree._execPathCopy(p, null);
-                }).to.throw();
-                /*
-                result = agree._execPathCopy(p, null).then(function () {}, function (err) {
-                    expect(result.inspect()).to.equal(promise);
-                    expect(err.message).to.equal('error during copying files');
-                    done();
-                });
-                */
+                }).to.throw('missing arguments');
             });
-            xit('not fails copy success', function (done) {
+            it('not fails copy success', function (done) {
                 var p = path.join(fxpath, 'agree'),
                     o = path.join(fxpath, '..', 'outputs');
-                result = agree._execPathCopy(p, o).then(function () {
-                    expect(result.inspect()).to.equal(promise);
+                result = agree._execPathCopy(p, o).then(function (res) {
+                    expect(result.inspect()).to.deep.equal(promise);
+                    expect(res).to.equal(true);
                     done();
-                }, function (err) {});
+                }, function (err) {
+                    console.log(err);
+                });
             });
         });
 
-        xdescribe('execPathArchive', function () {
+        describe('_execPathArchive', function () {
             it('not fails copy archive', function (done) {
-                result = agree._execPathArchive().then(function () {
-                    expect(result.inspect()).to.equal(promise);
+                result = agree._execPathArchive().then(function (res) {
+                    expect(result.inspect()).to.deep.equal(promise);
+                    expect(res).to.equal(true);
                     done();
                 }, function (err) {});
             });
         });
 
-        xdescribe('execClone', function () {
+        describe('_execClone', function () {
             it('not fails clone success', function (done) {
-                result = agree._execPathArchive().then(function () {
-                    expect(result.inspect()).to.equal(promise);
+                result = agree._execClone().then(function (res) {
+                    expect(result.inspect()).to.deep.equal(promise);
+                    expect(res).to.equal(true);
                     done();
                 }, function (err) {});
             });
         });
 
-        xdescribe('execURLArchive', function () {
+        describe('_execURLArchive', function () {
             it('not fails download archive success', function (done) {
-                result = agree._execURLArchive().then(function () {
-                    expect(result.inspect()).to.equal(promise);
+                result = agree._execURLArchive().then(function (res) {
+                    expect(result.inspect()).to.deep.equal(promise);
+                    expect(res).to.equal(true);
                     done();
                 }, function (err) {});
             });
@@ -215,12 +214,13 @@
                 it('success directory', function (done) {
                     var p = path.join(fxpath, 'agree');
                     result = agree.exec('a name', p, '/path/to/folder').then(function () {
-                        expect(result.inspect()).to.equal(promise);
                         expect(Q.defer.called).to.be(true);
+                        expect(result.inspect()).to.deep.equal(promise);
                         expect(agree._execPathCopy.calledOnce).to.be(true);
                         done();
                     }, function (err) {
                         console.log(err.message);
+                        done();
                     });
                 });
                 /*

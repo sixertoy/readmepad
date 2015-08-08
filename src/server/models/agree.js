@@ -24,7 +24,11 @@
          *
          */
         _execPathCopy: function (input, output) {
-            var q = Q.defer();
+            var q = Q.defer(),
+                args = _.chain(arguments).toArray().compact().value();
+            if (args.length < 2 || !_.filter(args, _.isString) || _.filter(args, _.isEmpty).length) {
+                throw new Error('missing arguments');
+            }
             fse.copy(input, output, function (err) {
                 if (err) {
                     q.reject(new Error('error during copying files'));
