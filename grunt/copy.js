@@ -4,14 +4,14 @@ module.exports = {
     html: {
         expand: true,
         cwd: 'src/html/',
-        dest: './build/public/html/',
+        dest: './build/public/',
         src: ['**/*', '!less', '!less/**/*', '!partials', '!partials/**/*', '!**/*.tpl', '!fonts', '!fonts/**/*']
     },
     server: {
         expand: true,
-        cwd: './src/server/',
-        dest: './build/server/',
-        src: ['**/*']
+        cwd: './src/',
+        dest: './build/',
+        src: ['server/**/*.js', 'app.js']
     },
     bower_js: {
         expand: true,

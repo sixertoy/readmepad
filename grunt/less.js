@@ -7,8 +7,8 @@ module.exports = {
             sourceMap: true
         },
         files: {
-            "./build/public/html/css/styles.min.css": "./src/html/less/styles.less",
-            "./build/public/html/css/github.min.css": "./src/html/less/github.less"
+            "./build/public/css/styles.min.css": "./src/html/less/styles.less",
+            "./build/public/css/github.min.css": "./src/html/less/github.less"
         }
     }
 };

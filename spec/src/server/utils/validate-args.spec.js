@@ -14,7 +14,7 @@
         _ = require('lodash'),
         path = require('path'),
         expect = require('chai').expect,
-        validate = require(path.join(cwd, 'src', 'server', 'utils', 'validate-args'));
+        validate = require(path.join(cwd, 'src', 'server', 'utils', 'validate-args')).exec;
 
     describe('Validate Function Arguments', function () {
 

@@ -67,6 +67,6 @@
             }
         };
 
-    module.exports = validate.exec;
+    module.exports = validate;
 
 }());

@@ -8,7 +8,7 @@ module.exports = {
             }
         },
         files: [{
-            "./build/public/html/index.html": "./src/html/index.tpl"
+            "./build/public/index.html": "./src/html/index.tpl"
         }]
     }
 };

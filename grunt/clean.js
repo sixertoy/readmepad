@@ -1,8 +1,8 @@
 /*jslint indent: 4 */
 /*global module */
 module.exports = {
-    server: ['./build/server/**/*'],
-    html: ['./build/public/html/**/*'],
+    html: ['./build/public/**/*'],
     documentation: ['./build/docs/**/*'],
+    server: ['./build/server/**/*', './build/app.js'],
     bower: ['./src/html/js/lib/**/*', './src/html/css/**/*']
 };

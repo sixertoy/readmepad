@@ -3,61 +3,87 @@
 (function () {
 
     'use strict';
-    var path = require('path'),
+    var Q = require('q'),
+        path = require('path'),
         chalk = require('chalk'),
         //
-        // Facade
+        ProjectModel = require('./models/project'),
+        ProjectController = require('./controllers/project'),
+
         Facade = {
-            ok: function (res, data) {
-                console.log(chalk.green('send data to client'));
-                res.send(data);
+
+            _stores: {},
+            _server: null,
+
+            server: function (value) {
+                if (value) {
+                    Facade._server = value;
+                }
+                return Facade._server;
             },
-            send404: function (res, err) {
-                console.log(chalk.red('server error'));
-                res.status(404).send({
-                    error: err
-                });
+
+            initProjectBehaviors: function () {
+                /*
+                var model = new ProjectModel();
+                this._stores['project'] = model;
+                var q = Q.defer();
+                var projectController = new ProjectController();
+                projectController.init(this._stores['project']);
+                Facade.server().use('/project', projectController.router());
+                return q.promise;
+                */
             },
 
             /**
              *
-             *
-             *
-             */
-            items: function (pages, items) {
-                var ext;
-                pages.forEach(function (item) {
-                    if (item.files && item.files.length > 0) {
-                        // recursive
-                        Facade.items(item.files, items);
-                    } else {
-                        ext = path.extname(item.name);
-                        if (ext === '.md') {
-                            items.push({
-                                path: item.fullpath,
-                                name: path.basename(item.name, ext)
-                            });
-                        }
-                    }
-                });
-                return items;
-            },
-
-            /**
-             *
-             *
+             * Il n'y a pas de modele MVC
+             * Le controller est lie au modele
              *
              */
-            document: function (doc) {
-                var items = [];
-                return {
-                    name: doc.name,
-                    path: doc.path,
-                    items: Facade.items(doc.pages, items)
-                };
+            start: function () {
+                var q = Q.defer();
+                if (Facade.server() === null) {
+                    q.reject(new Error('no server setted'));
+                    // error
+                } else {
+                    Facade.initProjectBehaviors();
+                    // q.resolve();
+                }
+                return q.promise;
             }
+
         };
 
     module.exports = Facade;
 
 }());
+
+//
+// routers/controllers
+// server.use('/document', documentController.router);
+//
+//
+// init de la bdd
+// dbfile = path.join(__dirname, database);
+//
+/*
+projectController.init(store, dbfile).then(function () {
+
+    // init de la dbb
+
+}, function () {
+
+});
+*/
+/*
+store.init('project', dbfile, function (err) {
+    if (err) {
+        console.log(err, dbfile);
+    } else {
+        // ajout du modele au controlleur
+        projectController.init(store, 'project');
+        // projectController.name('project');
+        // documentController.model(store);
+    }
+});
+*/

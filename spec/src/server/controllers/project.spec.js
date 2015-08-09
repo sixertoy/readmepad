@@ -5,8 +5,11 @@
 
     'use strict';
 
-    var result, app, db,
-        dbname = 'project',
+    function stubArguments(){
+        return arguments;
+    }
+
+    var helper, model, app,
         cwd = process.cwd(),
         //
         Q = require('q'),
@@ -15,6 +18,7 @@
         nedb = require('nedb'),
         sinon = require('sinon'),
         multer = require('multer'),
+        winston = require('winston'),
         express = require('express'),
         request = require('supertest'),
         expect = require('chai').expect,
@@ -22,33 +26,188 @@
         bodyParser = require('body-parser'),
         scandir = require('scandir-async').exec,
         //
-        dbfile = path.join(cwd, 'spec', 'fixtures', 'nedb', dbname + '.nedb'),
-        storeModel = require(path.join(cwd, 'src', 'server', 'models', 'project')),
-        projectController = require(path.join(cwd, 'src', 'server', 'controllers', 'project'));
+        dbfile = path.join(cwd, 'spec', 'fixtures', 'nedb', 'project.nedb'),
+        validate = require(path.join(cwd, 'src', 'server', 'utils', 'validate-args')),
+        ProjectModel = require(path.join(cwd, 'src', 'server', 'models', 'project')),
+        ProjectController = require(path.join(cwd, 'src', 'server', 'controllers', 'project'));
 
-    describe('ProjectController', function(){
+    app = express();
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({
+
+        extended: true
+    }));
+
+    winston.level = 'error';
+
+    describe('ProjectController', function () {
+
+        it('init project', function (done) {
+            model = new ProjectModel();
+            model.init(dbfile).then(function (store) {
+                helper = new ProjectController();
+                helper.init(model);
+                app.use('/project', helper.router());
+                done();
+            });
+        });
+
+        describe('status code 503', function () {
+
+            function stubModel(method){
+                sinon.stub(helper.model(), method, function () {
+                    var q = Q.defer();
+                    q.reject(new Error('error from model'));
+                    return q.promise;
+                });
+            }
+
+            function unstubModel(method){
+                helper.model()[method].restore();
+            }
+
+            it('createProject', function (done) {
+                stubModel('findOneProject');
+                var params = {
+                    path: cwd,
+                    name: 'project name'
+                };
+                request(app)
+                    .post('/project/create')
+                    .send(params)
+                    .end(function (err, res) {
+                        expect(res.statusCode).to.equal(503);
+                        unstubModel('findOneProject');
+                        done();
+                    });
+            });
+
+            it('updateProject', function (done) {
+                stubModel('updateProject');
+                var params = {
+                    pid: 'project_id',
+                    name: 'a ew project name'
+                };
+                request(app)
+                    .put('/project/update')
+                    .send(params)
+                    .end(function (err, res) {
+                        expect(res.statusCode).to.equal(503);
+                        unstubModel('updateProject');
+                        done();
+                    });
+            });
+
+            it('deleteProject', function (done) {
+                stubModel('deleteProject');
+                request(app)
+                    .delete('/project/delete/' + 'project_id')
+                    .send()
+                    .end(function (err, res) {
+                        expect(res.statusCode).to.equal(503);
+                        unstubModel('deleteProject');
+                        done();
+                    });
+            });
+
+            it('findOneProject', function (done) {
+                stubModel('findOneProject');
+                request(app)
+                    .get('/project/open/' + 'project_id')
+                    .send()
+                    .end(function (err, res) {
+                        expect(res.statusCode).to.equal(503);
+                        unstubModel('findOneProject');
+                        done();
+                    });
+            });
+
+            it('findAll', function (done) {
+                stubModel('findAll');
+                request(app)
+                    .get('/project/loadall')
+                    .send()
+                    .end(function (err, res) {
+                        expect(res.statusCode).to.equal(503);
+                        done();
+                    });
+            });
+
+        });
+
+        xdescribe('[GET]/project/loadall', function () {
+            it('returns 404 no post for this route', function (done) {
+                request(app)
+                    .post('/project/loadall')
+                    .send()
+                    .end(function (err, res) {
+                        expect(res.statusCode).to.equal(404);
+                        done();
+                    });
+            });
+            xit('returns 200 no project in DB', function (done) {
+                request(app)
+                    .get('/project/loadall')
+                    .send()
+                    .end(function (err, res) {
+                        expect(res.body).to.be.false;
+                        expect(res.statusCode).to.equal(200);
+                        done();
+                    });
+            });
+        });
 
 
+        xdescribe('[GET]/project/open', function () {
+            it('fails', function (done) {
+                request(app)
+                    .post('/project/open')
+                    .send()
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.status).to.equal(404); // Cannot POST /project/open
+                        done();
+                    });
+            });
+            it('fail no project_id param', function (done) {
+                request(app)
+                    .get('/project/open')
+                    .send()
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.status).to.equal(404); // Cannot GET /project/open
+                        done();
+                    });
+            });
+            it('fail code 404', function (done) {
+                var project_id = md5('   ');
+                request(app)
+                    .get('/project/open/' + project_id)
+                    .send()
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.status).to.equal(204);
+                        done();
+                    });
+            });
+            it('fail code 404', function (done) {
+                var project_id = md5('path/to/non/exists');
+                request(app)
+                    .get('/project/open/' + project_id)
+                    .send()
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.status).to.equal(204);
+                        done();
+                    });
+            });
+        });
 
     });
 
     //
-    /*
-    app = express();
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({
-        extended: true
-    }));
-    app.use('/project', projectController.router);
-    storeModel.init(dbname, dbfile);
-    //
-    projectController.name(dbname);
-    projectController.model(storeModel);
-    storeModel.createProject(dbname, {
-        name: 'toto',
-        path: 'path/to/toto'
-    }, []);
-    */
+    /*;
+     */
 
     /*
     describe('projectController', function () {

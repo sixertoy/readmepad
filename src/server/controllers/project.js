@@ -11,151 +11,181 @@
 
     'use strict';
 
-    var router,
-        __name = false,
-        __model = false,
-        // requires
+    var // requires
         fs = require('fs'),
         md5 = require('md5'),
         _ = require('lodash'),
         path = require('path'),
         chalk = require('chalk'),
         express = require('express'),
-        scandir = require('scandir-async').exec;
+        scandir = require('scandir-async').exec,
+        validate = require('./../utils/validate-args').exec,
 
-    var project = function(){};
+        /**
+         *
+         *
+         *
+         */
+        controller = {
 
-    /*
-    router = express.Router({
-        caseSensitive: true
-    });
+            _stubArguments: function(){
+                return arguments;
+            },
 
-    router.post('/create', function (req, res) {
-        var pid, name, doc,
-            pathvalid = req.body.hasOwnProperty('path') && lodash.isString(req.body.path) && !lodash.isEmpty(req.body.path.trim()),
-            namevalid = req.body.hasOwnProperty('name') && lodash.isString(req.body.name) && !lodash.isEmpty(req.body.name.trim());
-        if (!pathvalid || !namevalid) {
-            res.sendStatus(400);
-        } else {
-            fs.stat(req.body.path, function (err) {
-                if (err) {
-                    res.sendStatus(403);
+            create: function (req, res) {
+                var pid, name, doc,
+                    $this = this,
+                    valid = validate(this._stubArguments(req.body.path, req.body.name), [_.isString, _.isString]);
+                //
+                if (!valid) {
+                    res.sendStatus(400);
                 } else {
-                    pid = md5(req.body.path);
-                    __model.findOneProject(__name, pid).then(function (document) {
-                        if (document) {
-                            // si le projet existe
-                            res.status(200).send(document);
+                    fs.stat(req.body.path, function (err) {
+                        if (err) {
+                            res.sendStatus(403);
                         } else {
-                            // si le projet n'existe pas
-                            // on cree un nouveau document en BDD
-                            doc = {
-                                name: req.body.name.trim(),
-                                path: req.body.path.trim()
-                            };
-                            __model.createProject(__name, doc).then(function (document) {
-                                res.status(201).send(document);
-                            }, function (err) {
-                                res.sendStatus(404);
-                            });
+                            pid = md5(req.body.path);
+                            $this.model().findOneProject(pid).then(function (document) {
+                                if (document) {
+                                    // si le projet existe
+                                    res.status(200).send(document);
+                                } else {
+                                    // si le projet n'existe pas
+                                    // on cree un nouveau document en BDD
+                                    doc = {
+                                        name: req.body.name.trim(),
+                                        path: req.body.path.trim()
+                                    };
+                                    $this.model().createProject(doc).then(function (document) {
+                                        res.status(201).send(document);
+                                    }, function (err) {
+                                        res.sendStatus(404);
+                                    });
 
+                                }
+                            }, function (err) {
+                                res.sendStatus(503);
+                            });
+                        }
+                    });
+                }
+            },
+
+            update: function (req, res) {
+                var project,
+                    valid =
+                    valid = validate(this._stubArguments(req.body.pid, req.body.name), [_.isString, _.isString]);
+                if (!valid) {
+                    res.sendStatus(400);
+                } else {
+                    project = {
+                        name: req.body.name.trim(),
+                        pid: req.body.pid.trim()
+                    };
+                    this.model().updateProject(project).then(function (count) {
+                        if (count > 0) {
+                            res.sendStatus(201);
+                        } else {
+                            res.sendStatus(403);
                         }
                     }, function (err) {
                         res.sendStatus(503);
                     });
                 }
-            });
-        }
-    });
+            },
 
-    router.put('/update', function (req, res) {
-        var project,
-            pidvalid = req.body.hasOwnProperty('pid') && lodash.isString(req.body.pid) && !lodash.isEmpty(req.body.pid.trim()),
-            namevalid = req.body.hasOwnProperty('name') && lodash.isString(req.body.name) && !lodash.isEmpty(req.body.name.trim());
-        if (!pidvalid || !namevalid) {
-            res.sendStatus(400);
-        } else {
-            project = {
-                name: req.body.name.trim(),
-                pid: req.body.pid.trim()
-            };
-            __model.updateProject(__name, project).then(function (count) {
-                if (count > 0) {
-                    res.sendStatus(201);
+            /**
+             *
+             *
+             *
+             */
+            remove: function (req, res) {
+                var valid = validate(this._stubArguments(req.params.pid), [_.isString]);
+                //
+                if (!valid) {
+                    res.sendStatus(400);
                 } else {
-                    res.sendStatus(403);
+                    this.model().deleteProject(req.params.pid).then(function (count) {
+                        res.send((count > 0));
+                    }, function (err) {
+                        res.sendStatus(503);
+                    });
                 }
-            }, function (err) {
-                res.sendStatus(503);
-            });
-        }
-    });
+            },
 
-    router.delete('/delete/:project_id', function (req, res) {
-        var project_id = req.params.project_id;
-        __model.deleteProject(__name, project_id).then(function (count) {
-            res.send((count > 0));
-        }, function (err) {
-            res.sendStatus(503);
-        });
-    });
-    */
-
-    /**
-     *
-     * Ouvre un projet
-     *
-     * @param path [String] Chemin absolu du projet
-     *
-     */
-    /*
-    router.get('/open/:project_id', function (req, res) {
-        var project_path,
-            project_id = req.params.project_id;
-        __model.findOneProject(__name, project_id).then(function (doc) {
-            if (doc) {
-                project_path = doc.path;
-                scandir(project_path, {
-                    sorted: true
-                }).then(function (data) {
-                    res.send(data);
+            /**
+             *
+             *
+             *
+             */
+            loadAll: function (req, res) {
+                this.model().findAll().then(function (data) {
+                    res.status(200).send(data);
                 }, function (err) {
                     res.sendStatus(503);
                 });
-            } else {
-                // if project doesn't exists
-                res.sendStatus(204);
-            }
-        }, function (err) {
-            res.sendStatus(503);
-        });
-    });
+            },
 
-    router.get('/loadall', function (req, res) {
-        __model.findAll(__name).then(function (data) {
-            res.status(200).send(data);
-        }, function (err) {
-            res.sendStatus(503);
-        });
-    });
+            open: function (req, res) {
+                var project_path,
+                    valid = validate(this._stubArguments(req.params.pid), [_.isString]);
+                //
+                if (!valid) {
+                    res.sendStatus(400);
+                } else {
+                    this.model().findOneProject(req.params.pid).then(function (doc) {
+                        if (doc) {
+                            project_path = doc.path;
+                            scandir(project_path, {
+                                sorted: true
+                            }).then(function (data) {
+                                res.send(data);
+                            }, function (err) {
+                                res.sendStatus(503);
+                            });
+                        } else {
+                            // if project doesn't exists
+                            res.sendStatus(204);
+                        }
+                    }, function (err) {
+                        res.sendStatus(503);
+                    });
+                }
+            },
 
-    module.exports = {
-        model: function (model) {
-            if (arguments.length > 0) {
-                __model = model;
+            _model: null,
+            _router: null,
+
+            model: function () {
+                return this._model;
+            },
+
+            router: function () {
+                return this._router;
+            },
+
+            init: function (model) {
+                //
+                // init du router
+                this._model = model;
+                this._router = express.Router({
+                    caseSensitive: true
+                });
+                //
+                // definitions des routes
+                this._router.put('/update', this.update.bind(this));
+                this._router.post('/create', this.create.bind(this));
+                this._router.get('/loadall', this.loadAll.bind(this));
+                this._router.get('/open/:pid', this.open.bind(this));
+                this._router.delete('/delete/:pid', this.remove.bind(this));
+
             }
-            return __model;
         },
-        name: function (name) {
-            if (arguments.length > 0) {
-                __name = name;
-            }
-            return __name;
-        },
-        router: router
-    };
-    */
 
-    module.exports = project;
+        ProjectController = function () {};
+
+    _.assign(ProjectController.prototype, controller);
+
+    module.exports = ProjectController;
 
 }());

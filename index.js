@@ -4,6 +4,6 @@
 
     'use strict';
 
-    module.exports = require('./build/server/server.js');
+    module.exports = require('./build/app.js');
 
 }());

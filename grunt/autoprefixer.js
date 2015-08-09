@@ -9,7 +9,7 @@ module.exports = {
     dev: {
         expand: true,
         flatten: true,
-        dest: './build/html/css',
-        src: ['./build/html/css/*.css', './build/html/css/*.min.css']
+        dest: './build/public/css',
+        src: ['./build/public/css/*.css', './build/public/css/*.min.css']
     }
 };

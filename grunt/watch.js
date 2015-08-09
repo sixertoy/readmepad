@@ -7,7 +7,7 @@ module.exports = {
         livereloadOnError: false
     },
     html: {
-        files: ['./src/html/**/*', './src/html/**/*.hbs', './src/html/**/*.tpl'],
+        files: ['./src/public/**/*', './src/public/**/*.hbs', './src/public/**/*.tpl'],
         tasks: ['build_html']
     },
     server: {
