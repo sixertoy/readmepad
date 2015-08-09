@@ -46,9 +46,10 @@
                     done();
                 });
             });
-            it('resolve load db', function (done) {
+            it('resolve load db created file', function (done) {
                 projectModel.init(dbname, dbfile).then(function (res) {
-                    expect(res).to.equal(true);
+                    expect(res).to.be.true;
+                    expect(fs.statSync(dbfile)).to.be.an('object');
                     done();
                 }, function (err) {});
             });
@@ -59,8 +60,8 @@
             it('returns an object', function (done) {
                 projectModel.init(dbname, dbfile).then(function () {
                     db = projectModel.getStore();
-                    expect(_.isPlainObject(db)).to.equal(true);
-                    expect(db.hasOwnProperty(dbname)).to.equal(true);
+                    expect(_.isPlainObject(db)).to.be.true;
+                    expect(db.hasOwnProperty(dbname)).to.be.true;
                     done();
                 });
             });
@@ -71,17 +72,17 @@
                     done();
                 });
             });
-            it('returns false not a string', function (done) {
+            it('resolve false not a string', function (done) {
                 projectModel.init(dbname, dbfile).then(function () {
                     db = projectModel.getStore(1234);
-                    expect(db).to.equal(false);
+                    expect(db).to.be.false;
                     done();
                 });
             });
-            it('returns false non exists db', function (done) {
+            it('resolve false non exists db', function (done) {
                 projectModel.init(dbname, dbfile).then(function () {
                     db = projectModel.getStore('no.db.name');
-                    expect(db).to.equal(false);
+                    expect(db).to.be.false;
                     done();
                 });
             });
@@ -98,10 +99,10 @@
                     });
                 });
             });
-            it('no projects returns false', function (done) {
+            it('resolve false empty projects list', function (done) {
                 projectModel.init(dbname, dbfile).then(function () {
                     projectModel.findAll(dbname).then(function (projects) {
-                        expect(projects).to.equal(false);
+                        expect(projects).to.be.false;
                         done();
                     }, function (err) {});
                 });
@@ -125,10 +126,10 @@
                     });
                 });
             });
-            it('returns false no project', function (done) {
+            it('resolve false no project in BDD', function (done) {
                 projectModel.init(dbname, dbfile).then(function () {
                     projectModel.findOneProject(dbname, '_id.setted.by.nedb').then(function (project) {
-                        expect(project).to.equal(false);
+                        expect(project).to.be.false;
                         done();
                     });
                 });
@@ -152,13 +153,13 @@
                     });
                 });
             });
-            it('compact database', function (done) {
+            it('spy compact database', function (done) {
                 projectModel.init(dbname, dbfile).then(function () {
                     var persistence = projectModel.getStore(dbname).persistence;
                     sinon.spy(persistence, 'compactDatafile');
                     projectModel.deleteProject(dbname, 'no.id.project').then(function (deleted) {
-                        expect(deleted).to.equal(false);
-                        expect(persistence.compactDatafile.called).to.equal(true);
+                        expect(deleted).to.be.false;
+                        expect(persistence.compactDatafile.called).to.be.true;
                         persistence.compactDatafile.restore();
                         done();
                     });
@@ -169,7 +170,7 @@
         describe('createProject()', function () {
             this.timeout(5000);
             it('pause', function (done) {
-                setTimeout(done, 3000);
+                setTimeout(done, 2000);
             });
             it('reject missing arguments', function (done) {
                 projectModel.init(dbname, dbfile).then(function () {
@@ -192,14 +193,14 @@
                         expect(project.name).to.equal(doc.name);
                         expect(project.path).to.equal(doc.path);
                         expect(project.pid).to.equal(md5(doc.name)); // setted by model
-                        expect(project.hasOwnProperty('_id')).to.equal(true);
+                        expect(project.hasOwnProperty('_id')).to.be.true;
                         pid = project._id;
                         done();
                     });
                 })
             });
             it('pause', function (done) {
-                setTimeout(done, 3000);
+                setTimeout(done, 2000);
             });
             it('reject with false project already exists', function (done) {
                 projectModel.init(dbname, dbfile).then(function () {
@@ -207,134 +208,186 @@
                         name: 'a string whatever',
                         path: 'valid.abs.path.resolved.by.controller'
                     };
-                    projectModel.createProject(dbname, doc.name, doc.path).then(function () {}, function(err){
-                        expect(err).to.equal(false);
+                    projectModel.createProject(dbname, doc.name, doc.path).then(function () {}, function (err) {
+                        expect(err).to.be.false;
                         done();
                     });
                 })
             });
         });
 
-        /*
-        describe('findOneProject', function () {
-            it('reject not a string', function (done) {
-                dbname = 'store';
-                projectModel.findOneProject(dbname, {}).then(function (data) {}, function (err) {
-                    expect(err.message).to.equal('needs 2 argument at least');
-                    done();
+        describe('findAll()', function () {
+            this.timeout(5000);
+            it('pause', function (done) {
+                setTimeout(done, 2000);
+            });
+            it('resolve list of projects', function (done) {
+                projectModel.init(dbname, dbfile).then(function () {
+                    projectModel.findAll(dbname).then(function (projects) {
+                        expect(projects).is.an('array');
+                        expect(projects.length).to.equal(1);
+                        expect(projects[0]._id).to.equal(pid);
+                        done();
+                    }, function (err) {});
                 });
             });
-            it('resolve with false project not found', function (done) {
-                dbname = 'store';
-                var project_id = md5('toto/project');
-                projectModel.findOneProject(dbname, project_id).then(function (data) {
-                    expect(data).to.equal(false);
-                    done();
-                }, function (err) {});
-            });
         });
-        */
 
-        /*
-        describe('createProject', function () {
-            it('reject needs more argument', function (done) {
-                projectModel.createProject().then(function () {}, function (err) {
-                    expect(err.message).to.equal('needs 2 arguments at least');
-                    done();
-                });
+        describe('findOneProject()', function () {
+            this.timeout(5000);
+            it('pause', function (done) {
+                setTimeout(done, 2000);
             });
-            it('reject needs more argument', function (done) {
-                dbname = 'name';
-                projectModel.createProject(dbname).then(function () {}, function (err) {
-                    expect(err.message).to.equal('needs 2 arguments at least');
-                    done();
-                });
-            });
-            it('reject doc not an object', function (done) {
-                var project_id,
-                    name = 'toto',
-                    path = 'path/to/toto'
-                dbname = 'store';
-                projectModel.createProject(dbname, name, path).then(function (doc) {}, function (err) {
-                    expect(err.message).to.equal('document is not valid');
-                    done();
-                });
-            });
-            it('create a new project', function (done) {
-                var pid,
-                    doc = {
-                        name: 'toto',
-                        path: 'path/to/toto'
-                    };
-                dbname = 'store';
-                projectModel.createProject(dbname, doc).then(function (res) {
-                    pid = md5(doc.path);
-                    expect(res.pid).to.equal(pid);
-                    done();
-                }, function (err) {});
-            });
-            it('reject cause project already exists', function (done) {
-                var doc = {
-                        name: 'toto',
-                        path: 'path/to/toto'
-                    };
-                dbname = 'store';
-                projectModel.createProject(dbname, doc).then(function (doc) {}, function (err) {
-                    expect(err.errorType).to.equal('uniqueViolated');
-                    done();
+            it('retrieve one project', function (done) {
+                projectModel.init(dbname, dbfile).then(function () {
+                    projectModel.findOneProject(dbname, pid).then(function (project) {
+                        expect(project).is.an('object');
+                        expect(project._id).to.equal(pid);
+                        //
+                        // description de l'objet en BDD
+                        expect(project).to.include.keys('_id');
+                        expect(project).to.include.keys('pid');
+                        expect(project).to.include.keys('name');
+                        expect(project).to.include.keys('path');
+                        done();
+                    });
                 });
             });
         });
-        */
 
-        /*
-        describe('findOneProject', function () {
-            it('returns a document', function (done) {
-                dbname = 'store';
-                var pid = md5('path/to/toto');
-                projectModel.findOneProject(dbname, pid).then(function (doc) {
-                    expect(pid).to.equal(doc.pid);
-                    done();
-                }, function (err) {});
+        describe('updateProject()', function () {
+            this.timeout(5000);
+            it('pause', function (done) {
+                setTimeout(done, 2000);
+            });
+            it('reject missing arguments', function (done) {
+                projectModel.init(dbname, dbfile).then(function () {
+                    projectModel.updateProject().then(function () {}, function (err) {
+                        expect(err.message).to.equal('missing arguments');
+                        done();
+                    });
+                });
+            });
+            it('pause', function (done) {
+                setTimeout(done, 2000);
+            });
+            it('reject missing arguments', function (done) {
+                projectModel.init(dbname, dbfile).then(function () {
+                    projectModel.updateProject(dbname, '').then(function () {}, function (err) {
+                        expect(err.message).to.equal('missing arguments');
+                        done();
+                    });
+                });
+            });
+            it('pause', function (done) {
+                setTimeout(done, 2000);
+            });
+            it('reject no _id props missing arguments', function (done) {
+                projectModel.init(dbname, dbfile).then(function () {
+                    projectModel.updateProject(dbname, {
+                        name: 'toto'
+                    }).then(function () {}, function (err) {
+                        expect(err.message).to.equal('missing arguments');
+                        done();
+                    });
+                });
+            });
+            it('pause', function (done) {
+                setTimeout(done, 2000);
+            });
+            it('reject with nothing to update', function (done) {
+                projectModel.init(dbname, dbfile).then(function () {
+                    projectModel.updateProject(dbname, {
+                        _id: pid
+                    }).then(function () {}, function (err) {
+                        expect(err.message).to.equal('nothing to update');
+                        done();
+                    });
+                });
+            });
+            it('pause', function (done) {
+                setTimeout(done, 2000);
+            });
+            it('resolve with true', function (done) {
+                projectModel.init(dbname, dbfile).then(function () {
+                    projectModel.updateProject(dbname, {
+                        _id: pid,
+                        name: 'a new name'
+                    }).then(function (updated) {
+                        expect(updated).to.be.true;
+                        done();
+                    }, function (err) {});
+                });
             });
         });
-        */
 
-        /*
-        describe('deleteProject', function () {
-            it('reject more argument', function (done) {
-                projectModel.deleteProject().then(function () {}, function (err) {
-                    expect(err.message).to.equal('needs 2 argument at least');
-                    done();
-                });
+        describe('findOneProject()', function () {
+            this.timeout(5000);
+            it('pause', function (done) {
+                setTimeout(done, 2000);
             });
-            it('reject more argument', function (done) {
-                dbname = 'store';
-                projectModel.deleteProject(dbname).then(function () {}, function (err) {
-                    expect(err.message).to.equal('needs 2 argument at least');
-                    done();
-                });
-            });
-            it('resolve with value 1', function (done) {
-                dbname = 'store';
-                var pid = md5('path/to/toto');
-                projectModel.deleteProject(dbname, pid).then(function (num) {
-                    expect(num).to.equal(1);
-                    done();
-                }, function () {});
-            });
-            it('resolve with value 0 if document not exists', function (done) {
-                dbname = 'store';
-                var pid = md5('path/to/toto');
-                projectModel.deleteProject(dbname, pid).then(function (num) {
-                    expect(num).to.equal(0);
-                    done();
-                }, function (err) {
+            it('resolve project name and path has been updated', function (done) {
+                projectModel.init(dbname, dbfile).then(function () {
+                    projectModel.findOneProject(dbname, pid).then(function (project) {
+                        expect(project.name).to.equal('a new name');
+                        expect(project.path).to.equal(md5('a new name'));
+                        done();
+                    });
                 });
             });
         });
-        */
+
+        describe('updateProject()', function () {
+            this.timeout(5000);
+            it('pause', function (done) {
+                setTimeout(done, 2000);
+            });
+            it('change path only', function (done) {
+                projectModel.init(dbname, dbfile).then(function () {
+                    projectModel.updateProject(dbname, {
+                        _id: pid,
+                        path: 'a new path not valid but not fails'
+                    }).then(function (updated) {
+                        expect(updated).to.be.true;
+                        done();
+                    }, function (err) {});
+                });
+            });
+        });
+
+        describe('findOneProject()', function () {
+            this.timeout(5000);
+            it('pause', function (done) {
+                setTimeout(done, 2000);
+            });
+            it('resolve project path only has been updated', function (done) {
+                projectModel.init(dbname, dbfile).then(function () {
+                    projectModel.findOneProject(dbname, pid).then(function (project) {
+                        expect(project.path).to.equal('a new path not valid but not fails');
+                        done();
+                    });
+                });
+            });
+        });
+
+        describe('deleteProject()', function () {
+            it('resolve with true project deleted', function (done) {
+                this.timeout(5000);
+                it('pause', function (done) {
+                    setTimeout(done, 2000);
+                });
+                projectModel.init(dbname, dbfile).then(function () {
+                    var persistence = projectModel.getStore(dbname).persistence;
+                    sinon.spy(persistence, 'compactDatafile');
+                    projectModel.deleteProject(dbname, pid).then(function (deleted) {
+                        expect(deleted).to.be.true;
+                        expect(persistence.compactDatafile.called).to.be.true;
+                        persistence.compactDatafile.restore();
+                        done();
+                    });
+                })
+            });
+        });
 
     });
-
 }());

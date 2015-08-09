@@ -24,7 +24,7 @@
 
         it('not throw', function () {
             result = validate();
-            expect(result).to.equal(true);
+            expect(result).to.be.true;
         });
 
         it('throw not args', function () {
@@ -62,46 +62,46 @@
         it('returns true optionals arguments', function () {
             args = buildArguments(1224, '');
             result = validate(args, []);
-            expect(result).to.equal(true);
+            expect(result).to.be.true;
         });
 
         it('returns false less arguments more validators', function () {
             args = buildArguments(); // no arguments
             result = validate(args, [_.isString]);
-            expect(result).to.equal(false);
+            expect(result).to.be.false;
         });
 
         it('returns false less arguments more validators', function () {
             args = buildArguments(123); // no arguments
             result = validate(args, [_.isString, _.isString]);
-            expect(result).to.equal(false);
+            expect(result).to.be.false;
         });
 
         describe('strings arguments', function () {
             it('returns false not string', function () {
                 args = buildArguments(1224, '');
                 result = validate(args, [_.isString, _.isString]);
-                expect(result).to.equal(false);
+                expect(result).to.be.false;
             });
             it('returns false empty string', function () {
                 args = buildArguments('no empty', '    ');
                 result = validate(args, [_.isString, _.isString]);
-                expect(result).to.equal(false);
+                expect(result).to.be.false;
             });
             it('returns true 0 arg', function () {
                 args = buildArguments();
                 result = validate(args);
-                expect(result).to.equal(true);
+                expect(result).to.be.true;
             });
             it('returns true 1 arg', function () {
                 args = buildArguments('not empty');
                 result = validate(args, [_.isString]);
-                expect(result).to.equal(true);
+                expect(result).to.be.true;
             });
             it('returns true 2 arg', function () {
                 args = buildArguments('not empty', 'not empty');
                 result = validate(args, [_.isString, _.isString]);
-                expect(result).to.equal(true);
+                expect(result).to.be.true;
             });
         });
 

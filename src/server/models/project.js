@@ -14,10 +14,13 @@
         winston = require('winston'),
         filenamify = require('filenamify'),
         validate = require('../utils/validate-args'),
+        //
+        // description d'une entite projet en BDD
         document = {
             _id: null,
-            name: 'string',
-            path: 'string' // server/root/projects/path + project._id
+            pid: 'string', // unique
+            name: 'string', // nom ui du projet
+            path: 'string' // md5(name)
         };
 
     store = {
@@ -52,6 +55,46 @@
 
         /**
          *
+         * Mise a jour d'un projet
+         * Mise a jour des props contenus dans paramas
+         *
+         * @param upobject [object] props a mettre a jour
+         *
+         */
+        updateProject: function (name, upobject) {
+            var pid,
+                q = Q.defer(),
+                valid = validate(arguments, [_.isString, _.isPlainObject]);
+            if (!valid || !_.has(upobject, ['_id'])) {
+                q.reject(new Error('missing arguments'));
+            } else {
+                pid = upobject._id;
+                upobject = _.omit(upobject, '_id');
+                if (!_.keys(upobject).length) {
+                    q.reject(new Error('nothing to update'));
+                } else {
+                    if (_.has(upobject, ['name'])) {
+                        upobject.path = md5(upobject.name);
+                    }
+                    stores[name].update({
+                        _id: pid
+                    }, {
+                        $set: upobject
+                    }, {}, function (err, count) {
+                        if (err) {
+                            q.reject(err);
+                        } else {
+                            stores[name].persistence.compactDatafile();
+                            q.resolve(count > 0);
+                        }
+                    });
+                }
+            }
+            return q.promise;
+        },
+
+        /**
+         *
          * Supprime un projet de la bdd
          *
          */
@@ -78,38 +121,10 @@
 
         /**
          *
-         * Mise a jour d'un projet
-         * Mise a jour du nom du projet uniquement
+         * Retourne une entite projet
+         * Si le projet n'existe pas retourne false
          *
-         */
-        updateProject: function (name, params) {
-            var pid,
-                q = Q.defer(),
-                valid = validate(arguments, [_.isString, _.isPlainObject]);
-            if (!valid && !_.has(params, ['_id', 'name'])) {
-                q.reject(new Error('missing arguments'));
-            } else {
-                pid = params._id;
-                _.omit(params, ['_id']);
-                stores[name].update({
-                    _id: pid
-                }, {
-                    $set: params
-                }, {}, function (err, count) {
-                    if (err) {
-                        q.reject(err);
-                    } else {
-                        stores[name].persistence.compactDatafile();
-                        q.resolve(count > 0);
-                    }
-                });
-            }
-            return q.promise;
-        },
-
-        /**
-         *
-         * Supprime un projet de la bdd
+         * @param pid [string] id setted par nedb a la creation du projet
          *
          */
         findOneProject: function (dbname, pid) {
@@ -120,11 +135,11 @@
             } else {
                 stores[dbname].findOne({
                     _id: pid
-                }, function (err, doc) {
+                }, function (err, document) {
                     if (err) {
                         q.reject(err);
                     } else {
-                        q.resolve(false);
+                        q.resolve(document ? document : false);
                     }
                 });
             }
@@ -133,7 +148,8 @@
 
         /**
          *
-         * Supprime un projet de la bdd
+         * Retourne la liste de tous les projets en BDD
+         * Si la liste est vide retourne false
          *
          */
         findAll: function (dbname) {
@@ -142,11 +158,11 @@
             if (!valid) {
                 q.reject(new Error('missing arguments'));
             } else {
-                stores[dbname].find({}, function (err, docs) {
+                stores[dbname].find({}, function (err, documents) {
                     if (err) {
                         q.reject(err);
                     } else {
-                        q.resolve(false);
+                        q.resolve(documents.length ? documents : false);
                     }
                 });
             }
