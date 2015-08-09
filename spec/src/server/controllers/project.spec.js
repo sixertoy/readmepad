@@ -21,17 +21,26 @@
         filenamify = require('filenamify'),
         bodyParser = require('body-parser'),
         scandir = require('scandir-async').exec,
-        dbfile = path.join(cwd, 'spec', 'fixtures', 'nedb', 'project.nedb'),
-        storeModel = require(path.join(cwd, 'src', 'server', 'models', 'store')),
+        //
+        dbfile = path.join(cwd, 'spec', 'fixtures', 'nedb', dbname + '.nedb'),
+        storeModel = require(path.join(cwd, 'src', 'server', 'models', 'project')),
         projectController = require(path.join(cwd, 'src', 'server', 'controllers', 'project'));
+
+    describe('ProjectController', function(){
+
+
+
+    });
+
     //
+    /*
     app = express();
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({
         extended: true
     }));
     app.use('/project', projectController.router);
-    storeModel.init(dbname, dbfile, function () {});
+    storeModel.init(dbname, dbfile);
     //
     projectController.name(dbname);
     projectController.model(storeModel);
@@ -39,7 +48,9 @@
         name: 'toto',
         path: 'path/to/toto'
     }, []);
+    */
 
+    /*
     describe('projectController', function () {
 
         describe('[GET]/project/open', function () {
@@ -334,5 +345,6 @@
         });
 
     });
+    */
 
 }());
