@@ -11,12 +11,12 @@
         "postdocs": "node index",
 
         "prespec": "sh scripts/premocha",
-        "spec": "istanbul cover --report lcovonly node_modules/mocha/bin/_mocha -- -R spec ",
-        "postspec": "cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
+        "spec": "istanbul cover node_modules/mocha/bin/_mocha  --report lcovonly -- -R spec ",
+        "postspec": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
 
         "premocha": "sh scripts/premocha",
         "mocha": "istanbul test node_modules/mocha/bin/_mocha -R spec ./spec/src/server/**/*.spec.js",
-        "postmocha": "cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
+        "postmocha": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
 
         "prekarma": "sh scripts/prekarma",
         "karma": "karma start karma.conf.js --single-run",
