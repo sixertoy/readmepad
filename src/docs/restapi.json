@@ -1,0 +1,118 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "ReadmePad API",
+        "description": "Multi project Markdown Editor",
+        "version": "0.1.0"
+    },
+    "host": "api.uber.com",
+    "schemes": [
+        "http"
+    ],
+    "basePath": "/project",
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/loadall": {
+            "get": {
+                "summary": "Product Types",
+                "description": "any description\n",
+                "responses": {
+                    "200": {
+                        "description": "An array of projects",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Project"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "503": {
+                        "description": "Model error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/open/pid": {
+            "get": {
+                "summary": "Open a project",
+                "description": "any description\n",
+                "parameters": [
+                    {
+                        "name": "pid",
+                        "in": "query",
+                        "description": "Project ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "Project"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "any description\n",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Project"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Project": {
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "description": "Unique identifier setted by nedb.\n"
+                },
+                "pid": {
+                    "type": "string",
+                    "description": "Description of product."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Display name of product."
+                },
+                "path": {
+                    "type": "string",
+                    "description": "Capacity of product. For example, 4 people."
+                }
+            }
+        },
+        "Error": {
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "fields": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

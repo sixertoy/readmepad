@@ -59,7 +59,7 @@
                                     $this.model().createProject(doc).then(function (document) {
                                         res.status(201).send(document);
                                     }, function (err) {
-                                        res.sendStatus(404);
+                                        res.sendStatus(503);
                                     });
 
                                 }
@@ -72,25 +72,33 @@
             },
 
             update: function (req, res) {
-                var project,
-                    valid = validate(this._stubArguments(req.body.pid, req.body.name), [_.isString, _.isString]);
+                var valid = validate(this._stubArguments(req.body.pid, req.body.name), [_.isString, _.isString]);
                 if (!valid) {
                     res.sendStatus(400);
                 } else {
-                    project = {
-                        name: req.body.name.trim(),
-                        pid: req.body.pid.trim()
-                    };
-                    this.model().updateProject(project).then(function (count) {
+                    this.model().updateProject(req.body).then(function (count) {
                         if (count > 0) {
                             res.sendStatus(201);
                         } else {
-                            res.sendStatus(403);
+                            res.sendStatus(503);
                         }
                     }, function (err) {
                         res.sendStatus(503);
                     });
                 }
+            },
+
+            /**
+             *
+             *
+             *
+             */
+            remove: function (req, res) {
+                this.model().deleteProject(req.pid).then(function (count) {
+                    res.send((count > 0));
+                }, function (err) {
+                    res.sendStatus(503);
+                });
             },
 
             /**
@@ -104,23 +112,6 @@
                 }, function (err) {
                     res.sendStatus(503);
                 });
-            },
-
-            /**
-             *
-             *
-             *
-             */
-            remove: function (req, res) {
-                if (!req.pid) {
-                    res.sendStatus(400);
-                } else {
-                    this.model().deleteProject(req.params.pid).then(function (count) {
-                        res.send((count > 0));
-                    }, function (err) {
-                        res.sendStatus(503);
-                    });
-                }
             },
 
             /**
@@ -195,11 +186,11 @@
                 // @see https://github.com/strongloop/express/blob/master/examples/route-map/index.js
                 //
                 // definitions des routes
-                this._router.put('/update', this.update.bind(this));
                 this._router.post('/create', this.create.bind(this));
+                this._router.put('/update/', this.update.bind(this));
+                this._router.delete('/delete/:pid', this.remove.bind(this));
                 this._router.get('/open/:pid', this.open.bind(this));
                 this._router.get('/loadall', this.loadAll.bind(this));
-                this._router.delete('/delete/:pid', this.remove.bind(this));
 
             }
         },

@@ -55,7 +55,8 @@
         });
 
         describe('error from model status code 503', function () {
-            var code = 503,
+            var params,
+                code = 503,
                 pid = 'project_id';
 
             function stubModel(method) {
@@ -71,7 +72,7 @@
             }
             it('createProject', function (done) {
                 stubModel('findOneProject');
-                var params = {
+                params = {
                     path: cwd,
                     name: 'project name'
                 };
@@ -86,9 +87,9 @@
             });
             it('updateProject', function (done) {
                 stubModel('updateProject');
-                var params = {
+                params = {
                     pid: pid,
-                    name: 'a ew project name'
+                    name: 'a new project name'
                 };
                 request(app)
                     .put('/project/update')
@@ -160,7 +161,7 @@
                         done();
                     });
             });
-            it('fails empty pid code 204', function (done) {
+            it('fails empty pid code 404', function (done) {
                 pid = '   ';
                 request(app)
                     .get('/project/open/' + pid)
@@ -171,7 +172,7 @@
                         done();
                     });
             });
-            it('fails invalid pid code 400', function (done) {
+            it('fails invalid pid code 204', function (done) {
                 pid = JSON.stringify({
                     prop: 'value'
                 });
@@ -184,7 +185,7 @@
                         done();
                     });
             });
-            it('fails invalid pid code 400', function (done) {
+            it('fails invalid pid code 204', function (done) {
                 pid = false;
                 request(app)
                     .get('/project/open/' + pid)
@@ -206,7 +207,7 @@
                         done();
                     });
             });
-            it('fails project exixts in db but path non exists code 503', function (done) {
+            it('fails project exists in db but path non exists code 503', function (done) {
                 var p = 'path/to/non/exists';
                 pid = md5(p);
                 sinon.stub(helper.model(), 'findOneProject', function () {
@@ -228,113 +229,153 @@
             });
         });
 
-    });
-
-    /*
-    describe('projectController', function () {
-
-        describe('[GET]/project/open', function () {
-            it('fails', function (done) {
-                request(app)
-                    .post('/project/open')
-                    .send()
-                    .expect('Content-Type', /json/)
-                    .end(function (err, res) {
-                        expect(res.status).to.equal(404); // Cannot POST /project/open
-                        done();
-                    });
-            });
-            it('fail no project_id param', function (done) {
-                request(app)
-                    .get('/project/open')
-                    .send()
-                    .expect('Content-Type', /json/)
-                    .end(function (err, res) {
-                        expect(res.status).to.equal(404); // Cannot GET /project/open
-                        done();
-                    });
-            });
-            it('fail code 404', function (done) {
-                var project_id = md5('   ');
-                request(app)
-                    .get('/project/open/' + project_id)
-                    .send()
-                    .expect('Content-Type', /json/)
-                    .end(function (err, res) {
-                        expect(res.status).to.equal(204);
-                        done();
-                    });
-            });
-            it('fail code 404', function (done) {
-                var project_id = md5('path/to/non/exists');
-                request(app)
-                    .get('/project/open/' + project_id)
-                    .send()
-                    .expect('Content-Type', /json/)
-                    .end(function (err, res) {
-                        expect(res.status).to.equal(204);
-                        done();
-                    });
-            });
-        });
-
         describe('[DELETE]/project/delete', function () {
-            it('fails', function (done) {
-                request(app)
-                    .post('/project/delete')
-                    .send()
-                    .end(function (err, res) {
-                        expect(res.statusCode).to.equal(404);
-                        done();
-                    });
-            });
-            it('fail code 404', function (done) {
+            var pid;
+            it('fails no pid param code 404', function (done) {
                 request(app)
                     .delete('/project/delete')
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        expect(res.statusCode).to.equal(404);
+                        expect(res.status).to.equal(404);
                         done();
                     });
             });
-            it('success code 200 but no document', function (done) {
-                var pid = md5('project/non/exists');
+            it('fails empty pid code 404', function (done) {
+                pid = '   ';
+                request(app)
+                    .delete('/project/delete/' + pid)
+                    .send()
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.status).to.equal(404);
+                        done();
+                    });
+            });
+            it('fails invalid pid code 200 but respond', function (done) {
+                pid = JSON.stringify({
+                    prop: 'value'
+                });
                 request(app)
                     .delete('/project/delete/' + pid)
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
                         expect(res.body).to.equal(false);
-                        expect(res.statusCode).to.equal(200);
+                        expect(res.status).to.equal(200);
                         done();
                     });
             });
-            it('success code 200 document has been deleted', function (done) {
-                var pid = md5('path/to/toto');
-                request(app)
-                    .delete('/project/delete/' + pid)
-                    .send()
-                    .expect('Content-Type', /json/)
-                    .end(function (err, res) {
-                        expect(res.body).to.equal(true);
-                        expect(res.statusCode).to.equal(200);
-                        done();
-                    });
-            });
-            it('success code 200 but no document', function (done) {
-                var pid = md5('path/to/toto');
+            it('fails invalid pid code 200 but respond', function (done) {
+                pid = false;
                 request(app)
                     .delete('/project/delete/' + pid)
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
                         expect(res.body).to.equal(false);
-                        expect(res.statusCode).to.equal(200);
+                        expect(res.status).to.equal(200);
+                        done();
+                    });
+            });
+            it('fails no project in db with pid code 200', function (done) {
+                pid = md5('path/to/non/exists');
+                request(app)
+                    .delete('/project/delete/' + pid)
+                    .send()
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.body).to.equal(false);
+                        expect(res.status).to.equal(200);
                         done();
                     });
             });
         });
+
+        describe('[PUT]/project/update', function () {
+            var project;
+            it('fails null project data code 404', function(){
+                request(app)
+                    .put('/project/update')
+                    .send(project)
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.status).to.equal(404);
+                        done();
+                    });
+            });
+            it('fails empty project data code 400', function(){
+                project = {};
+                request(app)
+                    .put('/project/update')
+                    .send(project)
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.status).to.equal(400);
+                        done();
+                    });
+            });
+            it('fails empty props project data code 400', function(){
+                project = {
+                    pid: '',
+                    name: false
+                };
+                request(app)
+                    .put('/project/update')
+                    .send(project)
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.status).to.equal(400);
+                        done();
+                    });
+            });
+            it('fails empty props project data code 400', function(){
+                project = {
+                    pid: 'not an empty string',
+                    name: false
+                };
+                request(app)
+                    .put('/project/update')
+                    .send(project)
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.status).to.equal(400);
+                        done();
+                    });
+            });
+            it('fails invalid project data code 400', function(){
+                project = false;
+                request(app)
+                    .put('/project/update')
+                    .send(project)
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.status).to.equal(400);
+                        done();
+                    });
+            });
+
+        });
+
+        describe('[POST]/project/create', function () {
+            var project;
+            xit('fails invalid project data code 400', function(){
+                project = false;
+                request(app)
+                    .post('/project/create')
+                    .send(project)
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.status).to.equal(400);
+                        done();
+                    });
+            });
+        });
+
+    });
+
+    /*
+    describe('projectController', function () {
 
         describe('[POST]/project/create', function () {
             it('fails', function (done) {

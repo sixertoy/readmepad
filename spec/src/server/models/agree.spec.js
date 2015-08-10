@@ -174,7 +174,7 @@
                         done();
                     });
                 });
-                it('fails input path symlink', function (done) {
+                xit('fails input path symlink', function (done) {
                     var p = path.join(fxpath, 'agree', 'symlink');
                     agree.exec('a name', p, '/path/to/folder').then(function () {}, function (err) {
                         expect(err.message).to.equal('invalid input, only zip file or directory allowed');

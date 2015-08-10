@@ -1,8 +1,8 @@
-# readmepad [![Built with Grunt][grunt-img]](http://gruntjs.com/)
+# ReadmePad [![Built with Grunt][grunt-img]](http://gruntjs.com/)
 
 [![MIT License][license-img]][license-url] [![NPM version][npm-version-img]][npm-url] [![NPM downloads][npm-downloads-img]][npm-url] 
 
-* Project generated with Yeoman generator-gruntproject v0.1.20
+* Multi project online Markdown editor
 
 ## Install
 
@@ -13,6 +13,10 @@
 ## Issues
 
 ## History
+
+## Links
+
+- [Swagger Editor](http://editor.swagger.io)
 
 [grunt-img]: https://cdn.gruntjs.com/builtwith.png
 [license-img]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
