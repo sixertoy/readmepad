@@ -28,7 +28,7 @@
          */
         controller = {
 
-            _stubArguments: function(){
+            _stubArguments: function () {
                 return arguments;
             },
 
@@ -73,7 +73,6 @@
 
             update: function (req, res) {
                 var project,
-                    valid =
                     valid = validate(this._stubArguments(req.body.pid, req.body.name), [_.isString, _.isString]);
                 if (!valid) {
                     res.sendStatus(400);
@@ -96,13 +95,24 @@
 
             /**
              *
+             * Charge tous les projets en BDD
+             *
+             */
+            loadAll: function (req, res) {
+                this.model().findAll().then(function (data) {
+                    res.status(200).send(data || false);
+                }, function (err) {
+                    res.sendStatus(503);
+                });
+            },
+
+            /**
+             *
              *
              *
              */
             remove: function (req, res) {
-                var valid = validate(this._stubArguments(req.params.pid), [_.isString]);
-                //
-                if (!valid) {
+                if (!req.pid) {
                     res.sendStatus(400);
                 } else {
                     this.model().deleteProject(req.params.pid).then(function (count) {
@@ -115,42 +125,28 @@
 
             /**
              *
+             * Ouverture d'un projet
              *
+             * @param pid [string]
              *
              */
-            loadAll: function (req, res) {
-                this.model().findAll().then(function (data) {
-                    res.status(200).send(data);
+            open: function (req, res) {
+                this.model().findOneProject(req.pid).then(function (doc) {
+                    if (doc) {
+                        scandir(doc.path, {
+                            sorted: true
+                        }).then(function (data) {
+                            res.send(data);
+                        }, function (err) {
+                            res.sendStatus(503);
+                        });
+                    } else {
+                        // if project doesn't exists
+                        res.sendStatus(204);
+                    }
                 }, function (err) {
                     res.sendStatus(503);
                 });
-            },
-
-            open: function (req, res) {
-                var project_path,
-                    valid = validate(this._stubArguments(req.params.pid), [_.isString]);
-                //
-                if (!valid) {
-                    res.sendStatus(400);
-                } else {
-                    this.model().findOneProject(req.params.pid).then(function (doc) {
-                        if (doc) {
-                            project_path = doc.path;
-                            scandir(project_path, {
-                                sorted: true
-                            }).then(function (data) {
-                                res.send(data);
-                            }, function (err) {
-                                res.sendStatus(503);
-                            });
-                        } else {
-                            // if project doesn't exists
-                            res.sendStatus(204);
-                        }
-                    }, function (err) {
-                        res.sendStatus(503);
-                    });
-                }
             },
 
             _model: null,
@@ -164,6 +160,27 @@
                 return this._router;
             },
 
+            /**
+             *
+             * Prevalidation des parametres des routes
+             *
+             */
+            registerRoutesParams: function () {
+                var valid,
+                    $this = this;
+                // pid
+                this._router.param('pid', function (req, res, next, pid) {
+                    valid = validate($this._stubArguments(pid), [_.isString]);
+                    req.pid = valid ? pid : false;
+                    next();
+                });
+            },
+
+            /**
+             *
+             * Init du router et des routes
+             *
+             */
             init: function (model) {
                 //
                 // init du router
@@ -172,11 +189,16 @@
                     caseSensitive: true
                 });
                 //
+                this.registerRoutesParams();
+                //
+                // @TODO use map routes
+                // @see https://github.com/strongloop/express/blob/master/examples/route-map/index.js
+                //
                 // definitions des routes
                 this._router.put('/update', this.update.bind(this));
                 this._router.post('/create', this.create.bind(this));
-                this._router.get('/loadall', this.loadAll.bind(this));
                 this._router.get('/open/:pid', this.open.bind(this));
+                this._router.get('/loadall', this.loadAll.bind(this));
                 this._router.delete('/delete/:pid', this.remove.bind(this));
 
             }

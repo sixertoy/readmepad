@@ -5,7 +5,7 @@
 
     'use strict';
 
-    function stubArguments(){
+    function stubArguments() {
         return arguments;
     }
 
@@ -42,6 +42,8 @@
 
     describe('ProjectController', function () {
 
+        this.timeout(3000);
+
         it('init project', function (done) {
             model = new ProjectModel();
             model.init(dbfile).then(function (store) {
@@ -52,9 +54,11 @@
             });
         });
 
-        describe('status code 503', function () {
+        describe('error from model status code 503', function () {
+            var code = 503,
+                pid = 'project_id';
 
-            function stubModel(method){
+            function stubModel(method) {
                 sinon.stub(helper.model(), method, function () {
                     var q = Q.defer();
                     q.reject(new Error('error from model'));
@@ -62,10 +66,9 @@
                 });
             }
 
-            function unstubModel(method){
+            function unstubModel(method) {
                 helper.model()[method].restore();
             }
-
             it('createProject', function (done) {
                 stubModel('findOneProject');
                 var params = {
@@ -76,81 +79,68 @@
                     .post('/project/create')
                     .send(params)
                     .end(function (err, res) {
-                        expect(res.statusCode).to.equal(503);
+                        expect(res.statusCode).to.equal(code);
                         unstubModel('findOneProject');
                         done();
                     });
             });
-
             it('updateProject', function (done) {
                 stubModel('updateProject');
                 var params = {
-                    pid: 'project_id',
+                    pid: pid,
                     name: 'a ew project name'
                 };
                 request(app)
                     .put('/project/update')
                     .send(params)
                     .end(function (err, res) {
-                        expect(res.statusCode).to.equal(503);
+                        expect(res.statusCode).to.equal(code);
                         unstubModel('updateProject');
                         done();
                     });
             });
-
             it('deleteProject', function (done) {
                 stubModel('deleteProject');
                 request(app)
-                    .delete('/project/delete/' + 'project_id')
+                    .delete('/project/delete/' + pid)
                     .send()
                     .end(function (err, res) {
-                        expect(res.statusCode).to.equal(503);
+                        expect(res.statusCode).to.equal(code);
                         unstubModel('deleteProject');
                         done();
                     });
             });
-
             it('findOneProject', function (done) {
                 stubModel('findOneProject');
                 request(app)
-                    .get('/project/open/' + 'project_id')
+                    .get('/project/open/' + pid)
                     .send()
                     .end(function (err, res) {
-                        expect(res.statusCode).to.equal(503);
+                        expect(res.statusCode).to.equal(code);
                         unstubModel('findOneProject');
                         done();
                     });
             });
-
             it('findAll', function (done) {
                 stubModel('findAll');
                 request(app)
                     .get('/project/loadall')
                     .send()
                     .end(function (err, res) {
-                        expect(res.statusCode).to.equal(503);
+                        expect(res.statusCode).to.equal(code);
+                        unstubModel('findAll');
                         done();
                     });
             });
-
         });
 
-        xdescribe('[GET]/project/loadall', function () {
-            it('returns 404 no post for this route', function (done) {
-                request(app)
-                    .post('/project/loadall')
-                    .send()
-                    .end(function (err, res) {
-                        expect(res.statusCode).to.equal(404);
-                        done();
-                    });
-            });
-            xit('returns 200 no project in DB', function (done) {
+        describe('[GET]/project/loadall', function () {
+            it('returns 200 no project in DB', function (done) {
                 request(app)
                     .get('/project/loadall')
                     .send()
                     .end(function (err, res) {
-                        expect(res.body).to.be.false;
+                        expect(res.body).to.equal(false);
                         expect(res.statusCode).to.equal(200);
                         done();
                     });
@@ -158,18 +148,9 @@
         });
 
 
-        xdescribe('[GET]/project/open', function () {
-            it('fails', function (done) {
-                request(app)
-                    .post('/project/open')
-                    .send()
-                    .expect('Content-Type', /json/)
-                    .end(function (err, res) {
-                        expect(res.status).to.equal(404); // Cannot POST /project/open
-                        done();
-                    });
-            });
-            it('fail no project_id param', function (done) {
+        describe('[GET]/project/open', function () {
+            var pid;
+            it('fails no pid param', function (done) {
                 request(app)
                     .get('/project/open')
                     .send()
@@ -179,10 +160,23 @@
                         done();
                     });
             });
-            it('fail code 404', function (done) {
-                var project_id = md5('   ');
+            it('fails empty pid code 204', function (done) {
+                pid = '   ';
                 request(app)
-                    .get('/project/open/' + project_id)
+                    .get('/project/open/' + pid)
+                    .send()
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.status).to.equal(404);
+                        done();
+                    });
+            });
+            it('fails invalid pid code 400', function (done) {
+                pid = JSON.stringify({
+                    prop: 'value'
+                });
+                request(app)
+                    .get('/project/open/' + pid)
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
@@ -190,24 +184,51 @@
                         done();
                     });
             });
-            it('fail code 404', function (done) {
-                var project_id = md5('path/to/non/exists');
+            it('fails invalid pid code 400', function (done) {
+                pid = false;
                 request(app)
-                    .get('/project/open/' + project_id)
+                    .get('/project/open/' + pid)
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
                         expect(res.status).to.equal(204);
+                        done();
+                    });
+            });
+            it('fails no project code 204', function (done) {
+                pid = md5('path/to/non/exists');
+                request(app)
+                    .get('/project/open/' + pid)
+                    .send()
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.status).to.equal(204);
+                        done();
+                    });
+            });
+            it('fails project exixts in db but path non exists code 503', function (done) {
+                var p = 'path/to/non/exists';
+                pid = md5(p);
+                sinon.stub(helper.model(), 'findOneProject', function () {
+                    var q = Q.defer();
+                    q.resolve({
+                        path: p
+                    });
+                    return q.promise;
+                });
+                request(app)
+                    .get('/project/open/' + pid)
+                    .send()
+                    .expect('Content-Type', /json/)
+                    .end(function (err, res) {
+                        expect(res.status).to.equal(503);
+                        helper.model().findOneProject.restore();
                         done();
                     });
             });
         });
 
     });
-
-    //
-    /*;
-     */
 
     /*
     describe('projectController', function () {
