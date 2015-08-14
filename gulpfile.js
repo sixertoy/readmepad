@@ -14,10 +14,10 @@
         path = require('path'),
         preen = require('preen'),
         less = require('gulp-less'),
+        delta = require('gulp-delta'),
         rename = require('gulp-rename'),
         uglify = require('gulp-uglify'),
         flatten = require('gulp-flatten'),
-        changed = require('gulp-changed'),
         minifycss = require('gulp-minify-css'),
         autoprefixer = require('gulp-autoprefixer');
 
@@ -28,7 +28,7 @@
     dest = path.join(bower_src, '**/*.js');
     gulp.task('bower:js', function () {
         gulp.src(dest)
-            .pipe(changed(dest))
+            .pipe(delta(dest))
             .pipe(uglify()) // Minify CSS
             .pipe(rename({
                 suffix: '.min'
@@ -40,31 +40,15 @@
     dest = path.join(bower_src, '**/*.css');
     gulp.task('bower:css', function () {
         gulp.src(dest)
-            .pipe(changed(dest))
+            .pipe(delta(dest))
             .pipe(minifycss()) // Minify CSS
             .pipe(rename({
                 suffix: '.min'
             }))
             .pipe(flatten())
-            .pipe(gulp.dest(path.join(dist, 'html', 'css')));
+            .pipe(gulp.dest(path.join(dist, 'html', 'css', 'lib')));
     });
 
     gulp.task('bower', ['preen', 'bower:css', 'bower:js']);
-
-    /*
-    gulp.task('less', function () {
-        gulp.src(path.join(src, 'html', 'less', '*.less'))
-            .pipe(less())
-            .pipe(autoprefixer({
-                cascade: true,
-                browsers: ['last 2 versions']
-            }))
-            .pipe(minifycss()) // Minify CSS
-            .pipe(rename({
-                suffix: '.min'
-            }))
-            .pipe(gulp.dest(path.join(dist, 'public', 'css')));
-    });
-    */
 
 }());

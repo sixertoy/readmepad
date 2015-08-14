@@ -1,9 +1,3 @@
-build_bower:
-  - clean:bower
-  - copy:bower_js
-  - copy:bower_js_globals
-  - copy:bower_js_angular
-  - copy:bower_css
 build_html:
   - clean:html
   - copy:html
