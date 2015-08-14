@@ -4,21 +4,18 @@
   "description": "Project generated with Yeoman generator-gruntproject v0.1.20",
   "main": "index.js",
   "scripts": {
-
     "clean_modules": "rm -rf node_modules && rm -rf bower_components",
-
     "predocs": "rm -rf build/docs",
     "docs": "sh scripts/docs",
-
     "postdocs": "node index",
 
     "prespec": "sh scripts/premocha",
-    "spec": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ",
-    "postspec": "sh scripts/rm_coverage",
+    "spec": "env NODE_ENV=test istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ",
+    "postspec": "sh scripts/coverage",
 
     "premocha": "sh scripts/premocha",
-    "mocha": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./spec/src/server/**/*.spec.js",
-    "postmocha": "sh scripts/rm_coverage",
+    "mocha": "env NODE_ENV=test istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./spec/src/server/**/*",
+    "postmocha": "sh scripts/coverage",
 
     "prekarma": "sh scripts/prekarma",
     "karma": "karma start karma.conf.js --single-run",
@@ -33,7 +30,6 @@
 
     "prestart-dev": "grunt build && npm test",
     "start-dev": "env NODE_ENV=development node index"
-
   },
   "engines": {
     "node": ">=0.12.0"
@@ -102,7 +98,6 @@
     "karma-sinon": "^1.0.4",
     "load-grunt-config": "^0.17.1",
     "mocha": "^2.2.5",
-    "mocha-lcov-reporter": "0.0.2",
     "phantomjs": "^1.9.17",
     "sinon": "^1.15.4",
     "supertest": "^1.0.1"
