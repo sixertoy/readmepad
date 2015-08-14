@@ -5,7 +5,8 @@
     <title></title>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" /> {{$include 'commons/styles'}}
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    {{$include 'commons/styles'}}
 </head>
 
 <body class="" ng-class="[theme, hasSidebar, hasCheatsheet, isLoading]">
@@ -36,14 +37,13 @@
 
     <div class="after-body">
         {{$include 'commons/scripts'}}
+        {{$include 'templates/import-project_modal'}}
+        {{$include 'templates/preferences_popover'}}
+        {{$include 'templates/project-explorer_repeat'}}
     </div>
 
-    {{$include 'templates/import-project_modal'}}
-    {{$include 'templates/preferences_popover'}}
-    {{$include 'templates/project-explorer_repeat'}}
-
     <!-- livereload -->
-    {{!-- $livereload --}}
+    {{$livereload 1337}}
 
 </body>
 
