@@ -1,8 +1,3 @@
-serve:
-  - connect
-build_documentation:
-  - clean:documentation
-  - joli_markdown
 build_bower:
   - clean:bower
   - copy:bower_js
@@ -13,8 +8,6 @@ build_html:
   - clean:html
   - copy:html
   - mustacher
-  - less
-# - autoprefixer
 build_server:
   - clean:server
   - copy:server

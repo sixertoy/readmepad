@@ -1,38 +1,54 @@
 {
-  "name": "readmepad",
-  "main": "index.js",
-  "version": "0.1.0",
-  "authors": [
+    "name": "readmepad",
+    "main": "index.js",
+    "version": "0.1.0",
+    "authors": [
     "sixertoy <sixertoy.github@gmail.com>"
   ],
-  "description": "ReadmePad",
-  "moduleType": [
+    "description": "ReadmePad",
+    "moduleType": [
     "node"
   ],
-  "keywords": [
+    "keywords": [
     "markdown",
     "documentation",
     "express"
   ],
-  "license": "MIT",
-  "dependencies": {
-    "angular": "~1.4.2",
-    "angular-mocks": "~1.4.3",
-    "angular-ui-ace": "bower",
-    "markdown-it": "~4.3.0",
-    "angular-bootstrap": "~0.13.2",
-    "satellizer": "~0.11.2",
-    "bootstrap": "~3.3.5",
-    "normalize.css": "~3.0.3",
-    "lodash": "~3.10.0",
-    "angular-md5": "~0.1.8",
-    "octicons": "~2.4.1",
-    "ng-scrollbar": "~0.0.8",
-    "angular-sanitize": "~1.4.3",
-    "angular-ui-router": "~0.2.15",
-    "angular-base64": "~2.0.5",
-    "angular-loading-bar": "~0.8.0",
-    "angular-animate": "~1.4.3",
-    "github-markdown-css": "~2.0.9"
-  }
+    "license": "MIT",
+    "dependencies": {
+        "angular": "~1.4.2",
+        "angular-animate": "~1.4.3",
+        "angular-base64": "~2.0.5",
+        "angular-bootstrap": "~0.13.2",
+        "angular-loading-bar": "~0.8.0",
+        "angular-md5": "~0.1.8",
+        "angular-mocks": "~1.4.3",
+        "angular-sanitize": "~1.4.3",
+        "angular-ui-ace": "bower",
+        "angular-ui-router": "~0.2.15",
+        "bootstrap": "~3.3.5",
+        "lodash": "~3.10.0",
+        "ng-scrollbar": "~0.0.8",
+        "normalize.css": "~3.0.3",
+        "octicons": "~2.4.1"
+    },
+    "preen": {
+        "ace-builds": ["src-min-noconflict/ace.js", "src-min-noconflict/mode-markdown.js"],
+        "angular": ["angular.js"],
+        "angular-animate": ["angular-animate.js"],
+        "angular-base64": ["angular-base64.js"],
+        "angular-bootstrap": ["ui-bootstrap-tpls.js"],
+        "angular-loading-bar": ["build/loading-bar.css", "build/loading-bar.js"],
+        "angular-md5": ["angular-md5.js"],
+        "angular-mocks": ["angular-mocks.js"],
+        "angular-sanitize": ["angular-sanitize.js"],
+        "angular-ui-ace": ["angular-ui-ace/ui-ace.js"],
+        "angular-ui-router": ["release/angular-ui-router.js"],
+        "bootstrap": ["dist/css/bootstrap.css"],
+        "jquery": ["dist/jquery.js"],
+        "lodash": ["lodash.js"],
+        "ng-scrollbar": ["dist/ng-scrollbar.js", "dist/ng-scrollbar.css"],
+        "normalize.css": ["normalize.css"],
+        "octicons": ["octicons/octicons.css", "octicons/octicons.ttf", "octicons/octicons.woff", "octicons/octicons.eot", "octicons/octicons.svg"]
+    }
 }
