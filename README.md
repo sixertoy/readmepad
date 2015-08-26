@@ -1,8 +1,8 @@
-# readmepad [![Built with Grunt][grunt-img]](http://gruntjs.com/)
+# ReadmePad
 
-[![MIT License][license-img]][license-url] [![NPM version][npm-version-img]][npm-url] [![NPM downloads][npm-downloads-img]][npm-url] 
+[![MIT License][license-img]][license-url]
 
-> NodeJS Markdown Editor
+> Markdown online Editor
 
 ## Install
 
@@ -42,8 +42,6 @@ npm start
 
 - files list width | break word
 - scrollbars no update on fullscreen
-
-## History
 
 [grunt-img]: https://cdn.gruntjs.com/builtwith.png
 [license-img]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square

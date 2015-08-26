@@ -1,28 +1,37 @@
 {
   "name": "readmepad",
   "version": "0.1.1",
-  "description": "Project generated with Yeoman generator-gruntproject v0.1.20",
+  "description": "Markdown online editor",
   "main": "index.js",
   "scripts": {
+
     "clean_modules": "rm -rf node_modules && rm -rf bower_components",
+
     "predocs": "rm -rf build/docs",
     "docs": "sh scripts/docs",
     "postdocs": "node index",
+
     "prespec": "sh scripts/premocha",
     "spec": "env NODE_ENV=test istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ",
     "postspec": "sh scripts/coverage",
+
     "premocha": "sh scripts/premocha",
     "mocha": "env NODE_ENV=test istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./spec/src/server/**/*",
     "postmocha": "sh scripts/coverage",
+
     "prekarma": "sh scripts/prekarma",
     "karma": "karma start karma.conf.js --single-run",
+
     "preinstall": "bower install --allow-root",
-    "postinstall": "npm test",
+
     "test": "npm run mocha && npm run karma",
+
     "prestart": "grunt build && npm test",
     "start": "node index",
+
     "prestart-dev": "grunt build && npm test",
     "start-dev": "env NODE_ENV=development node index"
+
   },
   "engines": {
     "node": ">=0.12.0"
@@ -32,7 +41,9 @@
     "url": "https://github.com/sixertoy/readmepad"
   },
   "keywords": [
-    "grunt"
+    "markdown",
+    "online",
+    "editor"
   ],
   "author": [
     {

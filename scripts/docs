@@ -1,5 +1,5 @@
-mdown --input "./src/docs/**/*.md" --output ./build/docs --header "./src/docs/assets/header.html" --footer "./src/docs/assets/footer.html"
-github-markdown-css > ./build/docs/github-markdown.css
-bootprint swagger ./src/docs/restapi.json ./build/docs/v1
+mdown --input "./src/docs/**/*.md" --output ./docs --header "./docs/assets/header.html" --footer "./docs/assets/footer.html"
+github-markdown-css > ./docs/github-markdown.css
+bootprint swagger ./docs/restapi.json ./build/docs/v1
 cp src/app.js ./build/app.js
 exit 0
