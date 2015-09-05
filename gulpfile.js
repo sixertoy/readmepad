@@ -9,6 +9,8 @@
         src = 'src',
         dist = 'build',
         bower_src = 'bower_components',
+        // tasks
+
         // requires
         gulp = require('gulp'),
         path = require('path'),
@@ -20,6 +22,9 @@
         flatten = require('gulp-flatten'),
         minifycss = require('gulp-minify-css'),
         autoprefixer = require('gulp-autoprefixer');
+        //
+        require('./gulp/build_html');
+        require('./gulp/build_server');
 
     gulp.task('preen', function (cb) {
         preen.preen({}, cb);
@@ -49,6 +54,6 @@
             .pipe(gulp.dest(path.join(dist, 'html', 'css', 'lib')));
     });
 
-    gulp.task('bower', ['preen', 'bower:css', 'bower:js']);
+    gulp.task('bower',  ['preen', 'bower:css', 'bower:js']);
 
 }());

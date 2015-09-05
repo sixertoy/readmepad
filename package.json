@@ -4,34 +4,23 @@
   "description": "Markdown online editor",
   "main": "index.js",
   "scripts": {
-
     "clean_modules": "rm -rf node_modules && rm -rf bower_components",
-
     "predocs": "rm -rf build/docs",
     "docs": "sh scripts/docs",
     "postdocs": "node index",
-
     "prespec": "sh scripts/premocha",
     "spec": "env NODE_ENV=test istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ",
     "postspec": "sh scripts/coverage",
-
     "premocha": "sh scripts/premocha",
     "mocha": "env NODE_ENV=test istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./spec/src/server/**/*",
     "postmocha": "sh scripts/coverage",
-
     "prekarma": "sh scripts/prekarma",
     "karma": "karma start karma.conf.js --single-run",
-
-    "preinstall": "bower install --allow-root",
-
     "test": "npm run mocha && npm run karma",
-
     "prestart": "grunt build && npm test",
     "start": "node index",
-
     "prestart-dev": "grunt build && npm test",
     "start-dev": "env NODE_ENV=development node index"
-
   },
   "engines": {
     "node": ">=0.12.0"
@@ -81,26 +70,17 @@
   "devDependencies": {
     "coveralls": "^2.11.3",
     "express-livereload": "0.0.24",
-    "grunt": "^0.4.5",
-    "grunt-autoprefixer": "^3.0.3",
-    "grunt-bump": "^0.3.1",
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-copy": "^0.8.0",
-    "grunt-contrib-cssmin": "^0.12.3",
-    "grunt-contrib-jshint": "^0.11.2",
-    "grunt-contrib-less": "^1.0.1",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-font-base64": "^0.1.4",
-    "grunt-mustacher": "^1.3.15",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.1",
     "gulp-changed": "^1.3.0",
     "gulp-delta": "^0.1.1",
     "gulp-flatten": "^0.1.1",
+    "gulp-jshint": "^1.11.2",
     "gulp-less": "^3.0.3",
     "gulp-minify-css": "^1.2.0",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.2.0",
+    "jshint-stylish": "^2.0.1",
     "karma": "^0.13.3",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^0.2.0",
