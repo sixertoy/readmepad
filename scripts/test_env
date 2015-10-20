@@ -1,2 +1,0 @@
-env NODE_ENV=test
-env COVERALLS_GIT_COMMIT=git_commit: git log -1 --pretty=%B

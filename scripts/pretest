@@ -1,6 +1,0 @@
-grunt build_bower
-rm -rf ./spec/fixtures/nedb
-mkdir ./src/docs/pages
-rm -rf  ./spec/outputs
-mkdir ./spec/outputs
-exit 0
