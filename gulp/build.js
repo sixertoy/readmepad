@@ -51,8 +51,8 @@
         del.sync([
             path.join(dest, 'css', '**/*.min.css'),
             '!' + path.join(dest, 'css', 'vendor.min.css')
-        ])
-        return gulp.src(path.join(src, 'sass', '/*.scss'))
+        ]);
+        return gulp.src(path.join(src, 'sass', '*.scss'))
             .pipe(plumber())
             .pipe(sourcemaps.init())
             .pipe(sass())
@@ -70,11 +70,17 @@
     });
 
     gulp.task('build:css', function () {
-
     });
 
     gulp.task('build:js', function () {
-
+        del.sync([
+            path.join(dest, 'js', '**/*.min.css'),
+            '!' + path.join(dest, 'js', 'vendor.min.js')
+        ]);
+        return gulp.src(path.join(src, 'js', '**/*.js'))
+            .pipe(plumber())
+            .pipe(plumber.stop())
+            .pipe(gulp.dest(path.join(dest, 'js')));
     });
 
     gulp.task('build', function (cb) {
