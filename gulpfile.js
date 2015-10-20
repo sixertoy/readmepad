@@ -3,6 +3,8 @@
 (function () {
 
     'use strict';
+    
+    require('./gulp/bower');
 
     var // variables
         dest,
@@ -10,11 +12,11 @@
         dist = 'build',
         bower_src = 'bower_components',
         // tasks
-
         // requires
         gulp = require('gulp'),
+        runSequence = require('run-sequence');
+        /*
         path = require('path'),
-        preen = require('preen'),
         less = require('gulp-less'),
         delta = require('gulp-delta'),
         rename = require('gulp-rename'),
@@ -22,38 +24,10 @@
         flatten = require('gulp-flatten'),
         minifycss = require('gulp-minify-css'),
         autoprefixer = require('gulp-autoprefixer');
-        //
-        require('./gulp/build_html');
-        require('./gulp/build_server');
-
-    gulp.task('preen', function (cb) {
-        preen.preen({}, cb);
+        */
+    
+    gulp.task('default', function(cb){
+        runSequence('preen', 'bower', cb);
     });
-
-    dest = path.join(bower_src, '**/*.js');
-    gulp.task('bower:js', function () {
-        gulp.src(dest)
-            .pipe(delta(dest))
-            .pipe(uglify()) // Minify CSS
-            .pipe(rename({
-                suffix: '.min'
-            }))
-            .pipe(flatten())
-            .pipe(gulp.dest(path.join(dist, 'html', 'js', 'lib')));
-    });
-
-    dest = path.join(bower_src, '**/*.css');
-    gulp.task('bower:css', function () {
-        gulp.src(dest)
-            .pipe(delta(dest))
-            .pipe(minifycss()) // Minify CSS
-            .pipe(rename({
-                suffix: '.min'
-            }))
-            .pipe(flatten())
-            .pipe(gulp.dest(path.join(dist, 'html', 'css', 'lib')));
-    });
-
-    gulp.task('bower',  ['preen', 'bower:css', 'bower:js']);
 
 }());

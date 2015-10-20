@@ -33,22 +33,63 @@
         "octicons": "~2.4.1"
     },
     "preen": {
-        "ace-builds": ["src-min-noconflict/ace.js", "src-min-noconflict/mode-markdown.js"],
-        "angular": ["angular.js"],
-        "angular-animate": ["angular-animate.js"],
-        "angular-base64": ["angular-base64.js"],
-        "angular-bootstrap": ["ui-bootstrap-tpls.js"],
-        "angular-loading-bar": ["build/loading-bar.css", "build/loading-bar.js"],
-        "angular-md5": ["angular-md5.js"],
-        "angular-mocks": ["angular-mocks.js"],
-        "angular-sanitize": ["angular-sanitize.js"],
-        "angular-ui-ace": ["angular-ui-ace/ui-ace.js"],
-        "angular-ui-router": ["release/angular-ui-router.js"],
-        "bootstrap": ["dist/css/bootstrap.css"],
-        "jquery": ["dist/jquery.js"],
-        "lodash": ["lodash.js"],
-        "ng-scrollbar": ["dist/ng-scrollbar.js", "dist/ng-scrollbar.css"],
-        "normalize.css": ["normalize.css"],
-        "octicons": ["octicons/octicons.css", "octicons/octicons.ttf", "octicons/octicons.woff", "octicons/octicons.eot", "octicons/octicons.svg"]
+        "ace-builds": [
+            "src-min-noconflict/ace.js",
+            "src-min-noconflict/mode-markdown.js"
+        ],
+        "angular": [
+            "angular.js"
+        ],
+        "angular-animate": [
+            "angular-animate.js"
+        ],
+        "angular-base64": [
+            "angular-base64.js"
+        ],
+        "angular-bootstrap": [
+            "ui-bootstrap-tpls.js"
+        ],
+        "angular-loading-bar": [
+            "build/loading-bar.css",
+            "build/loading-bar.js"
+        ],
+        "angular-md5": [
+            "angular-md5.js"
+        ],
+        "angular-mocks": [
+            "angular-mocks.js"
+        ],
+        "angular-sanitize": [
+            "angular-sanitize.js"
+        ],
+        "angular-ui-ace": [
+            "angular-ui-ace/ui-ace.js"
+        ],
+        "angular-ui-router": [
+            "release/angular-ui-router.js"
+        ],
+        "bootstrap": [
+            "dist/css/bootstrap.css"
+        ],
+        "jquery": [
+            "dist/jquery.js"
+        ],
+        "lodash": [
+            "lodash.js"
+        ],
+        "ng-scrollbar": [
+            "dist/ng-scrollbar.js",
+            "dist/ng-scrollbar.css"
+        ],
+        "normalize.css": [
+            "normalize.css"
+        ],
+        "octicons": [
+            "octicons/octicons.css",
+            "octicons/octicons.ttf",
+            "octicons/octicons.woff",
+            "octicons/octicons.eot",
+            "octicons/octicons.svg"
+        ]
     }
 }

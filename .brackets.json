@@ -1,0 +1,7 @@
+{
+    "jwolfe.file-tree-exclude.list": [
+        ".git",
+        "node_modules",
+        "bower_components"
+    ]
+}
