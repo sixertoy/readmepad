@@ -12,6 +12,6 @@ script:
   - npm test --verbose
 after_success:
   - cat ./coverage/lcov.info | coveralls && rm -rf ./coverage
-  - git config user.name "Travis CI"
+  - git config user.name "sixertoy"
   - git config user.email "sixertoy.github@gmail.com"
   - git subtree push --prefix dist origin master
