@@ -1,5 +1,5 @@
 /*jslint indent: 4, nomen: true */
-/*global require, __dirname */
+/*global require, __dirname, process */
 (function () {
 
     'use strict';
@@ -8,7 +8,7 @@
     require('dotenv').load();
 
     var // variables
-        server, paths, devmode,
+        server, paths,
         port = process.env.PORT || 9080,
         devmode = process.env.DEBUG || false,
         lr_port = process.env.LIVERELOAD_PORT || false,

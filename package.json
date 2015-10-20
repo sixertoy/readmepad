@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "clean_modules": "sh ./scripts/clean_modules.sh",
+    "test": "",
     "start": "sh ./scripts/start.sh"
   },
   "engines": {
