@@ -5,9 +5,10 @@
     'use strict';
 
     var // variables
-        server, paths, devmode,
+        server, paths,
         port = 9080,
         lr_port = 1337,
+        devmode = true,
         // requires
         path = require('path'),
         multer = require('multer'),
@@ -16,10 +17,9 @@
         compression = require('compression'),
         serveFavicon = require('serve-favicon'),
         livereload = require('express-livereload'),
-        Facade = require('./server/facade');
+        Facade = require('./node/facade');
     //
     // app paths
-    devmode = (server.get('env') === 'development');
     paths = {
         www: path.join(__dirname, 'public'),
         app: path.join(__dirname, 'server'),
@@ -28,6 +28,7 @@
     //
     // express
     server = express();
+    //devmode = (server.get('env') === 'development');
     //
     // livereload
     if (devmode) {

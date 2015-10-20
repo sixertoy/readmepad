@@ -5,7 +5,7 @@
     'use strict';
 
     var // variables
-        dest = 'build/html',
+        dest = 'build/public',
         src = 'bower_components',
         //
         preen = require('./gulp-preen'),

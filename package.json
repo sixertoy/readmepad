@@ -4,26 +4,11 @@
   "description": "Markdown online editor",
   "main": "index.js",
   "scripts": {
-    "clean_modules": "rm -rf node_modules && rm -rf bower_components",
-    "predocs": "rm -rf build/docs",
-    "docs": "sh scripts/docs",
-    "postdocs": "node index",
-    "prespec": "sh scripts/premocha",
-    "spec": "env NODE_ENV=test istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ",
-    "postspec": "sh scripts/coverage",
-    "premocha": "sh scripts/premocha",
-    "mocha": "env NODE_ENV=test istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./spec/src/server/**/*",
-    "postmocha": "sh scripts/coverage",
-    "prekarma": "sh scripts/prekarma",
-    "karma": "karma start karma.conf.js --single-run",
-    "test": "npm run mocha && npm run karma",
-    "prestart": "grunt build && npm test",
-    "start": "node index",
-    "prestart-dev": "grunt build && npm test",
-    "start-dev": "env NODE_ENV=development node index"
+    "clean_modules": "sh ./scripts/clean_modules.sh",
+    "start": "sh ./scripts/start.sh"
   },
   "engines": {
-    "node": ">=0.12.0"
+    "node": "~4.2.1"
   },
   "repository": {
     "type": "git",
@@ -52,7 +37,7 @@
     "chalk": "^1.1.0",
     "compression": "^1.5.2",
     "dotenv": "^1.2.0",
-    "express": "^4.13.1",
+    "express": "^4.13.3",
     "filenamify": "^1.2.0",
     "fs-extra": "^0.23.0",
     "is-absolute": "^0.2.2",

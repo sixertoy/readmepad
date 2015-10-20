@@ -23,42 +23,55 @@
         runSequence = require('run-sequence'),
         sourcemaps = require('gulp-sourcemaps');
 
-    gulp.task('node:server', function () {
+    gulp.task('server:app', function () {
+        
         del.sync([
-            path.join(dest, 'node', '**/*')
+            path.join(dest, 'server', '**/*')
         ])
-        return gulp.src(path.join(src, 'node', '**/*.js'))
+        return gulp.src(path.join(src, 'server', '**/*.js'))
             .pipe(plumber())
             //.pipe(jshint('.jshintrc'))
             //.pipe(jshint.reporter('jshint-stylish'))
+            /*
             .pipe(sourcemaps.init())
             .pipe(uglify({
                 compress: true
             }))
             .pipe(sourcemaps.write())
+            */
             .pipe(plumber.stop())
-            .pipe(gulp.dest(path.join(dest, 'node')));
+            .pipe(gulp.dest(path.join(dest, 'server')));
     });
 
-    gulp.task('node:app', function () {
+    gulp.task('server:main', function () {
         del.sync([
-            path.join(dest, 'node.js')
+            path.join(dest, 'server.js')
         ])
-        return gulp.src(path.join(src, 'node.js'))
+        return gulp.src(path.join(src, 'server.js'))
             .pipe(plumber())
             //.pipe(jshint('.jshintrc'))
             //.pipe(jshint.reporter('jshint-stylish'))
+            /*
             .pipe(sourcemaps.init())
             .pipe(uglify({
                 compress: true
             }))
             .pipe(sourcemaps.write())
+            */
             .pipe(plumber.stop())
             .pipe(gulp.dest(dest));
     });
 
-    gulp.task('node', function (cb) {
-        runSequence('node:server', 'node:app', cb);
+    gulp.task('server:env', function () {
+        del.sync([
+            path.join(dest,'.env')
+        ])
+        return gulp.src(path.join(src, '..', '.env'))
+            .pipe(gulp.dest(dest));
+    });
+
+    gulp.task('server', function (cb) {
+        runSequence('server:env', 'server:main', 'server:app', cb);
     });
 
 

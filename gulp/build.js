@@ -12,7 +12,7 @@
 
     var // variables
         src = './src/html',
-        dest = './build/html',
+        dest = './build/public',
         // requires
         del = require('del'),
         gulp = require('gulp'),
@@ -29,8 +29,15 @@
 
     gulp.task('build:html', function () {
         del.sync([
-            path.join(dest, '**/*.html')
+            path.join(dest, '**/*.html'),
+            path.join(dest, 'favicon.ico')
         ]);
+        //
+        // favicon
+        gulp.src(path.join(src, 'favicon.ico'))
+            .pipe(gulp.dest(path.join(dest)));
+        //
+        // html
         return gulp.src(path.join(src, '*.tpl'))
             .pipe(mustacher({
                 partials: {
