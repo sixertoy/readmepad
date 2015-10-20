@@ -74,7 +74,7 @@
 
     gulp.task('build:js', function () {
         del.sync([
-            path.join(dest, 'js', '**/*.min.css'),
+            path.join(dest, 'js', '**/*.js'),
             '!' + path.join(dest, 'js', 'vendor.min.js')
         ]);
         return gulp.src(path.join(src, 'js', '**/*.js'))
