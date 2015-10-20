@@ -8,12 +8,13 @@
         runSequence = require('run-sequence');
     //
     // tasks
+    require('./gulp/node');
     require('./gulp/build');
     require('./gulp/bower');
     //
     // default
     gulp.task('default', function(cb){
-        runSequence('bower', 'build', cb);
+        runSequence('bower', 'build', 'node', cb);
     });
 
 }());
