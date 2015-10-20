@@ -9,8 +9,10 @@
 
     var // variables
         server, paths, devmode,
-        port = 9080,
-        lr_port = 1337,
+        port = process.env.PORT || 9080,
+        devmode = process.env.DEBUG || false,
+        lr_port = process.env.LIVERELOAD_PORT || false,
+        //
         // requires
         path = require('path'),
         multer = require('multer'),
@@ -19,6 +21,8 @@
         compression = require('compression'),
         serveFavicon = require('serve-favicon'),
         livereload = require('express-livereload'),
+        //
+        //
         Facade = require('./server/facade');
     //
     // app paths
@@ -30,7 +34,6 @@
     //
     // express
     server = express();
-    devmode = process.env.DEBUG;
     //
     // livereload
     if (devmode) {

@@ -204,8 +204,6 @@ bower_components/
 ###################################
 .env
 .coveralls.yml
-dist/
-build/
 spec/outputs
 spec/fixtures/**/*.nedb
 spec/fixtures/agree/symlink
