@@ -4,6 +4,6 @@
 
     'use strict';
 
-    module.exports = require('./build/node.js');
+    module.exports = require('./build/server');
 
 }());

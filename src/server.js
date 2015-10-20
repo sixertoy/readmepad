@@ -3,12 +3,14 @@
 (function () {
 
     'use strict';
+    //
+    // load env variables
+    require('dotenv').load();
 
     var // variables
-        server, paths,
+        server, paths, devmode,
         port = 9080,
         lr_port = 1337,
-        devmode = true,
         // requires
         path = require('path'),
         multer = require('multer'),
@@ -17,7 +19,7 @@
         compression = require('compression'),
         serveFavicon = require('serve-favicon'),
         livereload = require('express-livereload'),
-        Facade = require('./node/facade');
+        Facade = require('./server/facade');
     //
     // app paths
     paths = {
@@ -28,7 +30,7 @@
     //
     // express
     server = express();
-    //devmode = (server.get('env') === 'development');
+    devmode = process.env.DEBUG;
     //
     // livereload
     if (devmode) {
@@ -51,17 +53,21 @@
     //
     // le serveur express sert des ressouces statiques
     // pour l'app AngularJS/Front
-    server.use('/docs', express.static(path.join(paths.www, '..', 'docs')));
     server.use('/', express.static(paths.www));
-
+    //server.use('/docs', express.static(path.join(paths.www, '..', 'docs')));
+    
+    /*
     Facade.server(server);
     Facade.start().then(function () {
+        */
         server.listen(port, function () {
             console.log('ReadmePad now running under http://localhost:%d', port);
             if (devmode) {
                 console.log('Livereload is running on port %d\n', lr_port);
             }
         });
+        /*
     }, function () {});
+    */
 
 }());
