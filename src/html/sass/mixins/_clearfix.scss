@@ -1,0 +1,46 @@
+.clearfix:before,
+.clearfix:after {
+    content: ".";
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    font-size: 0;
+    line-height: 0;
+    width: 0;
+    height: 0;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.clearfix {
+    /* <IE7> */
+    *zoom: 1;
+    /* </IE7> */
+}
+
+@mixin clearfixed() {
+    @extend .clearfix;
+}
+
+@mixin floating($direction:left) {
+    width: auto;
+    display: block;
+    float: $direction;
+}
+
+/* -------------------------------
+ *
+ *
+ *
+ */
+
+.float {
+    &-left {
+        @include floating();
+    }
+    &-right {
+        @include floating(right);
+    }
+}

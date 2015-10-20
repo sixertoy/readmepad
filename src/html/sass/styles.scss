@@ -1,20 +1,25 @@
-@import url('inc/nice-toggler');
+@import './mixins/_clearfix';
+@import './mixins/_fonts';
+@import './mixins/_base';
+
+//@import url('_mixins/nice-toggler');
+
 // classic theme colors
-@light-grey: #E4E4E4;
-@grey: #AFAFAF;
-@dark: #1C1C1E;
-@blue: #74DDF1;
-@dark-blue: #204d74;
-@menu: #337ab7;
-@alert: #FF0000;
-@white: #FFFFF8;
-@hover: #2D2E30;
-@viewer: #F7F7F7;
-@divider: #767C7F;
-@tooltip: #3C3F41;
+$light-grey: #E4E4E4;
+$grey: #AFAFAF;
+$dark: #1C1C1E;
+$blue: #74DDF1;
+$dark-blue: #204d74;
+$menu: #337ab7;
+$alert: #FF0000;
+$white: #FFFFF8;
+$hover: #2D2E30;
+$viewer: #F7F7F7;
+$divider: #767C7F;
+$tooltip: #3C3F41;
 // variables
-@header-height: 54px;
-@footer-height: 40px;
+$header-height: 54px;
+$footer-height: 40px;
 
 /* -------------------------------------------------------------
  *
@@ -67,11 +72,11 @@ a {
 .ngsb-wrap .ngsb-scrollbar {
     .ngsb-track {
         width: 5px;
-        background: @light-grey;
+        background: $light-grey;
     }
     .ngsb-thumb-pos .ngsb-thumb {
         width: 5px;
-        background: @dark;
+        background: $dark;
         border-radius: 2px;
     }
 }
@@ -97,13 +102,13 @@ a {
  ------------------------------------------------------------- */
 
 body {
-    color: @dark;
-    background: @white;
+    color: $dark;
+    background: $white;
     font-family: 'OpenSans', 'Arial', 'Verdana', sans-serif;
 }
 
 .valid-error {
-    color: @grey;
+    color: $grey;
     text-transform: lowercase;
 }
 
@@ -115,7 +120,7 @@ body {
     opacity: 0.60;
     z-index: 9999;
     display: block;
-    background: @white;
+    background: $white;
     position: absolute;
     visibility: visible;
     transition: all 0.25s;
@@ -137,7 +142,7 @@ body {
     &.viewer {
         z-index: 120;
         width: 100%;
-        background-color: @viewer;
+        background-color: $viewer;
     }
     &.cheatsheet {
         z-index: 130;
@@ -165,9 +170,9 @@ body {
         right: 0;
         margin: 0;
         position: absolute;
-        height: @header-height;
-        min-height: @header-height;
-        max-height: @header-height;
+        height: $header-height;
+        min-height: $header-height;
+        max-height: $header-height;
         padding-top: 12px;
         padding-bottom: 10px;
         box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.25);
@@ -189,8 +194,8 @@ body {
         margin: 0;
         display: flex;
         position: absolute;
-        top: @header-height;
-        bottom: @footer-height;
+        top: $header-height;
+        bottom: $footer-height;
         .screen-full & {
             bottom: 0;
         }
@@ -203,21 +208,21 @@ body {
         margin: 0;
         padding: 0;
         width: 100%;
-        color: @white;
+        color: $white;
         font-size: 0.8em;
-        background: @grey;
+        background: $grey;
         position: absolute;
         text-align: center;
-        height: @footer-height;
-        max-height: @footer-height;
-        min-height: @footer-height;
+        height: $footer-height;
+        max-height: $footer-height;
+        min-height: $footer-height;
         > div {
             padding: 12px 15px;
         }
         .octicon {
-            color: @alert;
+            color: $alert;
             &.pull-right {
-                color: @white;
+                color: $white;
             }
         }
         .screen-full & {
@@ -309,7 +314,7 @@ body {
     }
     &-content {
         border-radius: 0;
-        background-color: @viewer;
+        background-color: $viewer;
         input + .valid-error {
             display: block;
             margin-top: 4px;
@@ -334,7 +339,7 @@ body {
             display: block;
             + span {
                 float: right;
-                color: @grey;
+                color: $grey;
                 font-size: 0.5em;
                 line-height: 16px;
                 font-weight: bolder;
@@ -390,10 +395,10 @@ body {
 .cheatsheet {
     .title {
         margin: 0;
-        color: @white;
+        color: $white;
         padding: 12px 0;
         font-weight: bold;
-        background: @menu;
+        background: $menu;
         text-align: center;
         text-transform: uppercase;
     }
@@ -420,7 +425,7 @@ body {
 .sidebar {
     .menu {
         width: 100%;
-        background: @menu;
+        background: $menu;
         > .btn {
             border: 0;
             width: 100%;
@@ -434,7 +439,7 @@ body {
                 a {
                     padding-left: 10px;
                     small {
-                        color: @grey;
+                        color: $grey;
                     }
                     .close {
                         font-size: 17px;
@@ -478,7 +483,7 @@ body {
             }
             a {
                 width: 100%;
-                color: @dark;
+                color: $dark;
                 display: block;
                 &.folder {
                     color: #A6B9BD;
@@ -506,63 +511,63 @@ body {
 
 .dark {
     // dark theme colors
-    @dark: #1C1C1E;
-    @blue: #74DDF1;
-    @white: #FFFFF8;
-    @rouge: #FF0000;
-    @hover: #2D2E30;
-    @viewer: #2B303B;
-    @divider: #767C7F;
-    @tooltip: #3C3F41;
+    $dark: #1C1C1E;
+    $blue: #74DDF1;
+    $white: #FFFFF8;
+    $rouge: #FF0000;
+    $hover: #2D2E30;
+    $viewer: #2B303B;
+    $divider: #767C7F;
+    $tooltip: #3C3F41;
     //
-    color: @white;
+    color: $white;
     background-color: #47484B;
     #screen-locker {
-        background: @dark;
+        background: $dark;
     }
     .popover,
     .dropdown-menu {
-        background-color: @tooltip;
+        background-color: $tooltip;
         &.bottom > .arrow {
-            border-bottom-color: @tooltip;
+            border-bottom-color: $tooltip;
         }
         &.bottom > .arrow:after {
-            border-bottom-color: @tooltip;
+            border-bottom-color: $tooltip;
         }
     }
     .modal-content {
-        background-color: @tooltip;
+        background-color: $tooltip;
     }
     .nice-toggler {
         input + span {
-            box-shadow: inset 0 0 0px 1px @divider;
+            box-shadow: inset 0 0 0px 1px $divider;
         }
         input + span:before {
             background: transparent;
         }
         input + span:after {
-            background: @divider;
+            background: $divider;
         }
         input:checked + span:before {
-            background: @blue;
+            background: $blue;
         }
         input:checked + span:after {
-            box-shadow: inset 0 0 0 1px @blue, 0 2px 4px rgba(0, 0, 0, 0.2);
+            box-shadow: inset 0 0 0 1px $blue, 0 2px 4px rgba(0, 0, 0, 0.2);
         }
     }
     .cheatsheet {
         dl dt {
-            color: @menu;
+            color: $menu;
         }
         dl dd pre {
             text-shadow: none;
         }
     }
     #page {
-        color: @white;
+        color: $white;
         text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.45);
         #header a {
-            color: @white;
+            color: $white;
         }
         #main {
             .sidebar {
@@ -572,7 +577,7 @@ body {
                         border: 0;
                         background: transparent;
                         &:focus {
-                            background: @dark;
+                            background: $dark;
                         }
                     }
                     &.open .dropdown-toggle {
@@ -580,31 +585,31 @@ body {
                     }
                     .dropdown-menu {
                         .divider {
-                            background-color: @divider;
+                            background-color: $divider;
                         }
                         .close,
                         > li > a {
-                            color: @white;
+                            color: $white;
                             text-shadow: none;
                         }
                         > li > a:focus,
                         > li > a:hover {
-                            color: @blue;
-                            background-color: @hover;
+                            color: $blue;
+                            background-color: $hover;
                         }
                     }
                 }
                 ul.files a {
-                    color: @white;
+                    color: $white;
                     &.folder {
                         color: #A6B9BD;
                     }
                 }
             }
             .viewer {
-                background-color: @viewer;
+                background-color: $viewer;
                 .inner .menu .btn.active {
-                    background-color: @blue;
+                    background-color: $blue;
                 }
             }
             .splitter a {
@@ -612,11 +617,11 @@ body {
             }
         }
         #footer {
-            background: @dark;
+            background: $dark;
             .octicon {
-                color: @alert;
+                color: $alert;
                 &.pull-right {
-                    color: @blue;
+                    color: $blue;
                 }
             }
         }

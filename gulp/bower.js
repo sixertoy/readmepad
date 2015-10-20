@@ -5,26 +5,20 @@
     'use strict';
 
     var // variables
-        src = 'src',
-        dest = 'build',
-        bower_src = 'bower_components',
+        dest = 'build/html',
+        src = 'bower_components',
         //
         preen = require('./gulp-preen'),
         //
         del = require('del'),
         path = require('path'),
         gulp = require('gulp'),
-        //rename = require('gulp-rename'),
         concat = require('gulp-concat'),
         flatten = require('gulp-flatten'),
         plumber = require('gulp-plumber'),
-        //delta = require('gulp-delta'),
-        //uglify = require('gulp-uglify'),
-        //sourcemaps = require('sourcemaps'),
         runSequence = require('run-sequence'),
         minifycss = require('gulp-minify-css'),
         sourcemaps = require('gulp-sourcemaps');
-    // autoprefixer = require('gulp-autoprefixer');
 
     /**
      * 
@@ -38,9 +32,9 @@
      */
     gulp.task('bower:js', function () {
         del.sync([
-            path.join(dest, 'html', 'js', 'vendor.js')
+            path.join(dest, 'js', 'vendor.js')
         ]);
-        return gulp.src(path.join(bower_src, '**/*.js'))
+        return gulp.src(path.join(src, '**/*.js'))
             .pipe(plumber())
             //.pipe(sourcemaps.init())
             .pipe(concat('vendor.js', {
@@ -48,7 +42,7 @@
             }))
             //.pipe(sourcemaps.write())
             .pipe(plumber.stop())
-            .pipe(gulp.dest(path.join(dest, 'html', 'js')));
+            .pipe(gulp.dest(path.join(dest, 'js')));
     });
 
     /**
@@ -63,9 +57,9 @@
      */
     gulp.task('bower:css', function () {
         del.sync([
-            path.join(dest, 'html', 'css', 'vendor.css')
+            path.join(dest, 'css', 'vendor.css')
         ]);
-        return gulp.src(path.join(bower_src, '**/*.css'))
+        return gulp.src(path.join(src, '**/*.css'))
             .pipe(plumber())
             //.pipe(sourcemaps.init())
             .pipe(minifycss())
@@ -74,7 +68,7 @@
             }))
             //.pipe(sourcemaps.write())
             .pipe(plumber.stop())
-            .pipe(gulp.dest(path.join(dest, 'html', 'css')));
+            .pipe(gulp.dest(path.join(dest, 'css')));
     });
 
     /**
@@ -89,17 +83,17 @@
      */
     gulp.task('bower:fonts', function () {
         del.sync([
-            path.join(dest, 'html', 'fonts', 'vendor', '**/*')
+            path.join(dest, 'fonts', 'vendor', '**/*')
         ]);
         return gulp.src([
-                path.join(bower_src, '**/*.eot'),
-                path.join(bower_src, '**/*.ttf'),
-                path.join(bower_src, '**/*.svg'),
-                path.join(bower_src, '**/*.woff'),
-                path.join(bower_src, '**/*.woff2')
+                path.join(src, '**/*.eot'),
+                path.join(src, '**/*.ttf'),
+                path.join(src, '**/*.svg'),
+                path.join(src, '**/*.woff'),
+                path.join(src, '**/*.woff2')
             ])
             .pipe(flatten())
-            .pipe(gulp.dest(path.join(dest, 'html', 'fonts', 'vendor')));
+            .pipe(gulp.dest(path.join(dest, 'fonts', 'vendor')));
     });
 
     gulp.task('bower', function (cb) {

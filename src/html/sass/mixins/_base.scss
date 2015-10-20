@@ -1,0 +1,96 @@
+/* -------------------------------
+ *
+ * HTML
+ *
+ */
+
+* {
+    speak: none;
+    box-sizing: border-box;
+}
+html,
+body {
+    width: 100%;
+    height: auto;
+    overflow: auto;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+body {
+    font-size: 13px;
+    line-height: 18px;
+    position: relative;
+    font-family: 'Open Sans', sans-serif;
+}
+
+a {
+    &,
+    &:hover,
+    &:active,
+    &:visited {
+        text-decoration: none;
+    }
+}
+
+img {
+    vertical-align: top;
+}
+
+.responsive img{
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* -------------------------------
+ *
+ * MAIN UI
+ *
+ */
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+.no-select {
+    &,
+    &-all,
+    &-all * {
+        user-select: none;
+    }
+}
+
+/* -------------------------------
+ *
+ * TEXT
+ *
+ */
+
+.align-left {
+    text-align: left;
+}
+.align-center {
+    text-align: center;
+}
+.align-right {
+    text-align: right;
+}
+.align-justify {
+    text-align: justify;
+}
+
+/* -------------------------------
+ *
+ * HTML READY ELEMENTS
+ *
+ */
+
+ul.clearfix{
+    & > li {
+        @include floating();
+    }
+    &-right > li {
+        @include floating(right);
+    }
+}

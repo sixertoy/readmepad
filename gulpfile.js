@@ -3,31 +3,17 @@
 (function () {
 
     'use strict';
-    
-    require('./gulp/bower');
 
-    var // variables
-        dest,
-        src = 'src',
-        dist = 'build',
-        bower_src = 'bower_components',
-        // tasks
-        // requires
-        gulp = require('gulp'),
+    var gulp = require('gulp'),
         runSequence = require('run-sequence');
-        /*
-        path = require('path'),
-        less = require('gulp-less'),
-        delta = require('gulp-delta'),
-        rename = require('gulp-rename'),
-        uglify = require('gulp-uglify'),
-        flatten = require('gulp-flatten'),
-        minifycss = require('gulp-minify-css'),
-        autoprefixer = require('gulp-autoprefixer');
-        */
-    
+    //
+    // tasks
+    require('./gulp/build');
+    require('./gulp/bower');
+    //
+    // default
     gulp.task('default', function(cb){
-        runSequence('preen', 'bower', cb);
+        runSequence('bower', 'build', cb);
     });
 
 }());
