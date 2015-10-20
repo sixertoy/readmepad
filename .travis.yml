@@ -1,7 +1,6 @@
 language: node_js
 branches:
   only:
-    - master
     - develop
 node_js:
   - "0.12"
@@ -11,4 +10,5 @@ script:
   - npm test --verbose
 after_success:
   - cat ./coverage/lcov.info | coveralls && rm -rf ./coverage
+  - gulp
   - git subtree push --prefix build origin master
