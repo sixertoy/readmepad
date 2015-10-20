@@ -202,9 +202,10 @@ bower_components/
 ###################################
 ### Custom ###
 ###################################
-build/
-dist/
-spec/fixtures/**/*.nedb
-spec/outputs
-spec/fixtures/agree/symlink
+.env
 .coveralls.yml
+dist/
+build/
+spec/outputs
+spec/fixtures/**/*.nedb
+spec/fixtures/agree/symlink
