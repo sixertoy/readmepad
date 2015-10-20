@@ -10,5 +10,4 @@ script:
   - npm test --verbose
 after_success:
   - cat ./coverage/lcov.info | coveralls && rm -rf ./coverage
-  - gulp
-  - git subtree push --prefix build origin master
+  - git subtree push --prefix dist origin master

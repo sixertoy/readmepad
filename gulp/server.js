@@ -12,7 +12,7 @@
 
     var // variables
         src = './src',
-        dest = './build',
+        dest = './dist',
         // requires
         del = require('del'),
         gulp = require('gulp'),
