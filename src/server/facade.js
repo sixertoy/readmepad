@@ -40,9 +40,9 @@
              * Le controller est lie au modele
              *
              */
-            start: function () {
+            start: function (server) {
                 var q = Q.defer();
-                if (Facade.server() === null) {
+                if (Facade.server(server) === null) {
                     q.reject(new Error('no server setted'));
                     // error
                 } else {

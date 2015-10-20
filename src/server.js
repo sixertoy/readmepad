@@ -22,7 +22,7 @@
         serveFavicon = require('serve-favicon'),
         livereload = require('express-livereload'),
         //
-        //
+        // main app entry point
         Facade = require('./server/facade');
     //
     // app paths
@@ -58,19 +58,14 @@
     // pour l'app AngularJS/Front
     server.use('/', express.static(paths.www));
     //server.use('/docs', express.static(path.join(paths.www, '..', 'docs')));
-    
-    /*
-    Facade.server(server);
-    Facade.start().then(function () {
-        */
+    //
+    Facade.start(server).then(function () {
         server.listen(port, function () {
             console.log('ReadmePad now running under http://localhost:%d', port);
             if (devmode) {
                 console.log('Livereload is running on port %d\n', lr_port);
             }
         });
-        /*
     }, function () {});
-    */
 
 }());
