@@ -7,4 +7,5 @@ mkdir ./spec/outputs
 istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./spec/src/server/**/*
 #istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec
 karma start karma.conf.js --single-run
+rm -rf ./project_model_spec
 exit 0
