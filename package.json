@@ -6,8 +6,6 @@
   "scripts": {
     "clean_modules": "sh ./scripts/clean_modules.sh",
     "start": "sh ./scripts/start.sh",
-    "test_server": "sh ./scripts/test_server.sh",
-    "test_front": "sh ./scripts/test_front.sh",
     "test": "sh ./scripts/test.sh"
   },
   "engines": {
