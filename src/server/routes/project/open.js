@@ -4,7 +4,7 @@
 
     'use strict';
 
-    var Application = require('./../app').getInstance();
+    var Application = require('./../../app').getInstance();
 
     /**
      *

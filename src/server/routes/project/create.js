@@ -12,7 +12,7 @@
         stubs = require('./../../utils/args'),
         validate = require('./../../utils/validate-args'),
         //
-        Application = require('./../app').getInstance();
+        Application = require('./../../app').getInstance();
 
     module.exports = function (req, res) {
         var pid, name, doc, valid,

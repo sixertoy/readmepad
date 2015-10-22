@@ -12,7 +12,7 @@ if [ -n "$1" ]; then
         # Test pour le l'application NodeJS
         #
         # -----------------------------------------------------
-        istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./spec/src/server/**/*
+        istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./spec/src/server/**/*.spec.js
     elif [ "$1" == "front" ]; then
         # -----------------------------------------------------
         #

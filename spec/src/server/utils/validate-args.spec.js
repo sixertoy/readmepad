@@ -11,10 +11,10 @@
 
     var result, args,
         cwd = process.cwd(),
-        _ = require('lodash'),
         path = require('path'),
         expect = require('chai').expect,
-        validate = require(path.join(cwd, 'src', 'server', 'utils', 'validate-args')).exec;
+        isstring = require('lodash.isstring'),
+        validate = require(path.join(cwd, 'src/server/utils/validate-args')).exec;
 
     describe('Validate Function Arguments', function () {
 
@@ -29,7 +29,7 @@
 
         it('throw not args', function () {
             expect(function () {
-                validate({}, [_.isString]);
+                validate({}, [isstring]);
             }).to.throw('missing arguments');
         });
 
@@ -67,25 +67,25 @@
 
         it('returns false less arguments more validators', function () {
             args = buildArguments(); // no arguments
-            result = validate(args, [_.isString]);
+            result = validate(args, [isstring]);
             expect(result).to.be.false;
         });
 
         it('returns false less arguments more validators', function () {
             args = buildArguments(123); // no arguments
-            result = validate(args, [_.isString, _.isString]);
+            result = validate(args, [isstring, isstring]);
             expect(result).to.be.false;
         });
 
         describe('strings arguments', function () {
             it('returns false not string', function () {
                 args = buildArguments(1224, '');
-                result = validate(args, [_.isString, _.isString]);
+                result = validate(args, [isstring, isstring]);
                 expect(result).to.be.false;
             });
             it('returns false empty string', function () {
                 args = buildArguments('no empty', '    ');
-                result = validate(args, [_.isString, _.isString]);
+                result = validate(args, [isstring, isstring]);
                 expect(result).to.be.false;
             });
             it('returns true 0 arg', function () {
@@ -95,12 +95,12 @@
             });
             it('returns true 1 arg', function () {
                 args = buildArguments('not empty');
-                result = validate(args, [_.isString]);
+                result = validate(args, [isstring]);
                 expect(result).to.be.true;
             });
             it('returns true 2 arg', function () {
                 args = buildArguments('not empty', 'not empty');
-                result = validate(args, [_.isString, _.isString]);
+                result = validate(args, [isstring, isstring]);
                 expect(result).to.be.true;
             });
         });

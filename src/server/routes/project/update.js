@@ -7,9 +7,9 @@
     var // requires
         isstring = require('lodash.isstring'),
         // utils
-        args = require('./../utils/args'),
-        validate = require('./../utils/validate-args'),
-        Application = require('./../app').getInstance();
+        args = require('./../../utils/args'),
+        validate = require('./../../utils/validate-args'),
+        Application = require('./../../app').getInstance();
 
     /**
      *
