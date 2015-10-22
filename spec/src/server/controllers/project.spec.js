@@ -26,15 +26,14 @@
         bodyParser = require('body-parser'),
         scandir = require('scandir-async').exec,
         //
-        dbfile = path.join(cwd, 'spec', 'fixtures', 'nedb', 'project.nedb'),
-        validate = require(path.join(cwd, 'src', 'server', 'utils', 'validate-args')),
-        ProjectModel = require(path.join(cwd, 'src', 'server', 'models', 'project')),
-        ProjectController = require(path.join(cwd, 'src', 'server', 'controllers', 'project'));
+        dbfile = path.join(cwd, 'spec/fixtures/nedb/project.nedb'),
+        validate = require(path.join(cwd, 'src/server/utils/validate-args')),
+        ProjectModel = require(path.join(cwd, 'src/server/models/project')),
+        ProjectController = require(path.join(cwd, 'src/server/controllers/project-controller'));
 
     app = express();
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({
-
         extended: true
     }));
 
@@ -47,7 +46,7 @@
         it('init project', function (done) {
             model = new ProjectModel();
             model.init(dbfile).then(function (store) {
-                helper = new ProjectController();
+                helper = ProjectController.getInstance();
                 helper.init(model);
                 app.use('/project', helper.router());
                 done();
@@ -125,7 +124,7 @@
             it('findAll', function (done) {
                 stubModel('findAll');
                 request(app)
-                    .get('/project/loadall')
+                    .get('/project/collection')
                     .send()
                     .end(function (err, res) {
                         expect(res.statusCode).to.equal(code);
@@ -135,10 +134,10 @@
             });
         });
 
-        describe('[GET]/project/loadall', function () {
+        describe('[GET]/project/collection', function () {
             it('returns 200 no project in DB', function (done) {
                 request(app)
-                    .get('/project/loadall')
+                    .get('/project/collection')
                     .send()
                     .end(function (err, res) {
                         expect(res.body).to.equal(false);
@@ -514,10 +513,10 @@
             });
         });
 
-        describe('[GET]/project/loadall', function () {
+        describe('[GET]/project/collection', function () {
             it('fails', function (done) {
                 request(app)
-                    .post('/project/loadall')
+                    .post('/project/collection')
                     .send()
                     .end(function (err, res) {
                         expect(res.statusCode).to.equal(404);
@@ -530,7 +529,7 @@
                     path: path.join(cwd, 'src', 'docs')
                 };
                 request(app)
-                    .get('/project/loadall')
+                    .get('/project/collection')
                     .send()
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {

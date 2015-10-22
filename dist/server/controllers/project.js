@@ -18,6 +18,7 @@
         path = require('path'),
         chalk = require('chalk'),
         express = require('express'),
+        isstring = require('lodash.isstring'),
         scandir = require('scandir-async').exec,
         validate = require('./../utils/validate-args').exec,
 
@@ -33,9 +34,11 @@
             },
 
             create: function (req, res) {
-                var pid, name, doc,
+                var pid, name, doc, valid,
                     $this = this,
-                    valid = validate(this._stubArguments(req.body.path, req.body.name), [_.isString, _.isString]);
+                    stubs = this._stubArguments(req.body.path, req.body.name);
+                //
+                valid = validate(stubs, [isstring, isstring]);
                 //
                 if (!valid) {
                     res.sendStatus(400);
@@ -188,9 +191,9 @@
                 // definitions des routes
                 this._router.post('/create', this.create.bind(this));
                 this._router.put('/update/', this.update.bind(this));
-                this._router.delete('/delete/:pid', this.remove.bind(this));
                 this._router.get('/open/:pid', this.open.bind(this));
                 this._router.get('/loadall', this.loadAll.bind(this));
+                this._router.delete('/delete/:pid', this.remove.bind(this));
 
             }
         },

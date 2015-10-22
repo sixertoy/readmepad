@@ -1,89 +1,90 @@
 {
-    "name": "readmepad",
-    "version": "0.1.1",
-    "description": "Markdown online editor",
-    "main": "index.js",
-    "scripts": {
-        "clean_modules": "sh ./scripts/clean_modules.sh",
-        "start": "sh ./scripts/start.sh",
-        "test_server": "sh ./scripts/test_server.sh",
-        "test_front": "sh ./scripts/test_front.sh",
-        "test": "sh ./scripts/test.sh"
-    },
-    "engines": {
-        "node": "~4.2.1"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/sixertoy/readmepad"
-    },
-    "keywords": [
+  "name": "readmepad",
+  "version": "0.1.1",
+  "description": "Markdown online editor",
+  "main": "index.js",
+  "scripts": {
+    "clean_modules": "sh ./scripts/clean_modules.sh",
+    "start": "sh ./scripts/start.sh",
+    "test_server": "sh ./scripts/test_server.sh",
+    "test_front": "sh ./scripts/test_front.sh",
+    "test": "sh ./scripts/test.sh"
+  },
+  "engines": {
+    "node": "~4.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sixertoy/readmepad"
+  },
+  "keywords": [
     "markdown",
     "online",
     "editor"
   ],
-    "author": [
-        {
-            "name": "sixertoy",
-            "email": "sixertoy.github@gmail.com"
+  "author": [
+    {
+      "name": "sixertoy",
+      "email": "sixertoy.github@gmail.com"
     }
   ],
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/sixertoy/readmepad/issues"
-    },
-    "homepage": "https://github.com/sixertoy/readmepad",
-    "dependencies": {
-        "archiver": "^0.14.4",
-        "body-parser": "^1.13.2",
-        "chai": "^3.2.0",
-        "chalk": "^1.1.0",
-        "compression": "^1.5.2",
-        "dotenv": "^1.2.0",
-        "express": "^4.13.3",
-        "filenamify": "^1.2.0",
-        "fs-extra": "^0.23.0",
-        "is-absolute": "^0.2.2",
-        "is-git-url": "^0.2.3",
-        "is-url": "^1.2.1",
-        "lodash": "^3.10.0",
-        "md5": "^2.0.0",
-        "multer": "^0.1.8",
-        "nedb": "^1.1.2",
-        "q": "^1.4.1",
-        "scandir-async": "^0.1.14",
-        "serve-favicon": "^2.3.0",
-        "valid-filename": "^1.1.0",
-        "winston": "^1.0.1"
-    },
-    "devDependencies": {
-        "coveralls": "^2.11.3",
-        "del": "^2.0.2",
-        "express-livereload": "0.0.24",
-        "gulp": "^3.9.0",
-        "gulp-autoprefixer": "^2.3.1",
-        "gulp-concat": "^2.6.0",
-        "gulp-flatten": "^0.1.1",
-        "gulp-jshint": "^1.11.2",
-        "gulp-minify-css": "^1.2.0",
-        "gulp-mustacher": "^0.1.11",
-        "gulp-plumber": "^1.0.1",
-        "gulp-rename": "^1.2.2",
-        "gulp-sass": "^2.0.4",
-        "gulp-sourcemaps": "^1.6.0",
-        "gulp-uglify": "^1.4.2",
-        "jshint-stylish": "^2.0.1",
-        "karma": "^0.13.3",
-        "karma-chai": "^0.1.0",
-        "karma-chrome-launcher": "^0.2.0",
-        "karma-mocha": "^0.2.0",
-        "karma-phantomjs-launcher": "^0.2.0",
-        "karma-sinon": "^1.0.4",
-        "mocha": "^2.2.5",
-        "phantomjs": "^1.9.17",
-        "preen": "^1.2.0",
-        "run-sequence": "^1.1.4",
-        "sinon": "^1.15.4",
-        "supertest": "^1.0.1"
-    }
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sixertoy/readmepad/issues"
+  },
+  "homepage": "https://github.com/sixertoy/readmepad",
+  "dependencies": {
+    "archiver": "^0.14.4",
+    "body-parser": "^1.13.2",
+    "chai": "^3.2.0",
+    "chalk": "^1.1.0",
+    "compression": "^1.5.2",
+    "dotenv": "^1.2.0",
+    "express": "^4.13.3",
+    "filenamify": "^1.2.0",
+    "fs-extra": "^0.23.0",
+    "is-absolute": "^0.2.2",
+    "is-git-url": "^0.2.3",
+    "is-url": "^1.2.1",
+    "lodash": "^3.10.0",
+    "lodash.isstring": "^3.0.1",
+    "md5": "^2.0.0",
+    "multer": "^0.1.8",
+    "nedb": "^1.1.2",
+    "q": "^1.4.1",
+    "scandir-async": "^0.1.14",
+    "serve-favicon": "^2.3.0",
+    "valid-filename": "^1.1.0",
+    "winston": "^1.0.1"
+  },
+  "devDependencies": {
+    "coveralls": "^2.11.3",
+    "del": "^2.0.2",
+    "express-livereload": "0.0.24",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^2.3.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-flatten": "^0.1.1",
+    "gulp-jshint": "^1.11.2",
+    "gulp-minify-css": "^1.2.0",
+    "gulp-mustacher": "^0.1.11",
+    "gulp-plumber": "^1.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.0.4",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.4.2",
+    "jshint-stylish": "^2.0.1",
+    "karma": "^0.13.3",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-mocha": "^0.2.0",
+    "karma-phantomjs-launcher": "^0.2.0",
+    "karma-sinon": "^1.0.4",
+    "mocha": "^2.2.5",
+    "phantomjs": "^1.9.17",
+    "preen": "^1.2.0",
+    "run-sequence": "^1.1.4",
+    "sinon": "^1.15.4",
+    "supertest": "^1.0.1"
+  }
 }

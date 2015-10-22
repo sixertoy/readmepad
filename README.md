@@ -1,43 +1,34 @@
 # ReadmePad
 
-[![MIT License][license-img]][license-url]
+> Markdown online multi projects editor
 
-> Markdown online Editor
+[![MIT License][license-img]][license-url]
 
 ## Install
 
 ```bash
-sudo su
-# recuperation du repo
 git clone https://github.com/sixertoy/readmepad
 cd readmepad
-# changer de branche au besoin
-# - master (default)
-# - develop
-# - feature/docker
-# - feature/sidebar
-# - feature/toolbar
-# - feature/restapi
-#
-git checkout <branch_name>
-#
-# installation des dependences
 npm install
-#
-# Build + Lancement du serveur
 npm start
-# se connecter sur http://localhost:9080/ 
+# se connecter sur http://localhost:9080/
 ```
 
-## Angular Components
+## Gulp's Tasks
 
-- [The Top 10 Mistakes AngularJS Developers Make](https://www.airpair.com/angularjs/posts/top-10-mistakes-angularjs-developers-make)
-- [UI.Bootstrap](https://angular-ui.github.io/bootstrap)
-- [Satellizer](https://github.com/sahat/satellizer)
-- [Markdown-it](https://github.com/markdown-it/markdown-it)
-- [UI.Ace](http://angular-ui.github.io/ui-ace/)
-- [Bootstrap](http://getbootstrap.com)
-
+- bower [preen, css, js, fonts]
+    - css
+    - js
+    - fonts
+- build [css, sass, js, html]
+    - css
+    - html
+    - js
+    - sass
+- server [main, app]
+    - app
+    - main
+    
 ## Issues
 
 - files list width | break word

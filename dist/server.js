@@ -8,10 +8,10 @@
     require('dotenv').load();
 
     var // variables
-        server, paths,
+        server, paths, app,
         port = process.env.PORT || 9080,
-        devmode = process.env.DEBUG || false,
-        lr_port = process.env.LIVERELOAD_PORT || false,
+        debug = process.env.DEBUG || false,
+        livereload_port = process.env.LIVERELOAD_PORT || false,
         //
         // requires
         path = require('path'),
@@ -22,8 +22,8 @@
         serveFavicon = require('serve-favicon'),
         livereload = require('express-livereload'),
         //
-        //
-        Facade = require('./server/facade');
+        // main app entry point
+        Application = require('./server/app');
     //
     // app paths
     paths = {
@@ -36,10 +36,10 @@
     server = express();
     //
     // livereload
-    if (devmode) {
+    if (debug) {
         livereload(server, {
-            port: lr_port,
             watchDir: paths.www,
+            port: livereload_port,
             exclusions: ['git/', '.svn/'],
             exts: ['html', 'css', 'js', 'png', 'gif', 'jpg', 'svg']
         });
@@ -58,19 +58,25 @@
     // pour l'app AngularJS/Front
     server.use('/', express.static(paths.www));
     //server.use('/docs', express.static(path.join(paths.www, '..', 'docs')));
-    
-    /*
-    Facade.server(server);
-    Facade.start().then(function () {
-        */
+    //
+    console.log(Application);
+    app = Application.getInstance();
+    app.init(server, function (err) {
+        if (err) {
+
+        } else {
+            console.log('init');
+        }
+        /*
         server.listen(port, function () {
-            console.log('ReadmePad now running under http://localhost:%d', port);
             if (devmode) {
-                console.log('Livereload is running on port %d\n', lr_port);
+                console.log('ReadmePad now running under http://localhost:%d', port);
+            }
+            if (devmode && livereload_port) {
+                console.log('Livereload is running on port %d\n', livereload_port);
             }
         });
-        /*
-    }, function () {});
-    */
+        */
+    });
 
 }());
