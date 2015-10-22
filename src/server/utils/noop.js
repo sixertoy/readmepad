@@ -5,11 +5,16 @@
     'use strict';
 
     /**
-     * 
+     *
      * Stubbing
      * Retourne une function
-     * 
+     *
      */
-    module.exports = function(){};
+
+    function noop() {
+        return function () {};
+    }
+
+    module.exports = noop;
 
 }());
