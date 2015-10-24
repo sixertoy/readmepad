@@ -4,7 +4,11 @@
 
     'use strict';
 
-    var Application = require('./../../app').getInstance();
+    var cwd = process.cwd(),
+        path = require('path'),
+        include = require('include'),
+        // include
+        Application = include('app');
 
     /**
      *
@@ -17,7 +21,7 @@
      *
      */
     module.exports = function (req, res) {
-        var model = Application.getModel('project');
+        var model = Application.getInstance().getModel('project');
         model.findOneProject(req.pid).then(function (doc) {
             if (!doc) {
                 // if project doesn't exists

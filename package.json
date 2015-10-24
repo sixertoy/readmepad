@@ -54,7 +54,8 @@
     "scandir-async": "^0.1.14",
     "serve-favicon": "^2.3.0",
     "valid-filename": "^1.1.0",
-    "winston": "^1.0.1"
+    "winston": "^1.0.1",
+    "include": "https://npm.fury.io/sixertoy/include/-/latest.tgz"
   },
   "devDependencies": {
     "coveralls": "^2.11.3",

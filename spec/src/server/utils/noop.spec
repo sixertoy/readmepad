@@ -9,7 +9,7 @@
         cwd = process.cwd(),
         path = require('path'),
         expect = require('chai').expect,
-        noop = require(path.join(cwd, 'src/server/utils/noop'));
+        noop = require('utils/noop');
 
     describe('noop', function () {
 

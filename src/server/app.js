@@ -4,31 +4,31 @@
 
     'use strict';
     var // variables
-        Application,
         instance = false,
         Enforcer = function () {},
         // requires
         Q = require('q'),
         path = require('path'),
         chalk = require('chalk'),
+        include = require('include'),
         isstring = require('lodash.isstring'),
-        //
-        ProjectController = require('./controllers/project-controller'),
+        // includes
+        ProjectController = include('controllers/project-controller'),
 
-    /**
-     *
-     * Constructeur
-     *
-     */
-    Application = function (enforcer) {
-        if (enforcer && enforcer instanceof Enforcer) {
-            this._models = {};
-            this._server = false;
-            this._controllers = {};
-        } else {
-            throw new Error('Application.getInstance()');
-        }
-    };
+        /**
+         *
+         * Constructeur
+         *
+         */
+        Application = function (enforcer) {
+            if (enforcer && enforcer instanceof Enforcer) {
+                this._models = {};
+                this._server = false;
+                this._controllers = {};
+            } else {
+                throw new Error('Application is a singleton instance. Use Application.getInstance() instead');
+            }
+        };
 
     /**
      *
@@ -53,8 +53,8 @@
      *
      */
     Application.prototype.getModel = function (name) {
-        if(arguments.length < 1 || !isstring(name) || !this._models.hasOwnProperty(name) || !this._models[name]){
-            throw new Error('Unable to load model:' + name);
+        if (arguments.length < 1 || !isstring(name) || !this._models.hasOwnProperty(name) || !this._models[name]) {
+            throw new Error('Unable to load model: ' + name);
         }
         return this._models[name];
     };
@@ -72,8 +72,8 @@
      *
      */
     Application.prototype.getController = function (name) {
-        if(arguments.length < 1 || !isstring(name) || !this._controllers.hasOwnProperty(name) || !this._controllers[name]){
-            throw new Error('Unable to load controller:' + name);
+        if (arguments.length < 1 || !isstring(name) || !this._controllers.hasOwnProperty(name) || !this._controllers[name]) {
+            throw new Error('Unable to load controller: ' + name);
         }
         return this._controllers[name];
     };
@@ -92,7 +92,7 @@
     Application.prototype.init = function (server, callback) {
         var controller, router, model, name;
         //
-        if(arguments.length < 2 || typeof(callback) !== 'function'){
+        if (arguments.length < 2 || typeof (callback) !== 'function') {
             throw new Error('missing arguments');
         }
         // affecte le serveur
@@ -104,8 +104,9 @@
         controller = ProjectController.getInstance();
         controller.init();
         server.use('/' + name, controller.getRouter());
-        this._models[name] = false;
         this._controllers[name] = controller;
+        //
+        //this._models[name] = false;
         //
         callback(null);
     };

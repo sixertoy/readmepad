@@ -5,11 +5,12 @@
     'use strict';
 
     var // requires
+        include = require('include'),
         isstring = require('lodash.isstring'),
         // utils
-        args = require('./../../utils/args'),
-        validate = require('./../../utils/validate-args'),
-        Application = require('./../../app').getInstance();
+        args = include('utils/args'),
+        validate = include('utils/validate-args'),
+        Application = include('app').getInstance();
 
     /**
      *

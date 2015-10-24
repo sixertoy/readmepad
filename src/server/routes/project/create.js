@@ -7,17 +7,17 @@
     var // requires
         FS = require('fs'),
         md5 = require('md5'),
+        include = require('include'),
         isstring = require('lodash.isstring'),
-        // utils
-        stubs = require('./../../utils/args'),
-        validate = require('./../../utils/validate-args'),
-        //
-        Application = require('./../../app').getInstance();
+        // include
+        stubs = include('utils/args'),
+        validate = include('utils/validate-args'),
+        Application = include('app').getInstance();
 
     module.exports = function (req, res) {
         var pid, name, doc, valid,
             $this = this,
-            model = Application.getModel('project'),
+            model = Application.getInstance().getModel('project'),
             stubs = this._stubArguments(req.body.path, req.body.name);
         //
         // validation des arguments

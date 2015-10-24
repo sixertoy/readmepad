@@ -4,7 +4,8 @@
 
     'use strict';
 
-    var Application = require('./../../app').getInstance();
+    var include = require('include'),
+        Application = include('app');
 
     /**
      *
@@ -16,7 +17,7 @@
      *
      */
     module.exports = function (req, res) {
-        var model = Application.getModel('project');
+        var model = Application.getInstance().getModel('project');
         model.findAll().then(function (data) {
             res.status(200).send(data || false);
         }, function (err) {

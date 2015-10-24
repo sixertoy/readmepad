@@ -11,7 +11,7 @@
         expect = require('chai').expect,
         toarray = require('lodash.toarray'),
         // helper
-        args = require(path.join(cwd, 'src/server/utils/args'));
+        args = require('utils/args');
 
     describe('args stubs function arguments', function () {
 

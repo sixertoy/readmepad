@@ -10,7 +10,6 @@
      * Retourne une function
      *
      */
-
     function noop() {
         return function () {};
     }

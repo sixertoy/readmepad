@@ -12,7 +12,7 @@ if [ -n "$1" ]; then
         # Test pour le l'application NodeJS
         #
         # -----------------------------------------------------
-        istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./spec/src/server/**/*.spec.js
+        istanbul cover --root ./src/server ./node_modules/mocha/bin/_mocha --recursive -S -R spec ./spec/src/server/**/*.js
     elif [ "$1" == "front" ]; then
         # -----------------------------------------------------
         #
@@ -26,7 +26,7 @@ if [ -n "$1" ]; then
         # Test pour sur un fichier de l'application
         #
         # -----------------------------------------------------
-        istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec $1
+        istanbul cover --root ./src/server ./node_modules/mocha/bin/_mocha spec $1
     fi
 fi
 

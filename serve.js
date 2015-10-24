@@ -4,6 +4,8 @@
 
     'use strict';
 
-    module.exports = require('./dist/server');
+    var include = require('include');
+    include.root('src/server');
+    module.exports = include('server');
 
 }());

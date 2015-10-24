@@ -20,18 +20,19 @@
         md5 = require('md5'),
         path = require('path'),
         chalk = require('chalk'),
+        include = require('include'),
         express = require('express'),
         isstring = require('lodash.isstring'),
         //scandir = require('scandir-async').exec,
         // utils
-        args = require('./../utils/args'),
-        validate = require('./../utils/validate-args').exec,
+        args = include('utils/args'),
+        validate = include('utils/validate-args').exec;
         // routes
-        open = require('./../routes/project/open'),
-        create = require('./../routes/project/create'),
-        remove = require('./../routes/project/remove'),
-        update = require('./../routes/project/update'),
-        collection = require('./../routes/project/collection');
+        //open = include('routes/project/open'),
+        //create = include('routes/project/create'),
+        //remove = include('routes/project/remove'),
+        //update = include('routes/project/update'),
+        //collection = include('routes/project/collection');
 
     /**
      *
@@ -85,11 +86,13 @@
      */
     ProjectController.prototype.init = function () {
         // ajout des routes de l'API
+        /*
         this._router.get('/open', open);
         this._router.put('/update', update);
         this._router.post('/create', create);
         this._router.delete('/remove', remove);
         this._router.get('/collection', collection);
+        */
     };
 
     /**

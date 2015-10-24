@@ -10,9 +10,11 @@
         md5 = require('md5'),
         _ = require('lodash'),
         Datastore = require('nedb'),
+        include = require('include'),
         winston = require('winston'),
         filenamify = require('filenamify'),
-        validate = require('../utils/validate-args').exec,
+        // include
+        validate = include('utils/validate-args').exec,
         //
         // description d'une entite projet en BDD
         document = {

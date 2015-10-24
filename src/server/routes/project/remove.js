@@ -4,7 +4,10 @@
 
     'use strict';
 
-    var Application = require('./../../app').getInstance();
+    var // requires
+        include = require('include'),
+        // include
+        Application = include('app').getInstance();
 
     /**
      *
