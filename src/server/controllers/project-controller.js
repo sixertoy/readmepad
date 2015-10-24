@@ -26,13 +26,13 @@
         //scandir = require('scandir-async').exec,
         // utils
         args = include('utils/args'),
-        validate = include('utils/validate-args').exec;
+        validate = include('utils/validate-args').exec,
         // routes
-        //open = include('routes/project/open'),
-        //create = include('routes/project/create'),
-        //remove = include('routes/project/remove'),
-        //update = include('routes/project/update'),
-        //collection = include('routes/project/collection');
+        open = include('routes/project/open'),
+        update = include('routes/project/update'),
+        remove = include('routes/project/remove'),
+        create = include('routes/project/create'),
+        collection = include('routes/project/collection');
 
     /**
      *
@@ -63,9 +63,13 @@
      * Constructeur
      *
      */
-    ProjectController = function () {
-        this._model = false;
-        this._router = _initRouter();
+    ProjectController = function (enforcer) {
+        if (enforcer && enforcer instanceof Enforcer) {
+            this._model = false;
+            this._router = _initRouter();
+        } else {
+            throw new Error('ProjectController is a singleton instance. Use ProjectController.getInstance() instead');
+        }
     };
 
     /**
@@ -86,13 +90,11 @@
      */
     ProjectController.prototype.init = function () {
         // ajout des routes de l'API
-        /*
         this._router.get('/open', open);
         this._router.put('/update', update);
         this._router.post('/create', create);
         this._router.delete('/remove', remove);
         this._router.get('/collection', collection);
-        */
     };
 
     /**

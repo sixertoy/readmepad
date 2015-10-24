@@ -39,7 +39,7 @@ fi
 # -----------------------------------------------------
 if [ -z "$1" ]; then
     gulp bower
-    istanbul cover -x *.spec.js node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./spec/src/server/**/*
+    istanbul cover --root ./src/server ./node_modules/mocha/bin/_mocha --recursive -S -R spec ./spec/src/server/**/*.js
     karma start karma.conf.js --single-run
 fi
 
