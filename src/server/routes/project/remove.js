@@ -4,10 +4,10 @@
 
     'use strict';
 
-    var // requires
-        include = require('include'),
-        // include
-        Application = include('app').getInstance();
+    var // variables
+        Application,
+        // requires
+        include = require('include');
 
     /**
      *
@@ -18,12 +18,14 @@
      *
      */
     module.exports = function (req, res) {
+        /*
         var model = Application.getModel('project');
         model.deleteProject(req.pid).then(function (count) {
             res.send((count > 0));
         }, function (err) {
             res.sendStatus(503);
         });
+        */
     };
 
 }());

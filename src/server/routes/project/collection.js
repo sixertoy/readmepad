@@ -4,8 +4,8 @@
 
     'use strict';
 
-    var include = require('include'),
-        Application = include('app');
+    var Application,
+        include = require('include');
 
     /**
      *
@@ -17,12 +17,15 @@
      *
      */
     module.exports = function (req, res) {
+        /*
         var model = Application.getInstance().getModel('project');
         model.findAll().then(function (data) {
             res.status(200).send(data || false);
         }, function (err) {
             res.sendStatus(503);
         });
+        */
     };
+    Application = include('app');
 
 }());

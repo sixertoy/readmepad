@@ -4,17 +4,19 @@
 
     'use strict';
 
-    var // requires
+    var // variables
+        Application,
+        // requires
         FS = require('fs'),
         md5 = require('md5'),
         include = require('include'),
         isstring = require('lodash.isstring'),
         // include
         stubs = include('utils/args'),
-        validate = include('utils/validate-args'),
-        Application = include('app').getInstance();
+        validate = include('utils/validate-args');
 
     module.exports = function (req, res) {
+        /*
         var pid, name, doc, valid,
             $this = this,
             model = Application.getInstance().getModel('project'),
@@ -63,7 +65,7 @@
                 });
             }
         });
-
+        */
     };
 
 }());

@@ -9,7 +9,7 @@
         return arguments;
     }
 
-    var helper, model, ctrl, app,
+    var helper, model, ctrl, app, server,
         cwd = process.cwd(),
         // requires
         sinon = require('sinon'),
@@ -27,7 +27,7 @@
         filenamify = require('filenamify'),
         scandir = require('scandir-async').exec,
         */
-        include = require('include').root('./src/server'),
+        include = require('include'),
         // includes
         // dbfile = path.join(cwd, 'spec/fixtures/nedb/project.nedb'),
         //validate = include(''),
@@ -35,33 +35,57 @@
         Application = include('app'),
         ProjectController = include('controllers/project-controller');
 
-    describe('ProjectController', function () {
-        it('params must be an instance of application', function () {
+    describe('ProjectController Constructor', function () {
+        it('throws', function () {
             expect(function () {
                 ctrl = new ProjectController();
             }).to.throw();
             expect(function () {
                 ctrl = new ProjectController(1234);
             }).to.throw();
+            expect(function () {
+                ctrl = new ProjectController(app);
+            }).to.throw();
+        });
+        it('not throws', function () {
+            expect(function () {
+                server = express();
+                server.use(bodyParser.json());
+                server.use(bodyParser.urlencoded({
+                    extended: true
+                }));
+                app = new Application(server);
+                app.init(function () {});
+                ctrl = new ProjectController(app, 'project2');
+            }).to.not.throw();
+        });
+    });
+    describe('ProjectController Methods', function () {
+        beforeEach(function () {
+            server = express();
+            server.use(bodyParser.json());
+            server.use(bodyParser.urlencoded({
+                extended: true
+            }));
+            app = new Application(server);
+            app.init(function () {});
         });
         it('has setted router in constructor', function () {
-            app = new Application();
-            ctrl = new ProjectController(app);
+            ctrl = app.getController('project');
             expect(ctrl.getRouter().prototype.toString()).to.equal(express.Router().prototype.toString());
         });
         it('spy calls router methods', function () {
-            app = new Application();
-            ctrl = new ProjectController(app);
-            var router = ctrl.getRouter();
-            var spyGet = sinon.spy(router, 'get'),
+            ctrl = new ProjectController(app, 'project2');
+            var router = ctrl.getRouter(),
+                spyGet = sinon.spy(router, 'get'),
                 spyPut = sinon.spy(router, 'put'),
                 spyPost = sinon.spy(router, 'post'),
                 spyDelete = sinon.spy(router, 'delete');
             ctrl.init();
-            //expect(spyPut.calledOnce).to.be.true; // called on /update
-            //expect(spyPost.calledOnce).to.be.true; // called on /create
-            //expect(spyDelete.calledOnce).to.be.true; // called on /remove
-            expect(spyGet.calledOnce).to.be.true; // called on /open and /collection
+            expect(spyPut.calledOnce).to.be.true; // called on /update
+            expect(spyPost.calledOnce).to.be.true; // called on /create
+            expect(spyGet.calledTwice).to.be.true; // called on /open and /collection
+            expect(spyDelete.calledOnce).to.be.true; // called on /remove
         });
 
     });

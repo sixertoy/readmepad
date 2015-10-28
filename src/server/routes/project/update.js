@@ -4,13 +4,14 @@
 
     'use strict';
 
-    var // requires
+    var // variables
+        Application,
+        // requires
         include = require('include'),
         isstring = require('lodash.isstring'),
         // utils
         args = include('utils/args'),
-        validate = include('utils/validate-args'),
-        Application = include('app').getInstance();
+        validate = include('utils/validate-args');
 
     /**
      *
@@ -24,6 +25,7 @@
      *
      */
     module.exports = function (req, res) {
+        /*
         var model = Application.getModel('project'),
             valid = validate(args(req.body.pid, req.body.name), [isstring, isstring]);
         if (!valid) {
@@ -39,6 +41,7 @@
                 res.sendStatus(503);
             });
         }
+        */
     };
 
 }());

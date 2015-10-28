@@ -4,11 +4,12 @@
 
     'use strict';
 
-    var cwd = process.cwd(),
+    var // variables
+        Application,
+        // requires
+        cwd = process.cwd(),
         path = require('path'),
-        include = require('include'),
-        // include
-        Application = include('app');
+        include = require('include');
 
     /**
      *

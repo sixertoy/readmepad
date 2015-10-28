@@ -14,7 +14,7 @@
         livereload_port = process.env.LIVERELOAD_PORT || false,
         //
         // requires
-        include = require('include').root('./server');
+        include = require('include').root('./server'),
         path = require('path'),
         multer = require('multer'),
         express = require('express'),

@@ -5,6 +5,7 @@
     'use strict';
     var // variables
         ProjectController,
+        Singleton = false,
         // requires
         Q = require('q'),
         path = require('path'),
@@ -21,6 +22,7 @@
         if (!server) {
             throw new Error('missing arguments');
         }
+        Singleton = this;
         this._models = {};
         this._server = server;
         this._controllers = {};
