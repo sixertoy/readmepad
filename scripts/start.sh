@@ -1,3 +1,3 @@
 gulp
-node serve
+node index
 exit 0

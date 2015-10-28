@@ -14,6 +14,7 @@
         livereload_port = process.env.LIVERELOAD_PORT || false,
         //
         // requires
+        include = require('include').root('./server');
         path = require('path'),
         multer = require('multer'),
         express = require('express'),
@@ -23,12 +24,13 @@
         livereload = require('express-livereload'),
         //
         // main app entry point
-        Application = require('./server/app');
+        Application = include('app');
+    
     //
     // app paths
     paths = {
         www: path.join(__dirname, 'public'),
-        app: path.join(__dirname, 'server'),
+        app: path.join(__dirname, 'server'), // include.root()
         storage: path.join(__dirname, 'data')
     };
     //
@@ -47,7 +49,7 @@
     //
     // express middlewares
     server.use(compression()); // gzip
-    server.use(serveFavicon(path.join(paths.www, 'favicon.ico'))); // utilisation du favicon
+    //server.use(serveFavicon(path.join(paths.www, 'favicon.ico'))); // utilisation du favicon
     server.use(multer()); // for parsing multipart/form-data
     server.use(bodyParser.json()); // for parsing application/json
     server.use(bodyParser.urlencoded({ // for parsing application/x-www-form-urlencoded
@@ -58,25 +60,22 @@
     // pour l'app AngularJS/Front
     server.use('/', express.static(paths.www));
     //server.use('/docs', express.static(path.join(paths.www, '..', 'docs')));
-    //
-    console.log(Application);
-    app = Application.getInstance();
-    app.init(server, function (err) {
+    app = new Application(server);
+    app.init(function (err) {
         if (err) {
 
         } else {
-            console.log('init');
+            /*
+            server.listen(port, function () {
+                if (devmode) {
+                    console.log('ReadmePad now running under http://localhost:%d', port);
+                }
+                if (devmode && livereload_port) {
+                    console.log('Livereload is running on port %d\n', livereload_port);
+                }
+            });
+            */
         }
-        /*
-        server.listen(port, function () {
-            if (devmode) {
-                console.log('ReadmePad now running under http://localhost:%d', port);
-            }
-            if (devmode && livereload_port) {
-                console.log('Livereload is running on port %d\n', livereload_port);
-            }
-        });
-        */
     });
 
 }());

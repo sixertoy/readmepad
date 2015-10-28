@@ -12,7 +12,7 @@ if [ -n "$1" ]; then
         # Test pour le l'application NodeJS
         #
         # -----------------------------------------------------
-        istanbul cover --root ./src/server ./node_modules/mocha/bin/_mocha --recursive -S -R spec ./spec/src/server/**/*.js
+        istanbul cover --root ./src/server ./node_modules/mocha/bin/_mocha -S -R spec --recursive "./spec/src/server/**/*.spec.js"
     elif [ "$1" == "front" ]; then
         # -----------------------------------------------------
         #
@@ -26,7 +26,7 @@ if [ -n "$1" ]; then
         # Test pour sur un fichier de l'application
         #
         # -----------------------------------------------------
-        istanbul cover --root ./src/server ./node_modules/mocha/bin/_mocha spec $1
+        istanbul cover --root ./src/server ./node_modules/mocha/bin/_mocha -S -R spec $1
     fi
 fi
 
@@ -39,7 +39,7 @@ fi
 # -----------------------------------------------------
 if [ -z "$1" ]; then
     gulp bower
-    istanbul cover --root ./src/server ./node_modules/mocha/bin/_mocha --recursive -S -R spec ./spec/src/server/**/*.js
+    istanbul cover --root ./src/server ./node_modules/mocha/bin/_mocha -S -R spec --recursive "./spec/src/server/**/*.js"
     karma start karma.conf.js --single-run
 fi
 

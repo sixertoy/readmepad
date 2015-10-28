@@ -21,13 +21,13 @@
      *
      */
     module.exports = function (req, res) {
+        /*
         var model = Application.getInstance().getModel('project');
         model.findOneProject(req.pid).then(function (doc) {
             if (!doc) {
                 // if project doesn't exists
                 res.sendStatus(204);
             } else {
-                /*
                 scandir(doc.path, {
                     sorted: true
                 }).then(function (data) {
@@ -35,11 +35,12 @@
                 }, function (err) {
                     res.sendStatus(503);
                 });
-                */
             }
         }, function (err) {
             res.sendStatus(503);
         });
+        */
+        res.sendStatus(204);
     };
 
 }());

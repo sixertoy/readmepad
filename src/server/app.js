@@ -4,31 +4,27 @@
 
     'use strict';
     var // variables
-        instance = false,
-        Enforcer = function () {},
+        ProjectController,
         // requires
         Q = require('q'),
         path = require('path'),
         chalk = require('chalk'),
         include = require('include'),
-        isstring = require('lodash.isstring'),
-        // includes
-        ProjectController = include('controllers/project-controller'),
+        isstring = require('lodash.isstring');
 
-        /**
-         *
-         * Constructeur
-         *
-         */
-        Application = function (enforcer) {
-            if (enforcer && enforcer instanceof Enforcer) {
-                this._models = {};
-                this._server = false;
-                this._controllers = {};
-            } else {
-                throw new Error('Application is a singleton instance. Use Application.getInstance() instead');
-            }
-        };
+    /**
+     *
+     * Constructeur
+     *
+     */
+    function Application(server) {
+        if (!server) {
+            throw new Error('missing arguments');
+        }
+        this._models = {};
+        this._server = server;
+        this._controllers = {};
+    }
 
     /**
      *
@@ -89,41 +85,23 @@
      * - callback n'est pas une fonction
      *
      */
-    Application.prototype.init = function (server, callback) {
-        var controller, router, model, name;
-        //
-        if (arguments.length < 2 || typeof (callback) !== 'function') {
+    Application.prototype.init = function (callback) {
+        if (arguments.length < 1 || typeof (callback) !== 'function') {
             throw new Error('missing arguments');
         }
-        // affecte le serveur
-        // a l'application
-        this._server = server;
+        var ctrl, name;
         //
-        // init du router pour les objets projets
+        // ProjectController
         name = 'project';
-        controller = ProjectController.getInstance();
-        controller.init();
-        server.use('/' + name, controller.getRouter());
-        this._controllers[name] = controller;
+        ctrl = new ProjectController(this, name);
+        this._controllers[name] = ctrl;
+        this._server.use('/' + name, ctrl.getRouter());
         //
-        //this._models[name] = false;
         //
         callback(null);
     };
 
-    /**
-     *
-     * Singleton
-     *
-     */
-    module.exports = {
-        getInstance: function () {
-            if (!instance) {
-                var enforcer = new Enforcer();
-                instance = new Application(enforcer);
-            }
-            return instance;
-        }
-    };
+    module.exports = Application;
+    ProjectController = include('controllers/project-controller');
 
 }());

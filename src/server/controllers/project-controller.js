@@ -1,5 +1,3 @@
-/*jslint indent: 4, nomen: true, plusplus: true */
-/*globals require, module, console*/
 /**
  *
  * HTTP Status Code
@@ -7,32 +5,55 @@
  *
  *
  */
+/*jslint indent: 4, nomen: true, plusplus: true */
+/*globals require, module, console*/
 (function () {
 
     'use strict';
 
     var // variables
-        instance,
-        ProjectController,
-        Enforcer = function () {},
+        // circulars dependencies
+        Application,
         // requires
-        fs = require('fs'),
-        md5 = require('md5'),
-        path = require('path'),
-        chalk = require('chalk'),
         include = require('include'),
         express = require('express'),
-        isstring = require('lodash.isstring'),
-        //scandir = require('scandir-async').exec,
-        // utils
-        args = include('utils/args'),
-        validate = include('utils/validate-args').exec,
-        // routes
-        open = include('routes/project/open'),
-        update = include('routes/project/update'),
-        remove = include('routes/project/remove'),
-        create = include('routes/project/create'),
-        collection = include('routes/project/collection');
+        isstring = require('lodash.isstring');
+    //scandir = require('scandir-async').exec,
+    // utils
+    //args = include('utils/args'),
+    //validate = include('utils/validate-args').exec,
+    // routes
+    //open = include('routes/project/open'),
+    //update = include('routes/project/update'),
+    //remove = include('routes/project/remove'),
+    //create = include('routes/project/create'),
+    //collection = include('routes/project/collection');
+
+    /**
+     *
+     * Constructeur
+     *
+     */
+    function ProjectController(app, name) {
+        if (arguments.length < 2 || !app || !(app instanceof Application)) {
+            throw new Error('missing arguments');
+        }
+        this._app = app;
+        this._name = name;
+        this._model = false;
+        this._router = this._initRouter();
+        this._initRoutes();
+        this._initParamsMiddleware();
+    };
+
+    ProjectController.prototype._initRoutes = function () {
+        // ajout des routes de l'API
+        //this._router.get('/open', open);
+        //this._router.put('/update', update);
+        //this._router.post('/create', create);
+        //this._router.delete('/remove', remove);
+        //this._router.get('/collection', collection);
+    };
 
     /**
      *
@@ -43,33 +64,23 @@
      * @TODO place in a super class for a route class
      *
      */
-    function _initRouter() {
-        var valid, router;
+    ProjectController.prototype._initRouter = function () {
         // init du router du controller
-        router = express.Router({
+        return express.Router({
             caseSensitive: true
         });
+    };
+
+    ProjectController.prototype._initParamsMiddleware = function () {
+        var valid;
         // parse param pid
-        router.param('pid', function (req, res, next, pid) {
+        this._router.param('pid', function (req, res, next, pid) {
+            /*
             valid = validate(args(pid), [isstring]);
             req.pid = valid ? pid : false;
             next();
+            */
         });
-        return router;
-    }
-
-    /**
-     *
-     * Constructeur
-     *
-     */
-    ProjectController = function (enforcer) {
-        if (enforcer && enforcer instanceof Enforcer) {
-            this._model = false;
-            this._router = _initRouter();
-        } else {
-            throw new Error('ProjectController is a singleton instance. Use ProjectController.getInstance() instead');
-        }
     };
 
     /**
@@ -82,34 +93,7 @@
         return this._router;
     };
 
-    /**
-     *
-     * Init des sous route de l'API
-     * Retourne le router pour le controller
-     *
-     */
-    ProjectController.prototype.init = function () {
-        // ajout des routes de l'API
-        this._router.get('/open', open);
-        this._router.put('/update', update);
-        this._router.post('/create', create);
-        this._router.delete('/remove', remove);
-        this._router.get('/collection', collection);
-    };
-
-    /**
-     *
-     * Singleton
-     *
-     */
-    module.exports = {
-        getInstance: function () {
-            if (!instance) {
-                var enforcer = new Enforcer();
-                instance = new ProjectController(enforcer);
-            }
-            return instance;
-        }
-    };
+    module.exports = ProjectController;
+    Application = include('app');
 
 }());

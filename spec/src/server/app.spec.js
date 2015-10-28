@@ -5,84 +5,90 @@
 
     'use strict';
 
-    var result, app,
+    var result, app, server,
         serverStub = {
             use: function () {},
             toString: 'an experss.js instance'
         },
-        include = require('include').root('./src/server'),
+        // requires
         path = require('path'),
+        express = require('express'),
         expect = require('chai').expect,
-        // include
+        bodyParser = require('body-parser'),
+        include = require('include').root('./../../../src/server'),
+        // includes
         Application = include('app'),
         ProjectController = include('controllers/project-controller');
 
-    describe('helper', function () {
+    beforeEach(function () {
+        server = express();
+        server.use(bodyParser.json());
+        server.use(bodyParser.urlencoded({
+            extended: true
+        }));
+        app = null;
+    });
 
-        describe('before app.init()', function () {
+    describe('Application', function () {
 
-            it('throws - not called by Application.getInstance()', function () {
+        describe('a new instance', function () {
+            it('needs server param', function () {
                 expect(function () {
                     app = new Application();
                 }).to.throw();
             });
-            it('returns an application instance', function () {
-                app = Application.getInstance();
-                expect(app).to.equal(Application.getInstance());
+            it('call with server as param', function () {
+                expect(function () {
+                    app = new Application(server);
+                }).to.not.throw();
             });
-            describe('getController/getModel', function () {
-                it('throws app.getModel()', function () {
-                    app = Application.getInstance();
-                    expect(function () {
-                        app.getModel();
-                    }).to.throw('Unable to load model: undefined');
-                });
-                it('throws app.getController()', function () {
-                    app = Application.getInstance();
-                    expect(function () {
-                        app.getController();
-                    }).to.throw('Unable to load controller: undefined');
-                });
+            it('throws app.getModel()', function () {
+                expect(function () {
+                    app = new Application(server);
+                    app.getModel();
+                }).to.throw('Unable to load model: undefined');
             });
-            describe('app.getServer()', function () {
-                it('returns false', function () {
-                    app = Application.getInstance();
-                    expect(app.getServer()).to.be.false;
-                });
+            it('throws app.getController()', function () {
+                expect(function () {
+                    app = new Application(server);
+                    app.getController();
+                }).to.throw('Unable to load controller: undefined');
             });
-
+            it('to be an instance of express router', function () {
+                app = new Application(server);
+                expect(app.getServer().prototype.toString()).to.equal(express.Router().prototype.toString());
+            });
         });
 
-        describe('init() call', function () {
-            app = Application.getInstance();
-            it('throws', function () {
+        it('throws app.getController()', function () {
+            expect(function () {
+                app = new Application(server);
+                app.getController();
+            }).to.throw('Unable to load controller: undefined');
+        });
+        it('to be an instance of express router', function () {
+            app = new Application(server);
+            expect(app.getServer().prototype.toString()).to.equal(express.Router().prototype.toString());
+        });
+
+        describe('init method', function () {
+            it('throws - no arguments', function () {
                 expect(function () {
-                    app.init()
+                    app = new Application(server);
+                    app.init();
                 }).to.throw('missing arguments');
+            });
+            it('not throws', function () {
                 expect(function () {
-                    app.init(false)
-                }).to.throw('missing arguments');
-                expect(function () {
-                    app.init(false, 1234)
-                }).to.throw('missing arguments');
+                    app = new Application(server);
+                    app.init(function () {});
+                }).to.not.throw();
             });
-            it('do not throws', function () {
-                var cb = function () {
-                    return 'callback called';
-                };
-                app = Application.getInstance();
-                app.init(serverStub, cb);
-            });
-            it('has setted server', function () {
-                expect(Application.getInstance().getServer()).to.equal(serverStub);
-            });
-            it('has setted controller', function () {
-                var ctrl = Application.getInstance().getController('project'),
-                    inst = ProjectController.getInstance();
-                expect(ctrl).to.equal(inst);
-            });
-            it('returns the instance', function () {
-                expect(app).to.equal(Application.getInstance());
+            it('project controller has been setted', function () {
+                app = new Application(server);
+                app.init(function () {});
+                var instance = app.getController('project');
+                expect(instance instanceof ProjectController).to.be.true;
             });
         });
 
