@@ -41,7 +41,6 @@
             res.sendStatus(503);
         });
         */
-        res.sendStatus(204);
     };
 
 }());

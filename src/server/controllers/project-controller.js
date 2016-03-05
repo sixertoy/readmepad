@@ -12,8 +12,7 @@
     'use strict';
 
     var // variables
-    // circulars dependencies
-        Application,
+        Application, Facade,
         // requires
         include = require('include'),
         express = require('express'),
@@ -45,30 +44,6 @@
             caseSensitive: true
         });
     }
-    
-    ProjectController.prototype.init = function(){
-        this._initRoutes();
-        this._initParamsMiddleware();
-    };
-
-    ProjectController.prototype._initRoutes = function () {
-        // ajout des routes de l'API
-        this._router.get('/open', open);
-        this._router.put('/update', update);
-        this._router.post('/create', create);
-        this._router.delete('/remove', remove);
-        this._router.get('/collection', collection);
-    };
-
-    ProjectController.prototype._initParamsMiddleware = function () {
-        var valid;
-        // parse param pid
-        this._router.param('pid', function (req, res, next, pid) {
-            valid = validate(args(pid), [isstring]);
-            req.pid = valid ? pid : false;
-            next();
-        });
-    };
 
     /**
      *
@@ -80,7 +55,45 @@
         return this._router;
     };
 
+    /**
+     * 
+     * 
+     */
+    ProjectController.prototype.getName = function () {
+        return this._name;
+    }
+
+    ProjectController.prototype.init = function () {
+        this._initRoutes();
+        this._initRoutesParams();
+    };
+
+    ProjectController.prototype._initRoutes = function () {
+        // ajout des routes de l'API
+        this._router.post('/create', create);
+        this._router.get('/collection', collection);
+        // params needed
+        this._router.get('/open/:id', open);
+        this._router.put('/update/:id', update);
+        this._router.delete('/remove/:id', remove);
+    };
+
+    ProjectController.prototype._initRoutesParams = function () {
+        var valid;
+        // parse param pid
+        this._router.param('id', function (req, res, next, id) {
+            valid = validate(args(id), [isstring]);
+            if(!valid){
+                res.sendStatus(400);
+            } else {
+                req.id = id;
+                next();
+            }
+        });
+    };
+
     module.exports = ProjectController;
+    Facade = include('facade');
     Application = include('app');
 
 }());

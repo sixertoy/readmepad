@@ -5,44 +5,44 @@
 
     'use strict';
 
-    var result, app, server, pid, ctrl,
+    var result, app, server, ctrl,
         callback = function () {
             console.log('callback called');
         },
+        pid = -1,
         cwd = process.cwd(),
         path = require('path'),
+        include = require('include'),
         express = require('express'),
         request = require('supertest'),
         expect = require('chai').expect,
         bodyParser = require('body-parser'),
-        include = require('include').root('./src/server'),
         // includes
+        Facade = include('facade'),
         Application = include('app');
 
-    server = express();
-    server.use(bodyParser.json());
-    server.use(bodyParser.urlencoded({
-        extended: true
-    }));
-
+    beforeEach(function () {
+        server = express();
+        server.use(bodyParser.json());
+        server.use(bodyParser.urlencoded({
+            extended: true
+        }));
+        Facade.setApplication(new Application(server));
+        app = Facade.getApplication();
+        app.init(function () {});
+    });
 
     describe('Route[GET][/project/open]', function () {
         it('fails invalid pid code 204', function (done) {
-            Application.destroy();
-            app = Application.getInstance();
-            app.init(server, callback);
-            server = app.getServer();
-            console.log(app.getController('project').getRouter().stack);
-
             pid = JSON.stringify({
                 prop: 'value'
             });
             request(server)
-                .get('/open/' + pid)
+                .get('/project/open/' + pid)
                 .send()
                 .expect('Content-Type', /json/)
                 .end(function (err, res) {
-                    expect(res.status).to.equal(204);
+                    expect(res.status).to.equal(204); // Cannot GET /project/open
                     done();
                 });
         });

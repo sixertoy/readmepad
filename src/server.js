@@ -24,8 +24,9 @@
         livereload = require('express-livereload'),
         //
         // main app entry point
+        Facade = include('facade'),
         Application = include('app');
-    
+
     //
     // app paths
     paths = {
@@ -60,21 +61,20 @@
     // pour l'app AngularJS/Front
     server.use('/', express.static(paths.www));
     //server.use('/docs', express.static(path.join(paths.www, '..', 'docs')));
-    app = new Application(server);
+    Facade.setApplication(new Application(server));
+    app = Facade.getApplication();
     app.init(function (err) {
         if (err) {
 
         } else {
-            /*
             server.listen(port, function () {
-                if (devmode) {
+                // if (devmode) {
                     console.log('ReadmePad now running under http://localhost:%d', port);
-                }
-                if (devmode && livereload_port) {
+                // }
+                // if (devmode && livereload_port) {
                     console.log('Livereload is running on port %d\n', livereload_port);
-                }
+                // }
             });
-            */
         }
     });
 

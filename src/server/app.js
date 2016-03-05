@@ -22,7 +22,6 @@
         if (!server) {
             throw new Error('missing arguments');
         }
-        Singleton = this;
         this._models = {};
         this._server = server;
         this._controllers = {};
@@ -91,14 +90,11 @@
         if (arguments.length < 1 || typeof (callback) !== 'function') {
             throw new Error('missing arguments');
         }
-        var ctrl, name;
-        //
-        // ProjectController
-        name = 'project';
-        ctrl = new ProjectController(this, name);
-        this._controllers[name] = ctrl;
+        var name = 'project',
+            ctrl = new ProjectController(this, name);
+        ctrl.init();
+        this._controllers[ctrl.getName()] = ctrl;
         this._server.use('/' + name, ctrl.getRouter());
-        //
         //
         callback(null);
     };
