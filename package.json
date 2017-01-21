@@ -1,0 +1,20 @@
+{
+  "name": "readmepad",
+  "version": "0.1.0",
+  "description": "React Markdwon Editor",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sixertoy/readmepad.git"
+  },
+  "author": "Matthieu Lassalvy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sixertoy/readmepad/issues"
+  },
+  "homepage": "https://github.com/sixertoy/readmepad#readme"
+}
